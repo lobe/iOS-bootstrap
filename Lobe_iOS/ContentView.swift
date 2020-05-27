@@ -17,6 +17,7 @@ struct ContentView: View {
             MyRepresentable(controller: controller)
             UpdateTextViewExternal(viewModel: controller)
         }
+        .edgesIgnoringSafeArea(.top)
     }
 }
 
