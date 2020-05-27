@@ -27,8 +27,8 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
         
         let captureSession = AVCaptureSession()
         
-        guard let captureDevice = AVCaptureDevice.default(for: .video) else {return}
-        guard let input = try? AVCaptureDeviceInput(device: captureDevice) else {return}
+        guard let captureDevice = AVCaptureDevice.default(for: .video) else { return }
+        guard let input = try? AVCaptureDeviceInput(device: captureDevice) else { return }
         captureSession.addInput(input)
         captureSession.startRunning()
         
@@ -58,14 +58,10 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
         }
         
         try? VNImageRequestHandler(cvPixelBuffer: pixelBuffer, options: [:]).perform([request])
-//        print(self.classificationLabel!)
         
     }
     
     func processClassifications(for request: VNRequest, error: Error?) {
-        if !(self.classificationLabel != nil) {
-            self.classificationLabel = "begin"
-        }
         DispatchQueue.main.async {
             guard let results = request.results else {
                 self.classificationLabel = "Unable to classify image.\n\(error!.localizedDescription)"
