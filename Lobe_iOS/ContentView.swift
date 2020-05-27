@@ -1,9 +1,9 @@
 //
 //  ContentView.swift
-//  Lobe_iOS
+//  SwiftUICamera
 //
-//  Created by Adam Menges on 5/20/20.
-//  Copyright © 2020 Adam Menges. All rights reserved.
+//  Created by Mohammad Azam on 2/10/20.
+//  Copyright © 2020 Mohammad Azam. All rights reserved.
 //
 
 import SwiftUI
@@ -11,24 +11,47 @@ import AVKit
 import Vision
 
 struct ContentView: View {
+    var controller: MyViewController = MyViewController()
     var body: some View {
-        MyRepresentable()
-        
+        VStack {
+            MyRepresentable(controller: controller)
+            UpdateTextViewExternal(viewModel: controller)
+        }
     }
 }
 
-class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate {
+struct UpdateTextViewExternal: View {
+    @ObservedObject var viewModel: MyViewController
+    var body: some View {
+        GeometryReader { geometry in
+           VStack {
+               VStack(alignment: .leading) {
+                Spacer()
+                   Text(self.viewModel.classificationLabel ?? "default")
+                       .foregroundColor(.white)
+                       .font(.system(size: 40))
+                       .multilineTextAlignment(.leading)
+               }
+           }
+           .padding()
+           .frame(width: geometry.size.width,
+                height: nil, alignment: .leading)
+        }
+    }
+}
 
-    var classificationLabel: String?
-    var myLabel: UILabel!
+class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate, ObservableObject {
+
+    @Published var classificationLabel: String?
+//    var myLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         
         let captureSession = AVCaptureSession()
         
-        guard let captureDevice = AVCaptureDevice.default(for: .video) else { return }
-        guard let input = try? AVCaptureDeviceInput(device: captureDevice) else { return }
+        guard let captureDevice = AVCaptureDevice.default(for: .video) else {return}
+        guard let input = try? AVCaptureDeviceInput(device: captureDevice) else {return}
         captureSession.addInput(input)
         captureSession.startRunning()
         
@@ -40,13 +63,6 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
         let dataOutput = AVCaptureVideoDataOutput()
         dataOutput.setSampleBufferDelegate(self, queue: DispatchQueue(label: "videoQueue"))
         captureSession.addOutput(dataOutput)
-        self.myLabel = UILabel(frame: CGRect(x: 0, y: 0, width: 400, height: 100))
-        self.myLabel.center = CGPoint(x: 250, y: 1000)
-        self.myLabel.textAlignment = .left
-        self.myLabel.text = "test label"
-        self.myLabel.textColor = .white
-        self.myLabel.font = myLabel.font.withSize(50)
-        self.view.addSubview(self.myLabel)
         
     }
     
@@ -76,15 +92,14 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
                 let topClassifications = classifications.prefix(1)
                 self.classificationLabel = topClassifications[0].identifier
             }
-            self.myLabel.text = self.classificationLabel!
         }
     }
 }
 
 struct MyRepresentable: UIViewControllerRepresentable {
+    @State var controller: MyViewController
     func makeUIViewController(context: Context) -> MyViewController {
-        let controller = MyViewController()
-        return controller
+        return self.controller
     }
     
     func updateUIViewController(_ uiViewController: MyViewController, context: Context) {
