@@ -1,9 +1,9 @@
 //
 //  ContentView.swift
-//  SwiftUICamera
+//  Lobe_iOS
 //
-//  Created by Mohammad Azam on 2/10/20.
-//  Copyright © 2020 Mohammad Azam. All rights reserved.
+//  Created by Adam Menges on 5/20/20.
+//  Copyright © 2020 Adam Menges. All rights reserved.
 //
 
 import SwiftUI
@@ -25,18 +25,18 @@ struct UpdateTextViewExternal: View {
     @ObservedObject var viewModel: MyViewController
     var body: some View {
         GeometryReader { geometry in
-           VStack {
-               VStack(alignment: .leading) {
-                Spacer()
-                   Text(self.viewModel.classificationLabel ?? "default")
-                       .foregroundColor(.white)
-                       .font(.system(size: 40))
-                       .multilineTextAlignment(.leading)
-               }
-           }
-           .padding()
-           .frame(width: geometry.size.width,
-                height: nil, alignment: .leading)
+            VStack {
+                VStack(alignment: .leading) {
+                    Spacer()
+                    Text(self.viewModel.classificationLabel ?? "default")
+                        .foregroundColor(.black)
+                        .font(.system(size: 40))
+                        .multilineTextAlignment(.leading)
+                }
+            }
+            .padding()
+            .frame(width: geometry.size.width,
+                   height: nil, alignment: .leading)
         }
     }
 }
@@ -44,7 +44,7 @@ struct UpdateTextViewExternal: View {
 class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate, ObservableObject {
 
     @Published var classificationLabel: String?
-//    var myLabel: UILabel!
+    //    var myLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,7 +69,7 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
     
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         guard let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
-        guard let model = try? VNCoreMLModel(for: MobileNet().model) else { return }
+        guard let model = try? VNCoreMLModel(for: LobeModel().model) else { return }
         let request = VNCoreMLRequest(model: model) { (finishReq, err) in
             self.processClassifications(for: finishReq, error: err)
         }
@@ -85,7 +85,7 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
                 return
             }
             let classifications = results as! [VNClassificationObservation]
-        
+
             if classifications.isEmpty {
                 self.classificationLabel = "Nothing recognized."
             } else {
