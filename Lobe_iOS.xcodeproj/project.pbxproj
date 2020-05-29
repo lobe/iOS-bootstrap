@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		76A9AF54247F138B002086F7 /* LobeModel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 76A9AF53247F138B002086F7 /* LobeModel.mlmodel */; };
+		76CDE1A4247F2E6D0096E882 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CDE1A3247F2E6D0096E882 /* ImagePicker.swift */; };
 		9B7B03EB2475DBF300D34020 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B7B03EA2475DBF300D34020 /* AppDelegate.swift */; };
 		9B7B03ED2475DBF300D34020 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B7B03EC2475DBF300D34020 /* SceneDelegate.swift */; };
 		9B7B03EF2475DBF300D34020 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B7B03EE2475DBF300D34020 /* ContentView.swift */; };
@@ -18,6 +19,7 @@
 
 /* Begin PBXFileReference section */
 		76A9AF53247F138B002086F7 /* LobeModel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = LobeModel.mlmodel; path = ../LobeModel.mlmodel; sourceTree = "<group>"; };
+		76CDE1A3247F2E6D0096E882 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
 		9B7B03E72475DBF300D34020 /* Lobe_iOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lobe_iOS.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B7B03EA2475DBF300D34020 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9B7B03EC2475DBF300D34020 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -61,6 +63,7 @@
 				9B7B03EA2475DBF300D34020 /* AppDelegate.swift */,
 				9B7B03EC2475DBF300D34020 /* SceneDelegate.swift */,
 				9B7B03EE2475DBF300D34020 /* ContentView.swift */,
+				76CDE1A3247F2E6D0096E882 /* ImagePicker.swift */,
 				9B7B03F02475DBF600D34020 /* Assets.xcassets */,
 				9B7B03F52475DBF600D34020 /* LaunchScreen.storyboard */,
 				76A9AF53247F138B002086F7 /* LobeModel.mlmodel */,
@@ -151,6 +154,7 @@
 			files = (
 				76A9AF54247F138B002086F7 /* LobeModel.mlmodel in Sources */,
 				9B7B03EB2475DBF300D34020 /* AppDelegate.swift in Sources */,
+				76CDE1A4247F2E6D0096E882 /* ImagePicker.swift in Sources */,
 				9B7B03ED2475DBF300D34020 /* SceneDelegate.swift in Sources */,
 				9B7B03EF2475DBF300D34020 /* ContentView.swift in Sources */,
 			);
