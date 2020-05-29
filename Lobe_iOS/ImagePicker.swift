@@ -14,12 +14,12 @@ class ImagePickerCoordinator: NSObject, UINavigationControllerDelegate, UIImageP
     
     @Binding var image: UIImage?
     @Binding var isShown: Bool
-    var hehe: MyViewController
+    var controller: MyViewController
     
-    init(image: Binding<UIImage?>, isShown: Binding<Bool>, hehe: MyViewController) {
+    init(image: Binding<UIImage?>, isShown: Binding<Bool>, controller: MyViewController) {
         _image = image
         _isShown = isShown
-        self.hehe = hehe
+        self.controller = controller
     }
     
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
@@ -27,7 +27,7 @@ class ImagePickerCoordinator: NSObject, UINavigationControllerDelegate, UIImageP
         if let uiImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             image = uiImage
             isShown = false
-            hehe.changeStatus(useCam: false, img: uiImage)
+            controller.changeStatus(useCam: false, img: uiImage)
         }
         
     }
@@ -46,14 +46,14 @@ struct ImagePicker: UIViewControllerRepresentable {
     
     @Binding var image: UIImage?
     @Binding var isShown: Bool
-    var hehe: MyViewController
+    var controller: MyViewController
     var sourceType: UIImagePickerController.SourceType = .camera
     
     func updateUIViewController(_ uiViewController: UIImagePickerController, context: UIViewControllerRepresentableContext<ImagePicker>) {
     }
     
     func makeCoordinator() -> ImagePicker.Coordinator {
-        return ImagePickerCoordinator(image: $image, isShown: $isShown, hehe: hehe)
+        return ImagePickerCoordinator(image: $image, isShown: $isShown, controller: controller)
     }
     
     func makeUIViewController(context: UIViewControllerRepresentableContext<ImagePicker>) -> UIImagePickerController {

@@ -74,7 +74,7 @@ struct ContentView: View {
                 .frame(width: geometry.size.width,
                       height: nil, alignment: .bottom)
                 .sheet(isPresented: self.$showImagePicker) {
-                    ImagePicker(image: self.$image, isShown: self.$showImagePicker, hehe: self.controller, sourceType: .photoLibrary)}
+                    ImagePicker(image: self.$image, isShown: self.$showImagePicker, controller: self.controller, sourceType: .photoLibrary)}
             }
         }
     }
