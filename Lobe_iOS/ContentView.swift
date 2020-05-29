@@ -11,10 +11,12 @@ import AVKit
 import Vision
 
 var useCam: Bool = true
+
 struct ContentView: View {
     var controller: MyViewController = MyViewController()
     @State var showImagePicker: Bool = false
     @State private var image: UIImage?
+    
     var body: some View {
         GeometryReader { geometry in
         
@@ -33,9 +35,27 @@ struct ContentView: View {
             
             VStack  {
                 Spacer()
+                UpdateTextViewExternal(viewModel: self.controller)
                 HStack {
-                        UpdateTextViewExternal(viewModel: self.controller)
-                        VStack{
+                            Button(action: {
+                                self.showImagePicker = true
+                            }) {
+                                Text("Photo Lib")
+                                 .frame(width: geometry.size.width/16, height: geometry.size.width/16)
+                                    .multilineTextAlignment(.center)
+                            }
+                            .buttonStyle(RoundStyle())
+
+                    
+                            Button(action: {
+                                self.screenShotMethod()
+                            }) {
+                                Text("Screenshot")
+                                    .multilineTextAlignment(.center)
+                                .frame(width: geometry.size.width/9, height: geometry.size.width/9)
+                            }
+                            .buttonStyle(RoundStyle())
+                    
                             Button(action: {
                                 if self.image != nil {
                                     self.controller.changeStatus(useCam: true, img: self.image!)
@@ -43,28 +63,57 @@ struct ContentView: View {
                                 }
                                 self.controller.flipCamera()
                             }) {
-                                Text("Switch Camera")
-                               .font(.system(size: 20))
+                                Text("Switch Cam")
+                                    .multilineTextAlignment(.center)
+                                    .frame(width: geometry.size.width/16, height: geometry.size.width/16)
                            }
-                            Spacer()
-                           Button(action: {
-                               self.showImagePicker = true
-                           }) {
-                               Text("Photo Library")
-                               .font(.system(size: 20))
-                           }
-                        }
+                            .buttonStyle(RoundStyle())
+
                     }
                 .padding()
                 .frame(width: geometry.size.width,
-                      height: geometry.size.height/10, alignment: .bottomTrailing)
-//                    .background(Color.purple)
+                      height: nil, alignment: .bottom)
                 .sheet(isPresented: self.$showImagePicker) {
                     ImagePicker(image: self.$image, isShown: self.$showImagePicker, hehe: self.controller, sourceType: .photoLibrary)}
             }
         }
     }
+    
+
+    struct RoundStyle: ButtonStyle {
+     
+        func makeBody(configuration: Self.Configuration) -> some View {
+            configuration.label
+                .frame(minWidth: 0, maxWidth: .infinity)
+                .padding()
+                .foregroundColor(.white)
+                .background(Color.gray)
+            .mask(Circle())
+            .overlay(
+                Circle().stroke(Color("lightGray"), lineWidth: 6))
+            .shadow(radius: 10)
+            
+
+        }
+    }
+    
+    func screenShotMethod() {
+
+        let layer = UIApplication.shared.keyWindow!.layer
+        let scale = UIScreen.main.scale
+        UIGraphicsBeginImageContextWithOptions(layer.frame.size, false, scale);
+
+        layer.render(in: UIGraphicsGetCurrentContext()!)
+        let screenshot = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        UIImageWriteToSavedPhotosAlbum(screenshot!, nil, nil, nil)
+    }
+    
+
 }
+
+
 
 struct UpdateTextViewExternal: View {
     @ObservedObject var viewModel: MyViewController
@@ -75,17 +124,25 @@ struct UpdateTextViewExternal: View {
         GeometryReader { geometry in
             VStack {
                 Spacer()
-                
                 HStack {
-                    Text(self.viewModel.classificationLabel ?? "default")
-                        .foregroundColor(.white)
-                        .font(.system(size: 40))
-                        .multilineTextAlignment(.leading)
-                        .frame(width: geometry.size.width/3,
-                            height: geometry.size.width/9, alignment: .bottomLeading)
+                    ZStack (alignment: .leading) {
+                        
+                        Rectangle().frame(width: min(CGFloat(self.viewModel.confidence ?? 0)*geometry.size.width, geometry.size.width), height: geometry.size.height/9)
+                            .foregroundColor(Color("deeperGreen"))
+                        .animation(.linear)
+                        
+                        Text(self.viewModel.classificationLabel ?? "default")
+                                               .foregroundColor(.white)
+                                               .font(.system(size: 40))
+                                               .frame(width: geometry.size.width, height: geometry.size.height/9, alignment: .center)
+                                           .background(Color("myGreen"))
+    
+                    }
+                   
             }
             .frame(width: geometry.size.width,
-                   height: nil, alignment: .bottomLeading)
+                   height: geometry.size.height/7, alignment: .center)
+                
         }
             
     }
@@ -102,6 +159,8 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
     var previewLayer: AVCaptureVideoPreviewLayer?
     var useCam: Bool = true
     var img: UIImage?
+    var confidence: Float?
+    
     
     func flipCamera() {
        captureSession.stopRunning()
@@ -164,14 +223,15 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
         let request = VNCoreMLRequest(model: model) { (finishReq, err) in
             self.processClassifications(for: finishReq, error: err)
         }
-        
+
         if useCam {
             try? VNImageRequestHandler(cvPixelBuffer: pixelBuffer, options: [:]).perform([request])
         } else {
             try? VNImageRequestHandler(ciImage: CIImage(cgImage: (self.img?.cgImage!)!)).perform([request])
         }
-        
+
     }
+
     
     func processClassifications(for request: VNRequest, error: Error?) {
         DispatchQueue.main.async {
@@ -187,12 +247,13 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
                 // Display top classifications ranked by confidence in the UI.
                 let topClassifications = classifications.prefix(1)
                 self.classificationLabel = topClassifications[0].identifier
+                self.confidence = topClassifications[0].confidence
             }
         }
     }
 }
 
-struct MyRepresentable: UIViewControllerRepresentable {
+struct MyRepresentable: UIViewControllerRepresentable{
     @State var controller: MyViewController
     func makeUIViewController(context: Context) -> MyViewController {
         return self.controller
