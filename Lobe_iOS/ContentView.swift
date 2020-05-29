@@ -81,7 +81,6 @@ struct ContentView: View {
     
 
     struct RoundStyle: ButtonStyle {
-     
         func makeBody(configuration: Self.Configuration) -> some View {
             configuration.label
                 .frame(minWidth: 0, maxWidth: .infinity)
@@ -92,13 +91,9 @@ struct ContentView: View {
             .overlay(
                 Circle().stroke(Color("lightGray"), lineWidth: 6))
             .shadow(radius: 10)
-            
-
         }
     }
-    
     func screenShotMethod() {
-
         let layer = UIApplication.shared.keyWindow!.layer
         let scale = UIScreen.main.scale
         UIGraphicsBeginImageContextWithOptions(layer.frame.size, false, scale);
@@ -106,14 +101,10 @@ struct ContentView: View {
         layer.render(in: UIGraphicsGetCurrentContext()!)
         let screenshot = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
-
         UIImageWriteToSavedPhotosAlbum(screenshot!, nil, nil, nil)
     }
     
-
 }
-
-
 
 struct UpdateTextViewExternal: View {
     @ObservedObject var viewModel: MyViewController
@@ -142,9 +133,7 @@ struct UpdateTextViewExternal: View {
             }
             .frame(width: geometry.size.width,
                    height: geometry.size.height/7, alignment: .center)
-                
         }
-            
     }
 }
 }
@@ -161,7 +150,6 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
     var img: UIImage?
     var confidence: Float?
     
-    
     func flipCamera() {
        captureSession.stopRunning()
        previewLayer?.removeFromSuperlayer()
@@ -176,7 +164,6 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
         setPreviewLayer()
         setOutput()
        }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         backCam = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .back).devices.first!
@@ -188,25 +175,21 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
         setPreviewLayer()
         setOutput()
     }
-    
     func setPreviewLayer() {
         previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         previewLayer!.videoGravity = AVLayerVideoGravity.resizeAspectFill
         view.layer.addSublayer(previewLayer!)
         previewLayer!.frame = view.frame
     }
-    
     func setOutput() {
         let dataOutput = AVCaptureVideoDataOutput()
         dataOutput.setSampleBufferDelegate(self, queue: DispatchQueue(label: "videoQueue"))
         captureSession.addOutput(dataOutput)
     }
-    
     func getDevice(position: AVCaptureDevice.Position) -> AVCaptureDevice? {
         let cam = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: position).devices
         return cam.first
     }
-    
     func changeStatus(useCam: Bool, img: UIImage){
         if useCam {
             self.useCam = true
@@ -216,7 +199,6 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
             self.img = img
         }
     }
-    
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         guard let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
         guard let model = try? VNCoreMLModel(for: LobeModel().model) else { return }
@@ -231,8 +213,6 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
         }
 
     }
-
-    
     func processClassifications(for request: VNRequest, error: Error?) {
         DispatchQueue.main.async {
             guard let results = request.results else {
@@ -258,7 +238,6 @@ struct MyRepresentable: UIViewControllerRepresentable{
     func makeUIViewController(context: Context) -> MyViewController {
         return self.controller
     }
-    
     func updateUIViewController(_ uiViewController: MyViewController, context: Context) {
         
     }
