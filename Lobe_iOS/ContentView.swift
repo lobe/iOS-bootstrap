@@ -23,8 +23,8 @@ struct ContentView: View {
             VStack {
                 if (self.image != nil) {
                     Image(uiImage: self.image!)
-                                       .resizable()
-                        .aspectRatio(self.image!.size, contentMode: .fit)
+                        .resizable()
+//                        .aspectRatio(self.image!.size, contentMode: .fit)
                 } else {
                     MyRepresentable(controller: self.controller)
                 }
@@ -35,6 +35,15 @@ struct ContentView: View {
             
             VStack  {
                 Spacer()
+                HStack {
+                    Spacer()
+                    Button(action: {
+                        self.screenShotMethod()
+                    }) {
+                        Text("Screenshot")
+                    }
+                }.padding()
+                
                 UpdateTextViewExternal(viewModel: self.controller)
                 HStack {
                             Button(action: {
@@ -48,9 +57,10 @@ struct ContentView: View {
 
                     
                             Button(action: {
-                                self.screenShotMethod()
+                                self.controller.changeStatus(useCam: false, img: self.controller.camImage!)
+                                self.image = self.controller.camImage
                             }) {
-                                Text("Screenshot")
+                                Text("Take Photo")
                                     .multilineTextAlignment(.center)
                                 .frame(width: geometry.size.width/9, height: geometry.size.width/9)
                             }
@@ -93,11 +103,11 @@ struct ContentView: View {
             .shadow(radius: 10)
         }
     }
+    
     func screenShotMethod() {
         let layer = UIApplication.shared.keyWindow!.layer
         let scale = UIScreen.main.scale
         UIGraphicsBeginImageContextWithOptions(layer.frame.size, false, scale);
-
         layer.render(in: UIGraphicsGetCurrentContext()!)
         let screenshot = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
@@ -149,6 +159,7 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
     var useCam: Bool = true
     var img: UIImage?
     var confidence: Float?
+    var camImage: UIImage?
     
     func flipCamera() {
        captureSession.stopRunning()
@@ -201,6 +212,11 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
     }
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         guard let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
+        
+        let curImg = UIImage(pixelBuffer: pixelBuffer)
+        let rotatedImage = curImg!.rotate(radians: .pi/2)
+        self.camImage = rotatedImage
+        
         guard let model = try? VNCoreMLModel(for: LobeModel().model) else { return }
         let request = VNCoreMLRequest(model: model) { (finishReq, err) in
             self.processClassifications(for: finishReq, error: err)
@@ -232,6 +248,45 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
         }
     }
 }
+
+import VideoToolbox
+
+extension UIImage {
+    public convenience init?(pixelBuffer: CVPixelBuffer) {
+        var cgImage: CGImage?
+        VTCreateCGImageFromCVPixelBuffer(pixelBuffer, options: nil, imageOut: &cgImage)
+
+        guard let myImage = cgImage else {
+            return nil
+        }
+
+        self.init(cgImage: myImage)
+    }
+}
+
+extension UIImage {
+    func rotate(radians: CGFloat) -> UIImage {
+        let rotatedSize = CGRect(origin: .zero, size: size)
+            .applying(CGAffineTransform(rotationAngle: CGFloat(radians)))
+            .integral.size
+        UIGraphicsBeginImageContext(rotatedSize)
+        if let context = UIGraphicsGetCurrentContext() {
+            let origin = CGPoint(x: rotatedSize.width / 2.0,
+                                 y: rotatedSize.height / 2.0)
+            context.translateBy(x: origin.x, y: origin.y)
+            context.rotate(by: radians)
+            draw(in: CGRect(x: -origin.y, y: -origin.x,
+                            width: size.width, height: size.height))
+            let rotatedImage = UIGraphicsGetImageFromCurrentImageContext()
+            UIGraphicsEndImageContext()
+
+            return rotatedImage ?? self
+        }
+
+        return self
+    }
+}
+
 
 struct MyRepresentable: UIViewControllerRepresentable{
     @State var controller: MyViewController
