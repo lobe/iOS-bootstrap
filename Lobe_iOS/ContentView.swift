@@ -35,14 +35,6 @@ struct ContentView: View {
             
             VStack  {
                 Spacer()
-                HStack {
-                    Spacer()
-                    Button(action: {
-                        self.screenShotMethod()
-                    }) {
-                        Text("Screenshot")
-                    }
-                }.padding()
                 
                 UpdateTextViewExternal(viewModel: self.controller)
                 HStack {
@@ -57,16 +49,16 @@ struct ContentView: View {
 
                     
                             Button(action: {
-                                self.controller.changeStatus(useCam: false, img: self.controller.camImage!)
-                                self.image = self.controller.camImage
+                                self.screenShotMethod()
                             }) {
-                                Text("Take Photo")
+                                Text("Screenshot")
                                     .multilineTextAlignment(.center)
                                 .frame(width: geometry.size.width/9, height: geometry.size.width/9)
                             }
                             .buttonStyle(RoundStyle())
                     
                             Button(action: {
+                                useCam = true
                                 if self.image != nil {
                                     self.controller.changeStatus(useCam: true, img: self.image!)
                                     self.image = nil
@@ -89,7 +81,6 @@ struct ContentView: View {
         }
     }
     
-
     struct RoundStyle: ButtonStyle {
         func makeBody(configuration: Self.Configuration) -> some View {
             configuration.label
@@ -105,6 +96,13 @@ struct ContentView: View {
     }
     
     func screenShotMethod() {
+        let imageView = UIImageView(image: self.controller.camImage!)
+        imageView.frame = self.controller.view.frame
+        if useCam{
+            self.controller.view.addSubview(imageView)
+            self.controller.changeStatus(useCam: false, img: self.controller.camImage!)
+        }
+
         let layer = UIApplication.shared.keyWindow!.layer
         let scale = UIScreen.main.scale
         UIGraphicsBeginImageContextWithOptions(layer.frame.size, false, scale);
@@ -112,6 +110,11 @@ struct ContentView: View {
         let screenshot = UIGraphicsGetImageFromCurrentImageContext()
         UIGraphicsEndImageContext()
         UIImageWriteToSavedPhotosAlbum(screenshot!, nil, nil, nil)
+        
+        if useCam {
+            imageView.removeFromSuperview()
+            self.controller.changeStatus(useCam: true, img: self.controller.camImage!)
+        }
     }
     
 }
@@ -222,7 +225,7 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
             self.processClassifications(for: finishReq, error: err)
         }
 
-        if useCam {
+        if self.useCam {
             try? VNImageRequestHandler(cvPixelBuffer: pixelBuffer, options: [:]).perform([request])
         } else {
             try? VNImageRequestHandler(ciImage: CIImage(cgImage: (self.img?.cgImage!)!)).perform([request])

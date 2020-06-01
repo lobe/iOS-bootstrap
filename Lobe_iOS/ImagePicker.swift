@@ -25,6 +25,7 @@ class ImagePickerCoordinator: NSObject, UINavigationControllerDelegate, UIImageP
         if let uiImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             image = uiImage
             isShown = false
+            useCam = false
             controller.changeStatus(useCam: false, img: uiImage)
         }
     }
