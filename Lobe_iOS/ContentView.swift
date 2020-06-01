@@ -31,7 +31,7 @@ struct ContentView: View {
             }
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
             .background(Color.black)
-            .edgesIgnoringSafeArea(.top)
+            .edgesIgnoringSafeArea(.all)
             
             VStack  {
                 Spacer()
