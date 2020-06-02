@@ -33,7 +33,7 @@ struct ContentView: View {
                         }
                     )
                 } else {
-//                    MyRepresentable(controller: self.controller)
+                    MyRepresentable(controller: self.controller)
                 }
             }
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
