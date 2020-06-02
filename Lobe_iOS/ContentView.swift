@@ -16,17 +16,24 @@ struct ContentView: View {
     var controller: MyViewController = MyViewController()
     @State var showImagePicker: Bool = false
     @State private var image: UIImage?
+    @State var flipped = false
     
     var body: some View {
         GeometryReader { geometry in
-        
+    
             VStack {
-                if (self.image != nil) {
+                 if (self.image != nil) {
                     Image(uiImage: self.image!)
                         .resizable()
-//                        .aspectRatio(self.image!.size, contentMode: .fit)
+                        .aspectRatio(self.image!.size, contentMode: .fill)
+                    .gesture(DragGesture()
+                        .onEnded {_ in
+                            self.image = nil
+                            self.controller.changeStatus(useCam: true, img: self.controller.camImage!)
+                        }
+                    )
                 } else {
-                    MyRepresentable(controller: self.controller)
+//                    MyRepresentable(controller: self.controller)
                 }
             }
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
@@ -40,24 +47,24 @@ struct ContentView: View {
                 HStack {
                             Button(action: {
                                 self.showImagePicker = true
+                                self.controller.changeStatus(useCam: false, img: self.controller.camImage!)
                             }) {
-                                Text("Photo Lib")
-                                 .frame(width: geometry.size.width/16, height: geometry.size.width/16)
-                                    .multilineTextAlignment(.center)
+                                    Image("PhotoLib")
+                                        .renderingMode(.original)
+                                        .frame(width: geometry.size.width/3, height: geometry.size.height/16)
                             }
-                            .buttonStyle(RoundStyle())
 
                     
                             Button(action: {
                                 self.screenShotMethod()
                             }) {
-                                Text("Screenshot")
-                                    .multilineTextAlignment(.center)
-                                .frame(width: geometry.size.width/9, height: geometry.size.width/9)
+                                Image("Button")
+                                    .renderingMode(.original)
+                                    .frame(width: geometry.size.width/3, height: geometry.size.width/9)
                             }
-                            .buttonStyle(RoundStyle())
                     
                             Button(action: {
+                                 self.flipped.toggle()
                                 useCam = true
                                 if self.image != nil {
                                     self.controller.changeStatus(useCam: true, img: self.image!)
@@ -65,18 +72,22 @@ struct ContentView: View {
                                 }
                                 self.controller.flipCamera()
                             }) {
-                                Text("Switch Cam")
-                                    .multilineTextAlignment(.center)
-                                    .frame(width: geometry.size.width/16, height: geometry.size.width/16)
+                                    Image("Swap")
+                                        .renderingMode(.original)
+                                        .frame(width: geometry.size.width/3, height: geometry.size.height/16)
                            }
-                            .buttonStyle(RoundStyle())
 
                     }
                 .padding()
                 .frame(width: geometry.size.width,
                       height: nil, alignment: .bottom)
-                .sheet(isPresented: self.$showImagePicker) {
-                    ImagePicker(image: self.$image, isShown: self.$showImagePicker, controller: self.controller, sourceType: .photoLibrary)}
+//                .sheet(isPresented: self.$showImagePicker) {
+//                    ImagePicker(image: self.$image, isShown: self.$showImagePicker, controller: self.controller, sourceType: .photoLibrary)}
+            }
+            
+            if self.showImagePicker{
+                ImagePicker(image: self.$image, isShown: self.$showImagePicker, controller: self.controller, sourceType: .photoLibrary)
+                    .edgesIgnoringSafeArea(.all)
             }
         }
     }
@@ -98,6 +109,7 @@ struct ContentView: View {
     func screenShotMethod() {
         let imageView = UIImageView(image: self.controller.camImage!)
         imageView.frame = self.controller.view.frame
+        
         if useCam{
             self.controller.view.addSubview(imageView)
             self.controller.changeStatus(useCam: false, img: self.controller.camImage!)
@@ -165,6 +177,7 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
     var camImage: UIImage?
     
     func flipCamera() {
+       UIView.transition(with: view, duration: 0.5, options: .transitionFlipFromLeft, animations: nil)
        captureSession.stopRunning()
        previewLayer?.removeFromSuperlayer()
        if captureDevice == backCam{
