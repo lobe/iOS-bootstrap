@@ -17,6 +17,7 @@ struct ContentView: View {
     @State var showImagePicker: Bool = false
     @State private var image: UIImage?
     @State var flipped = false
+    @State var shutter = false
     
     var body: some View {
         GeometryReader { geometry in
@@ -24,12 +25,13 @@ struct ContentView: View {
             VStack {
                  if (self.image != nil) {
                     Image(uiImage: self.image!)
-                        .resizable()
-                        .aspectRatio(self.image!.size, contentMode: .fill)
+                    .resizable()
+                    .aspectRatio(self.image!.size, contentMode: .fill)
                     .gesture(DragGesture()
                         .onEnded {_ in
                             self.image = nil
-                            self.controller.changeStatus(useCam: true, img: self.controller.camImage!)
+                            useCam = true
+                            self.controller.changeStatus(useCam: useCam, img: self.controller.camImage!)
                         }
                     )
                 } else {
@@ -56,6 +58,7 @@ struct ContentView: View {
 
                     
                             Button(action: {
+                                self.shutter = true
                                 self.screenShotMethod()
                             }) {
                                 Image("Button")
@@ -85,6 +88,14 @@ struct ContentView: View {
 //                    ImagePicker(image: self.$image, isShown: self.$showImagePicker, controller: self.controller, sourceType: .photoLibrary)}
             }
             
+            VStack {
+                Text("placeholder")
+                    .frame(width: geometry.size.width, height: geometry.size.height*2)
+                    .opacity(0)
+                    .blink(on: self.$shutter, color: Color.black, repeatCount: 1, duration: 0.1)
+            }
+            .edgesIgnoringSafeArea(.top)
+                
             if self.showImagePicker{
                 ImagePicker(image: self.$image, isShown: self.$showImagePicker, controller: self.controller, sourceType: .photoLibrary)
                     .edgesIgnoringSafeArea(.all)
@@ -108,9 +119,10 @@ struct ContentView: View {
     
     func screenShotMethod() {
         let imageView = UIImageView(image: self.controller.camImage!)
+//        imageView.contentMode = .scaleAspectFit
         imageView.frame = self.controller.view.frame
-        
         if useCam{
+            UIView.transition(with: self.controller.view, duration: 1, options: .curveEaseIn, animations: nil)
             self.controller.view.addSubview(imageView)
             self.controller.changeStatus(useCam: false, img: self.controller.camImage!)
         }
@@ -129,6 +141,42 @@ struct ContentView: View {
         }
     }
     
+}
+
+
+struct BlinkingBorderModifier: ViewModifier {
+    let state: Binding<Bool>
+    let color: Color
+    let repeatCount: Int
+    let duration: Double
+
+    // internal wrapper is needed because there is no didFinish of Animation now
+    private var blinking: Binding<Bool> {
+        Binding<Bool>(get: {
+            DispatchQueue.main.asyncAfter(deadline: .now() + self.duration) {
+                self.state.wrappedValue = false
+            }
+            return self.state.wrappedValue }, set: {
+            self.state.wrappedValue = $0
+        })
+    }
+
+    func body(content: Content) -> some View
+    {
+        content
+            .background(self.blinking.wrappedValue ? self.color : Color.clear)
+            .animation(
+                Animation.linear(duration:self.duration).repeatCount(self.repeatCount)
+            )
+    }
+}
+
+extension View {
+    func blink(on state: Binding<Bool>, color: Color,
+                     repeatCount: Int = 1, duration: Double = 0.5) -> some View {
+        self.modifier(BlinkingBorderModifier(state: state, color: color,
+                                             repeatCount: repeatCount, duration: duration))
+    }
 }
 
 struct UpdateTextViewExternal: View {
@@ -154,13 +202,22 @@ struct UpdateTextViewExternal: View {
                                            .background(Color("myGreen"))
     
                     }
-                   
+                }
+                .frame(width: geometry.size.width,
+                       height: geometry.size.height/7, alignment: .center)
             }
-            .frame(width: geometry.size.width,
-                   height: geometry.size.height/7, alignment: .center)
         }
     }
 }
+
+struct MyRepresentable: UIViewControllerRepresentable{
+    @State var controller: MyViewController
+    func makeUIViewController(context: Context) -> MyViewController {
+        return self.controller
+    }
+    func updateUIViewController(_ uiViewController: MyViewController, context: Context) {
+        
+    }
 }
 
 class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate, ObservableObject {
@@ -228,20 +285,20 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
     }
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         guard let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
-        
+    
         let curImg = UIImage(pixelBuffer: pixelBuffer)
         let rotatedImage = curImg!.rotate(radians: .pi/2)
-        self.camImage = rotatedImage
+        self.camImage = rotatedImage  // camImage is just the captured image without cropping
         
         guard let model = try? VNCoreMLModel(for: LobeModel().model) else { return }
         let request = VNCoreMLRequest(model: model) { (finishReq, err) in
             self.processClassifications(for: finishReq, error: err)
         }
 
-        if self.useCam {
-            try? VNImageRequestHandler(cvPixelBuffer: pixelBuffer, options: [:]).perform([request])
+        if self.useCam {  // crop images and send to model here
+            try? VNImageRequestHandler(ciImage: CIImage(cgImage: (self.camImage?.squared()?.cgImage!)!)).perform([request])
         } else {
-            try? VNImageRequestHandler(ciImage: CIImage(cgImage: (self.img?.cgImage!)!)).perform([request])
+            try? VNImageRequestHandler(ciImage: CIImage(cgImage: (self.img?.squared()?.cgImage!)!)).perform([request])
         }
 
     }
@@ -268,6 +325,29 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
 import VideoToolbox
 
 extension UIImage {
+    var isPortrait:  Bool    { size.height > size.width }
+    var isLandscape: Bool    { size.width > size.height }
+    var breadth:     CGFloat { min(size.width, size.height) }
+    var breadthSize: CGSize  { .init(width: breadth, height: breadth) }
+
+    
+    func squared(isOpaque: Bool = false) -> UIImage? {
+        guard let cgImage = cgImage?
+            .cropping(to: .init(origin: .init(x: isLandscape ? ((size.width-size.height)/2).rounded(.down) : 0,
+                                              y: isPortrait  ? ((size.height-size.width)/2).rounded(.down) : 0),
+                                size: breadthSize)) else { return nil }
+        let format = imageRendererFormat
+        format.opaque = isOpaque
+        return UIGraphicsImageRenderer(size: breadthSize, format: format).image { _ in
+            UIImage(cgImage: cgImage, scale: 1, orientation: imageOrientation)
+            .draw(in: .init(origin: .zero, size: breadthSize))
+        }
+    }
+}
+
+
+
+extension UIImage {
     public convenience init?(pixelBuffer: CVPixelBuffer) {
         var cgImage: CGImage?
         VTCreateCGImageFromCVPixelBuffer(pixelBuffer, options: nil, imageOut: &cgImage)
@@ -278,9 +358,7 @@ extension UIImage {
 
         self.init(cgImage: myImage)
     }
-}
-
-extension UIImage {
+    
     func rotate(radians: CGFloat) -> UIImage {
         let rotatedSize = CGRect(origin: .zero, size: size)
             .applying(CGAffineTransform(rotationAngle: CGFloat(radians)))
@@ -300,17 +378,6 @@ extension UIImage {
         }
 
         return self
-    }
-}
-
-
-struct MyRepresentable: UIViewControllerRepresentable{
-    @State var controller: MyViewController
-    func makeUIViewController(context: Context) -> MyViewController {
-        return self.controller
-    }
-    func updateUIViewController(_ uiViewController: MyViewController, context: Context) {
-        
     }
 }
 
