@@ -31,6 +31,7 @@ class ImagePickerCoordinator: NSObject, UINavigationControllerDelegate, UIImageP
     }
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         isShown = false
+        self.controller.changeStatus(useCam: true, img: self.controller.camImage!)
     }
 
 }
