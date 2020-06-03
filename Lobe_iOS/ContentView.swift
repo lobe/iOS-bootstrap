@@ -10,6 +10,10 @@ import SwiftUI
 import AVKit
 import Vision
 
+
+
+
+
 var useCam: Bool = true
 
 struct ContentView: View {
@@ -18,6 +22,8 @@ struct ContentView: View {
     @State private var image: UIImage?
     @State var flipped = false
     @State var shutter = false
+    @State var scaling: CGSize = .init(width: 1, height: 1)
+    @State private var offset = CGSize.zero
     
     var body: some View {
         GeometryReader { geometry in
@@ -27,13 +33,26 @@ struct ContentView: View {
                     Image(uiImage: self.image!)
                     .resizable()
                     .aspectRatio(self.image!.size, contentMode: .fill)
+                        .scaleEffect(1/self.scaling.height)
+                        .offset(self.offset)
                     .gesture(DragGesture()
+                        .onChanged ({value in
+                            self.scaling = value.translation
+                            self.scaling.height = max(self.scaling.height/30, 1)
+
+                            self.offset = value.translation
+                    })
                         .onEnded {_ in
-                            self.image = nil
+                            self.offset = .zero
+                            if self.scaling.height > 1.5{
+                                self.image = nil
+                            }
+                            self.scaling = .init(width: 1, height: 1)
                             useCam = true
                             self.controller.changeStatus(useCam: useCam, img: self.controller.camImage!)
                         }
                     )
+                        .opacity(1/self.scaling.height < 1 ? 0.5: 1)
                 } else {
                     MyRepresentable(controller: self.controller)
                 }
@@ -41,6 +60,19 @@ struct ContentView: View {
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
             .background(Color.black)
             .edgesIgnoringSafeArea(.all)
+            
+            HStack {
+                Spacer()
+                Image("x")
+                    .resizable()
+                    .opacity(self.image != nil ? 1: 0)
+                    .frame(width: geometry.size.width/15, height: geometry.size.width/15)
+                    .onTapGesture {
+                    self.image = nil
+                    useCam = true
+                    self.controller.changeStatus(useCam: useCam, img: self.controller.camImage!)
+                }
+            }.padding()
             
             VStack  {
                 Spacer()
@@ -84,9 +116,13 @@ struct ContentView: View {
                 .padding()
                 .frame(width: geometry.size.width,
                       height: nil, alignment: .bottom)
+                    .opacity(self.image == nil ? 1: 0)
 //                .sheet(isPresented: self.$showImagePicker) {
 //                    ImagePicker(image: self.$image, isShown: self.$showImagePicker, controller: self.controller, sourceType: .photoLibrary)}
             }
+            
+            
+            
             
             VStack {
                 Text("placeholder")
@@ -232,6 +268,7 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
     var img: UIImage?
     var confidence: Float?
     var camImage: UIImage?
+    var totalFrameCount = 0
     
     func flipCamera() {
        UIView.transition(with: view, duration: 0.5, options: .transitionFlipFromLeft, animations: nil)
@@ -284,6 +321,9 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
         }
     }
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        totalFrameCount += 1
+        if totalFrameCount % 20 != 0{ return } // skip frames to optimize
+        
         guard let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else { return }
     
         let curImg = UIImage(pixelBuffer: pixelBuffer)
