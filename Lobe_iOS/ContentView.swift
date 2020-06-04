@@ -179,7 +179,7 @@ struct UpdateTextViewExternal: View {
                 .frame(width: geometry.size.width/1.3,
                        height: nil, alignment: .center)
                 .cornerRadius(20.0)
-//                .padding()
+                .padding()
 //                .padding()
             }
         }
