@@ -128,6 +128,23 @@ struct ContentView: View {
 
 }
 
+extension View {
+    func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+        clipShape( RoundedCorner(radius: radius, corners: corners) )
+    }
+}
+
+struct RoundedCorner: Shape {
+
+    var radius: CGFloat = .infinity
+    var corners: UIRectCorner = .allCorners
+
+    func path(in rect: CGRect) -> Path {
+        let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+        return Path(path.cgPath)
+    }
+}
+
 struct UpdateTextViewExternal: View {
     @ObservedObject var viewModel: MyViewController
     @State var showImagePicker: Bool = false
@@ -140,20 +157,28 @@ struct UpdateTextViewExternal: View {
                 HStack {
                     ZStack (alignment: .leading) {
                         
-                        Rectangle().frame(width: min(CGFloat(self.viewModel.confidence ?? 0)*geometry.size.width, geometry.size.width), height: geometry.size.height/9)
+                        Rectangle().foregroundColor(Color("myGreen"))
+                                               .font(.system(size: 40))
+                            .frame(width: geometry.size.width/1.3, height: geometry.size.height/9, alignment: .leading)
+                                           .background(Color("myGreen"))
+  
+                        
+                        
+                        Rectangle().frame(width: min(CGFloat(self.viewModel.confidence ?? 0)*geometry.size.width/1.3, geometry.size.width/1.3), height: geometry.size.height/9)
                             .foregroundColor(Color("deeperGreen"))
                         .animation(.linear)
                         
-                        Text(self.viewModel.classificationLabel ?? "default")
-                                               .foregroundColor(.white)
-                                               .font(.system(size: 40))
-                                               .frame(width: geometry.size.width, height: geometry.size.height/9, alignment: .center)
-                                           .background(Color("myGreen"))
-    
+
+                        
+                        Text(self.viewModel.classificationLabel ?? "default").padding()
+                                                                       .foregroundColor(.white)
+                                                                       .font(.system(size: 40))
+                                                    .frame(width: geometry.size.width/1.3, height: geometry.size.height/9, alignment: .leading)
                     }
                 }
-                .frame(width: geometry.size.width,
-                       height: geometry.size.height/7, alignment: .center)
+                .frame(width: geometry.size.width/1.3,
+                       height: nil, alignment: .center)
+                .cornerRadius(20.0)
             }
         }
     }
