@@ -10,23 +10,20 @@ import SwiftUI
 import AVKit
 import Vision
 
-
-
-
-
-var useCam: Bool = true
+var useCamera: Bool = true
 
 struct ContentView: View {
     var controller: MyViewController = MyViewController()
     @State var showImagePicker: Bool = false
     @State private var image: UIImage?
-    @State var flipped = false
-    @State var shutter = false
+//    @State var flipped = false
+//    @State var shutter = false
     @State var scaling: CGSize = .init(width: 1, height: 1)
     @State private var offset = CGSize.zero
     
     var body: some View {
-        GeometryReader { geometry in
+        
+        return GeometryReader { geometry in
     
             VStack {
                  if (self.image != nil) {
@@ -38,7 +35,7 @@ struct ContentView: View {
                     .gesture(DragGesture()
                         .onChanged ({value in
                             self.scaling = value.translation
-                            self.scaling.height = max(self.scaling.height/30, 1)
+                            self.scaling.height = max(self.scaling.height/50, 1)
 
                             self.offset = value.translation
                     })
@@ -46,15 +43,52 @@ struct ContentView: View {
                             self.offset = .zero
                             if self.scaling.height > 1.5{
                                 self.image = nil
+                                useCamera = true
+                                self.controller.changeStatus(useCam: useCamera, img: self.controller.camImage!)
                             }
                             self.scaling = .init(width: 1, height: 1)
-                            useCam = true
-                            self.controller.changeStatus(useCam: useCam, img: self.controller.camImage!)
                         }
                     )
                         .opacity(1/self.scaling.height < 1 ? 0.5: 1)
                 } else {
+                    
                     MyRepresentable(controller: self.controller)
+                    .gesture(
+                        DragGesture()
+                        .onEnded {value in
+                            if value.translation.height < 0 {
+                                withAnimation{
+                                    self.showImagePicker = true
+                                }
+                                self.controller.changeStatus(useCam: false, img: self.controller.camImage!)
+                            }
+                        }
+                    )
+//                        .simultaneousGesture(TapGesture(count:2).onEnded {
+//                            self.flipped.toggle()
+//                               useCam = true
+//                               if self.image != nil {
+//                                   self.controller.changeStatus(useCam: true, img: self.image!)
+//                                   self.image = nil
+//                               }
+//                               self.controller.flipCamera()
+//                        }.exclusively(before: TapGesture(count:3))
+//                    )
+//                        .onTapGesture(count: 3) {
+//                            print("...")
+//                                self.shutter = true
+////                                self.screenShotMethod()
+//                        }
+//                        .onTapGesture(count: 2) {
+//                            self.flipped.toggle()
+//                            useCam = true
+//                            if self.image != nil {
+//                                self.controller.changeStatus(useCam: true, img: self.image!)
+//                                self.image = nil
+//                            }
+//                            self.controller.flipCamera()
+//                        }
+
                 }
             }
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
@@ -69,8 +103,8 @@ struct ContentView: View {
                     .frame(width: geometry.size.width/15, height: geometry.size.width/15)
                     .onTapGesture {
                     self.image = nil
-                    useCam = true
-                    self.controller.changeStatus(useCam: useCam, img: self.controller.camImage!)
+                    useCamera = true
+                    self.controller.changeStatus(useCam: useCamera, img: self.controller.camImage!)
                 }
             }.padding()
             
@@ -80,7 +114,9 @@ struct ContentView: View {
                 UpdateTextViewExternal(viewModel: self.controller)
                 HStack {
                             Button(action: {
-                                self.showImagePicker = true
+                                withAnimation {
+                                    self.showImagePicker = true
+                                }
                                 self.controller.changeStatus(useCam: false, img: self.controller.camImage!)
                             }) {
                                     Image("PhotoLib")
@@ -90,8 +126,9 @@ struct ContentView: View {
 
                     
                             Button(action: {
-                                self.shutter = true
-                                self.screenShotMethod()
+//                                self.shutter = true
+                                self.controller.screenShotMethod()
+//                                print("UI:", UIApplication.shared.keyWindow?.frame.height, UIApplication.shared.keyWindow?.frame.width)
                             }) {
                                 Image("Button")
                                     .renderingMode(.original)
@@ -99,12 +136,12 @@ struct ContentView: View {
                             }
                     
                             Button(action: {
-                                 self.flipped.toggle()
-                                useCam = true
-                                if self.image != nil {
-                                    self.controller.changeStatus(useCam: true, img: self.image!)
-                                    self.image = nil
-                                }
+//                                 self.flipped.toggle()
+//                                useCamera = true
+//                                if self.image != nil {
+//                                    self.controller.changeStatus(useCam: true, img: self.image!)
+//                                    self.image = nil
+//                                }
                                 self.controller.flipCamera()
                             }) {
                                     Image("Swap")
@@ -118,102 +155,105 @@ struct ContentView: View {
                       height: nil, alignment: .bottom)
                     .opacity(self.image == nil ? 1: 0)
 //                .sheet(isPresented: self.$showImagePicker) {
-//                    ImagePicker(image: self.$image, isShown: self.$showImagePicker, controller: self.controller, sourceType: .photoLibrary)}
+//                    ImagePicker(image: self.$image, isShown: self.$showImagePicker, controller: self.controller, sourceType: .photoLibrary)
+//                    .frame(width: geometry.size.width, height: geometry.size.height)
+//                }
+                    
             }
             
-            
-            
-            
-            VStack {
-                Text("placeholder")
-                    .frame(width: geometry.size.width, height: geometry.size.height*2)
-                    .opacity(0)
-                    .blink(on: self.$shutter, color: Color.black, repeatCount: 1, duration: 0.1)
-            }
-            .edgesIgnoringSafeArea(.top)
+//            VStack {
+//                Text("placeholder")
+//                    .frame(width: geometry.size.width, height: geometry.size.height*2)
+//                    .opacity(0)
+//                    .blink(on: self.$shutter, color: Color.black, repeatCount: 1, duration: 0.1)
+//            }
+//            .edgesIgnoringSafeArea(.top)
                 
-            if self.showImagePicker{
+//            if self.showImagePicker{
                 ImagePicker(image: self.$image, isShown: self.$showImagePicker, controller: self.controller, sourceType: .photoLibrary)
                     .edgesIgnoringSafeArea(.all)
-            }
+                    .offset(x:0, y:self.showImagePicker ? 0: UIApplication.shared.keyWindow?.frame.height ?? 0)
+//            }
         }
     }
     
-    struct RoundStyle: ButtonStyle {
-        func makeBody(configuration: Self.Configuration) -> some View {
-            configuration.label
-                .frame(minWidth: 0, maxWidth: .infinity)
-                .padding()
-                .foregroundColor(.white)
-                .background(Color.gray)
-            .mask(Circle())
-            .overlay(
-                Circle().stroke(Color("lightGray"), lineWidth: 6))
-            .shadow(radius: 10)
-        }
-    }
+
+//
+//    struct RoundStyle: ButtonStyle {
+//        func makeBody(configuration: Self.Configuration) -> some View {
+//            configuration.label
+//                .frame(minWidth: 0, maxWidth: .infinity)
+//                .padding()
+//                .foregroundColor(.white)
+//                .background(Color.gray)
+//            .mask(Circle())
+//            .overlay(
+//                Circle().stroke(Color("lightGray"), lineWidth: 6))
+//            .shadow(radius: 10)
+//        }
+//    }
     
-    func screenShotMethod() {
-        let imageView = UIImageView(image: self.controller.camImage!)
+//    func screenShotMethod() {
+//        let imageView = UIImageView(image: self.controller.camImage!)
 //        imageView.contentMode = .scaleAspectFit
-        imageView.frame = self.controller.view.frame
-        if useCam{
-            UIView.transition(with: self.controller.view, duration: 1, options: .curveEaseIn, animations: nil)
-            self.controller.view.addSubview(imageView)
-            self.controller.changeStatus(useCam: false, img: self.controller.camImage!)
-        }
-
-        let layer = UIApplication.shared.keyWindow!.layer
-        let scale = UIScreen.main.scale
-        UIGraphicsBeginImageContextWithOptions(layer.frame.size, false, scale);
-        layer.render(in: UIGraphicsGetCurrentContext()!)
-        let screenshot = UIGraphicsGetImageFromCurrentImageContext()
-        UIGraphicsEndImageContext()
-        UIImageWriteToSavedPhotosAlbum(screenshot!, nil, nil, nil)
-        
-        if useCam {
-            imageView.removeFromSuperview()
-            self.controller.changeStatus(useCam: true, img: self.controller.camImage!)
-        }
-    }
+//        imageView.frame = self.controller.view.frame
+//        if useCamera{
+//            UIView.transition(with: self.controller.view, duration: 1, options: .curveEaseIn, animations: nil)
+//            self.controller.view.addSubview(imageView)
+//            self.controller.changeStatus(useCam: false, img: self.controller.camImage!)
+//        }
+//
+//        let layer = UIApplication.shared.keyWindow!.layer
+//        let scale = UIScreen.main.scale
+//        UIGraphicsBeginImageContextWithOptions(layer.frame.size, false, scale);
+//        layer.render(in: UIGraphicsGetCurrentContext()!)
+//        let screenshot = UIGraphicsGetImageFromCurrentImageContext()
+//        UIGraphicsEndImageContext()
+//        UIImageWriteToSavedPhotosAlbum(screenshot!, nil, nil, nil)
+//
+//        if useCamera {
+//            imageView.removeFromSuperview()
+//            self.controller.changeStatus(useCam: true, img: self.controller.camImage!)
+//        }
+//    }
     
 }
 
 
-struct BlinkingBorderModifier: ViewModifier {
-    let state: Binding<Bool>
-    let color: Color
-    let repeatCount: Int
-    let duration: Double
+//struct BlinkingBorderModifier: ViewModifier {
+//    let state: Binding<Bool>
+//    let color: Color
+//    let repeatCount: Int
+//    let duration: Double
+//
+//    // internal wrapper is needed because there is no didFinish of Animation now
+//    private var blinking: Binding<Bool> {
+//        Binding<Bool>(get: {
+//            DispatchQueue.main.asyncAfter(deadline: .now() + self.duration) {
+//                self.state.wrappedValue = false
+//            }
+//            return self.state.wrappedValue }, set: {
+//            self.state.wrappedValue = $0
+//        })
+//    }
+//
+//    func body(content: Content) -> some View
+//    {
+//        content
+//            .background(self.blinking.wrappedValue ? self.color : Color.clear)
+//            .animation(
+//                Animation.linear(duration:self.duration).repeatCount(self.repeatCount)
+//            )
+//    }
+//}
 
-    // internal wrapper is needed because there is no didFinish of Animation now
-    private var blinking: Binding<Bool> {
-        Binding<Bool>(get: {
-            DispatchQueue.main.asyncAfter(deadline: .now() + self.duration) {
-                self.state.wrappedValue = false
-            }
-            return self.state.wrappedValue }, set: {
-            self.state.wrappedValue = $0
-        })
-    }
-
-    func body(content: Content) -> some View
-    {
-        content
-            .background(self.blinking.wrappedValue ? self.color : Color.clear)
-            .animation(
-                Animation.linear(duration:self.duration).repeatCount(self.repeatCount)
-            )
-    }
-}
-
-extension View {
-    func blink(on state: Binding<Bool>, color: Color,
-                     repeatCount: Int = 1, duration: Double = 0.5) -> some View {
-        self.modifier(BlinkingBorderModifier(state: state, color: color,
-                                             repeatCount: repeatCount, duration: duration))
-    }
-}
+//extension View {
+//    func blink(on state: Binding<Bool>, color: Color,
+//                     repeatCount: Int = 1, duration: Double = 0.5) -> some View {
+//        self.modifier(BlinkingBorderModifier(state: state, color: color,
+//                                             repeatCount: repeatCount, duration: duration))
+//    }
+//}
 
 struct UpdateTextViewExternal: View {
     @ObservedObject var viewModel: MyViewController
@@ -247,6 +287,7 @@ struct UpdateTextViewExternal: View {
 }
 
 struct MyRepresentable: UIViewControllerRepresentable{
+    
     @State var controller: MyViewController
     func makeUIViewController(context: Context) -> MyViewController {
         return self.controller
@@ -269,8 +310,75 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
     var confidence: Float?
     var camImage: UIImage?
     var totalFrameCount = 0
+
+    var tripleTapGesture = UITapGestureRecognizer()
+    var doubleTapGesture = UITapGestureRecognizer()
     
-    func flipCamera() {
+    @objc func handleDoubleTap(_ sender: UITapGestureRecognizer? = nil) {
+        flipCamera()
+    }
+    
+    @objc func handleTripleTap(_ sender: UITapGestureRecognizer? = nil) {
+        screenShotMethod()
+    }
+    
+    @objc func screenShotMethod() {
+        let imageView = UIImageView(image: self.camImage!)
+        imageView.contentMode = .scaleAspectFit
+        imageView.frame = view.frame
+        
+        let black = UIImage(named: "Black")
+        let blackView = UIImageView(image: black)
+        imageView.contentMode = .scaleAspectFill
+        blackView.frame = view.frame
+        view.addSubview(blackView)
+        blackView.alpha = 1
+        UIView.animate(withDuration: 0.3, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: {
+            blackView.alpha = 0
+        }, completion: nil)  // shutter animation
+        
+        if useCamera{
+            UIView.transition(with: view, duration: 1, options: .curveEaseIn, animations: nil)
+            view.addSubview(imageView)
+            self.changeStatus(useCam: false, img: camImage!)
+        }
+
+        let layer = UIApplication.shared.keyWindow!.layer
+        let scale = UIScreen.main.scale
+        UIGraphicsBeginImageContextWithOptions(layer.frame.size, false, scale);
+        layer.render(in: UIGraphicsGetCurrentContext()!)
+        let screenshot = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        UIImageWriteToSavedPhotosAlbum(screenshot!, nil, nil, nil)
+        if useCamera {
+            imageView.removeFromSuperview()
+            self.changeStatus(useCam: true, img: self.camImage!)
+        }
+    }
+    
+//    func setCaptureRate() {
+//        do {
+//            captureSession.beginConfiguration()
+//            try captureDevice!.lockForConfiguration()
+//
+//            // Minimum duration is 1 / (max frame rate).
+//            let currentFrameRate:Int32 = 4
+//
+//            // Lower the min and max frame rate to recover from slow processing.
+//            let newFrameRate:Int32 = currentFrameRate - 1
+//            captureDevice!.activeVideoMinFrameDuration = CMTimeMake(value: 1, timescale: newFrameRate)
+//            captureDevice!.activeVideoMaxFrameDuration = CMTimeMake(value: 1, timescale: newFrameRate)
+//
+//            captureDevice!.unlockForConfiguration()
+//            captureSession.commitConfiguration()
+//        }
+//        catch {
+//            print("Failed to lock the device for configuration: \(error)")
+//        }
+//    }
+    
+    
+    @objc func flipCamera() {
        UIView.transition(with: view, duration: 0.5, options: .transitionFlipFromLeft, animations: nil)
        captureSession.stopRunning()
        previewLayer?.removeFromSuperlayer()
@@ -285,8 +393,22 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
         setPreviewLayer()
         setOutput()
        }
+    
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        doubleTapGesture = UITapGestureRecognizer(target: self, action:#selector(self.handleDoubleTap(_:)))
+        doubleTapGesture.numberOfTapsRequired = 2
+        view.addGestureRecognizer(doubleTapGesture)
+        
+        tripleTapGesture = UITapGestureRecognizer(target: self, action:#selector(self.handleTripleTap(_:)))
+        tripleTapGesture.numberOfTapsRequired = 3
+        view.addGestureRecognizer(tripleTapGesture)
+        
+        doubleTapGesture.require(toFail: tripleTapGesture)
+        
+        
         backCam = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .back).devices.first!
         frontCam = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .front).devices.first!
         captureDevice = backCam
@@ -301,6 +423,7 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
         previewLayer!.videoGravity = AVLayerVideoGravity.resizeAspectFill
         view.layer.addSublayer(previewLayer!)
         previewLayer!.frame = view.frame
+//        previewLayer!.frame = CGRect(x: 10, y: 20, width: 100, height: 50)
     }
     func setOutput() {
         let dataOutput = AVCaptureVideoDataOutput()
@@ -328,7 +451,7 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
     
         let curImg = UIImage(pixelBuffer: pixelBuffer)
         let rotatedImage = curImg!.rotate(radians: .pi/2)
-        self.camImage = rotatedImage  // camImage is just the captured image without cropping
+        self.camImage = rotatedImage.crop(height: (previewLayer?.frame.height)!, width: (previewLayer?.frame.width)!)  // camImage is just the captured image without cropping
         
         guard let model = try? VNCoreMLModel(for: LobeModel().model) else { return }
         let request = VNCoreMLRequest(model: model) { (finishReq, err) in
@@ -369,6 +492,7 @@ extension UIImage {
     var isLandscape: Bool    { size.width > size.height }
     var breadth:     CGFloat { min(size.width, size.height) }
     var breadthSize: CGSize  { .init(width: breadth, height: breadth) }
+//    var screenSize: CGSize  { .init(width: 500, height: 500)}
 
     
     func squared(isOpaque: Bool = false) -> UIImage? {
@@ -381,6 +505,22 @@ extension UIImage {
         return UIGraphicsImageRenderer(size: breadthSize, format: format).image { _ in
             UIImage(cgImage: cgImage, scale: 1, orientation: imageOrientation)
             .draw(in: .init(origin: .zero, size: breadthSize))
+        }
+    }
+    
+    func crop(isOpaque: Bool = false, height: CGFloat, width: CGFloat) -> UIImage? {
+        let newWidth = size.width
+        let newHeight = height/width * size.width
+        var screenSize: CGSize  { .init(width: newWidth, height: newHeight)}
+        guard let cgImage = cgImage?
+            .cropping(to: .init(origin: .init(x: 0,
+                                              y: ((size.height - newHeight)/2)),
+                                size: screenSize)) else { return nil }
+        let format = imageRendererFormat
+        format.opaque = isOpaque
+        return UIGraphicsImageRenderer(size: screenSize, format: format).image { _ in
+            UIImage(cgImage: cgImage, scale: 1, orientation: imageOrientation)
+            .draw(in: .init(origin: .zero, size: screenSize))
         }
     }
 }
