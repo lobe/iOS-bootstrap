@@ -114,9 +114,8 @@ struct ContentView: View {
                     }.opacity(0)
 
                 }
-                .padding()
                 .frame(width: geometry.size.width,
-                      height: nil, alignment: .bottom)
+                      height: geometry.size.height/30, alignment: .bottom)
                     .opacity(self.image == nil ? 1: 0)  // hide the buttons when displaying an image from the photo library
             }
 
@@ -144,6 +143,24 @@ struct RoundedCorner: Shape {
         return Path(path.cgPath)
     }
 }
+extension UIColor {
+   convenience init(red: Int, green: Int, blue: Int) {
+       assert(red >= 0 && red <= 255, "Invalid red component")
+       assert(green >= 0 && green <= 255, "Invalid green component")
+       assert(blue >= 0 && blue <= 255, "Invalid blue component")
+
+       self.init(red: CGFloat(red) / 255.0, green: CGFloat(green) / 255.0, blue: CGFloat(blue) / 255.0, alpha: 1.0)
+   }
+
+   convenience init(rgb: Int) {
+       self.init(
+           red: (rgb >> 16) & 0xFF,
+           green: (rgb >> 8) & 0xFF,
+           blue: rgb & 0xFF
+       )
+   }
+}
+
 
 struct UpdateTextViewExternal: View {
     @ObservedObject var viewModel: MyViewController
@@ -157,28 +174,29 @@ struct UpdateTextViewExternal: View {
                 HStack {
                     ZStack (alignment: .leading) {
                         
-                        Rectangle().foregroundColor(Color("myGreen"))
-                                               .font(.system(size: 40))
-                            .frame(width: geometry.size.width/1.3, height: geometry.size.height/9, alignment: .leading)
-                                           .background(Color("myGreen"))
-  
-                        
-                        
-                        Rectangle().frame(width: min(CGFloat(self.viewModel.confidence ?? 0)*geometry.size.width/1.3, geometry.size.width/1.3), height: geometry.size.height/9)
-                            .foregroundColor(Color("deeperGreen"))
-                        .animation(.linear)
-                        
+                        Rectangle()
+                            .foregroundColor(Color(UIColor(rgb: 0x33987A))).opacity(0.88)
+//                            .frame(width: geometry.size.width/1.2, height: geometry.size.height/10, alignment: .leading)
 
+  
+//                        self.viewModel.confidence ?? 0
                         
+                        Rectangle()
+                            .foregroundColor(Color(UIColor(rgb: 0x00DDAD)))
+                            .frame(width: min(CGFloat(self.viewModel.confidence ?? 0)*geometry.size.width/1.2, geometry.size.width/1.2))
+                            .animation(.linear)
+                    
                         Text(self.viewModel.classificationLabel ?? "default").padding()
+//                            UIFont(name: "labgrotesque-bold", size: UIFont.labelFontSize)
                                                                        .foregroundColor(.white)
-                                                                       .font(.system(size: 40))
-                                                    .frame(width: geometry.size.width/1.3, height: geometry.size.height/9, alignment: .leading)
+//                                                                       .font(.system(size: 30))
+                        .font(.custom("labgrotesque-bold", size: 28))
+//                                                    .frame(width: geometry.size.width/1.2, height: geometry.size.height/10, alignment: .leading)
                     }
                     }
-                .frame(width: geometry.size.width/1.3,
-                       height: nil, alignment: .center)
-                .cornerRadius(20.0)
+                .frame(width: geometry.size.width/1.2,
+                       height: geometry.size.height/13, alignment: .center)
+                .cornerRadius(17.0)
                 .padding()
 //                .padding()
             }
@@ -258,14 +276,6 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
     
     @objc func flipCamera() {
        UIView.transition(with: view, duration: 0.5, options: .transitionFlipFromLeft, animations: nil)
-//       captureSession.stopRunning()
-//       previewLayer?.removeFromSuperlayer()
-//        UIView.animate(withDuration: 0.5, delay: 0, options: .transitionFlipFromLeft, animations: {
-////            self.captureSession.stopRunning()
-////            self.previewLayer?.removeFromSuperlayer()
-//        }, completion: nil)  // shutter animation
-//
-        
        if captureDevice == backCam{
            captureDevice = frontCam}
        else {
@@ -277,7 +287,6 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
         setPreviewLayer()
         setOutput()
        }
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
