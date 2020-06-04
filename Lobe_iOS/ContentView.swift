@@ -16,15 +16,12 @@ struct ContentView: View {
     var controller: MyViewController = MyViewController()
     @State var showImagePicker: Bool = false
     @State private var image: UIImage?
-//    @State var flipped = false
-//    @State var shutter = false
     @State var scaling: CGSize = .init(width: 1, height: 1)
     @State private var offset = CGSize.zero
     
     var body: some View {
-        
-        return GeometryReader { geometry in
-    
+        GeometryReader { geometry in
+            
             VStack {
                  if (self.image != nil) {
                     Image(uiImage: self.image!)
@@ -36,7 +33,6 @@ struct ContentView: View {
                         .onChanged ({value in
                             self.scaling = value.translation
                             self.scaling.height = max(self.scaling.height/50, 1)
-
                             self.offset = value.translation
                     })
                         .onEnded {_ in
@@ -51,9 +47,8 @@ struct ContentView: View {
                     )
                         .opacity(1/self.scaling.height < 1 ? 0.5: 1)
                 } else {
-                    
                     MyRepresentable(controller: self.controller)
-                    .gesture(
+                    .gesture(                                  // guesture for swiping up the photo library
                         DragGesture()
                         .onEnded {value in
                             if value.translation.height < 0 {
@@ -64,31 +59,6 @@ struct ContentView: View {
                             }
                         }
                     )
-//                        .simultaneousGesture(TapGesture(count:2).onEnded {
-//                            self.flipped.toggle()
-//                               useCam = true
-//                               if self.image != nil {
-//                                   self.controller.changeStatus(useCam: true, img: self.image!)
-//                                   self.image = nil
-//                               }
-//                               self.controller.flipCamera()
-//                        }.exclusively(before: TapGesture(count:3))
-//                    )
-//                        .onTapGesture(count: 3) {
-//                            print("...")
-//                                self.shutter = true
-////                                self.screenShotMethod()
-//                        }
-//                        .onTapGesture(count: 2) {
-//                            self.flipped.toggle()
-//                            useCam = true
-//                            if self.image != nil {
-//                                self.controller.changeStatus(useCam: true, img: self.image!)
-//                                self.image = nil
-//                            }
-//                            self.controller.flipCamera()
-//                        }
-
                 }
             }
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
@@ -97,7 +67,7 @@ struct ContentView: View {
             
             HStack {
                 Spacer()
-                Image("x")
+                Image("x")     // icon for close the image
                     .resizable()
                     .opacity(self.image != nil ? 1: 0)
                     .frame(width: geometry.size.width/15, height: geometry.size.width/15)
@@ -110,150 +80,53 @@ struct ContentView: View {
             
             VStack  {
                 Spacer()
-                
                 UpdateTextViewExternal(viewModel: self.controller)
                 HStack {
-                            Button(action: {
-                                withAnimation {
-                                    self.showImagePicker = true
-                                }
-                                self.controller.changeStatus(useCam: false, img: self.controller.camImage!)
-                            }) {
-                                    Image("PhotoLib")
-                                        .renderingMode(.original)
-                                        .frame(width: geometry.size.width/3, height: geometry.size.height/16)
-                            }
-
                     
-                            Button(action: {
-//                                self.shutter = true
-                                self.controller.screenShotMethod()
-//                                print("UI:", UIApplication.shared.keyWindow?.frame.height, UIApplication.shared.keyWindow?.frame.width)
-                            }) {
-                                Image("Button")
-                                    .renderingMode(.original)
-                                    .frame(width: geometry.size.width/3, height: geometry.size.width/9)
-                            }
-                    
-                            Button(action: {
-//                                 self.flipped.toggle()
-//                                useCamera = true
-//                                if self.image != nil {
-//                                    self.controller.changeStatus(useCam: true, img: self.image!)
-//                                    self.image = nil
-//                                }
-                                self.controller.flipCamera()
-                            }) {
-                                    Image("Swap")
-                                        .renderingMode(.original)
-                                        .frame(width: geometry.size.width/3, height: geometry.size.height/16)
-                           }
-
+                    // button for openning the photo library
+                    Button(action: {
+                        withAnimation {
+                            self.showImagePicker = true
+                        }
+                        self.controller.changeStatus(useCam: false, img: self.controller.camImage!)
+                    }) {
+                        Image("PhotoLib")
+                            .renderingMode(.original)
+                            .frame(width: geometry.size.width/3, height: geometry.size.height/16)
                     }
+
+                    // button for taking screenshot
+                    Button(action: {
+                        self.controller.screenShotMethod()
+                    }) {
+                        Image("Button")
+                            .renderingMode(.original)
+                            .frame(width: geometry.size.width/3, height: geometry.size.width/9)
+                    }
+                    
+                    // button for flipping the camera
+                    Button(action: {
+                        self.controller.flipCamera()
+                    }) {
+                        Image("Swap")
+                            .renderingMode(.original)
+                            .frame(width: geometry.size.width/3, height: geometry.size.height/16)
+                   }
+
+                }
                 .padding()
                 .frame(width: geometry.size.width,
                       height: nil, alignment: .bottom)
-                    .opacity(self.image == nil ? 1: 0)
-//                .sheet(isPresented: self.$showImagePicker) {
-//                    ImagePicker(image: self.$image, isShown: self.$showImagePicker, controller: self.controller, sourceType: .photoLibrary)
-//                    .frame(width: geometry.size.width, height: geometry.size.height)
-//                }
-                    
+                    .opacity(self.image == nil ? 1: 0)  // hide the buttons when displaying an image from the photo library
             }
-            
-//            VStack {
-//                Text("placeholder")
-//                    .frame(width: geometry.size.width, height: geometry.size.height*2)
-//                    .opacity(0)
-//                    .blink(on: self.$shutter, color: Color.black, repeatCount: 1, duration: 0.1)
-//            }
-//            .edgesIgnoringSafeArea(.top)
-                
-//            if self.showImagePicker{
-                ImagePicker(image: self.$image, isShown: self.$showImagePicker, controller: self.controller, sourceType: .photoLibrary)
-                    .edgesIgnoringSafeArea(.all)
-                    .offset(x:0, y:self.showImagePicker ? 0: UIApplication.shared.keyWindow?.frame.height ?? 0)
-//            }
+
+            ImagePicker(image: self.$image, isShown: self.$showImagePicker, controller: self.controller, sourceType: .photoLibrary)
+                .edgesIgnoringSafeArea(.all)
+                .offset(x:0, y:self.showImagePicker ? 0: UIApplication.shared.keyWindow?.frame.height ?? 0)
         }
     }
-    
 
-//
-//    struct RoundStyle: ButtonStyle {
-//        func makeBody(configuration: Self.Configuration) -> some View {
-//            configuration.label
-//                .frame(minWidth: 0, maxWidth: .infinity)
-//                .padding()
-//                .foregroundColor(.white)
-//                .background(Color.gray)
-//            .mask(Circle())
-//            .overlay(
-//                Circle().stroke(Color("lightGray"), lineWidth: 6))
-//            .shadow(radius: 10)
-//        }
-//    }
-    
-//    func screenShotMethod() {
-//        let imageView = UIImageView(image: self.controller.camImage!)
-//        imageView.contentMode = .scaleAspectFit
-//        imageView.frame = self.controller.view.frame
-//        if useCamera{
-//            UIView.transition(with: self.controller.view, duration: 1, options: .curveEaseIn, animations: nil)
-//            self.controller.view.addSubview(imageView)
-//            self.controller.changeStatus(useCam: false, img: self.controller.camImage!)
-//        }
-//
-//        let layer = UIApplication.shared.keyWindow!.layer
-//        let scale = UIScreen.main.scale
-//        UIGraphicsBeginImageContextWithOptions(layer.frame.size, false, scale);
-//        layer.render(in: UIGraphicsGetCurrentContext()!)
-//        let screenshot = UIGraphicsGetImageFromCurrentImageContext()
-//        UIGraphicsEndImageContext()
-//        UIImageWriteToSavedPhotosAlbum(screenshot!, nil, nil, nil)
-//
-//        if useCamera {
-//            imageView.removeFromSuperview()
-//            self.controller.changeStatus(useCam: true, img: self.controller.camImage!)
-//        }
-//    }
-    
 }
-
-
-//struct BlinkingBorderModifier: ViewModifier {
-//    let state: Binding<Bool>
-//    let color: Color
-//    let repeatCount: Int
-//    let duration: Double
-//
-//    // internal wrapper is needed because there is no didFinish of Animation now
-//    private var blinking: Binding<Bool> {
-//        Binding<Bool>(get: {
-//            DispatchQueue.main.asyncAfter(deadline: .now() + self.duration) {
-//                self.state.wrappedValue = false
-//            }
-//            return self.state.wrappedValue }, set: {
-//            self.state.wrappedValue = $0
-//        })
-//    }
-//
-//    func body(content: Content) -> some View
-//    {
-//        content
-//            .background(self.blinking.wrappedValue ? self.color : Color.clear)
-//            .animation(
-//                Animation.linear(duration:self.duration).repeatCount(self.repeatCount)
-//            )
-//    }
-//}
-
-//extension View {
-//    func blink(on state: Binding<Bool>, color: Color,
-//                     repeatCount: Int = 1, duration: Double = 0.5) -> some View {
-//        self.modifier(BlinkingBorderModifier(state: state, color: color,
-//                                             repeatCount: repeatCount, duration: duration))
-//    }
-//}
 
 struct UpdateTextViewExternal: View {
     @ObservedObject var viewModel: MyViewController
@@ -356,28 +229,6 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
         }
     }
     
-//    func setCaptureRate() {
-//        do {
-//            captureSession.beginConfiguration()
-//            try captureDevice!.lockForConfiguration()
-//
-//            // Minimum duration is 1 / (max frame rate).
-//            let currentFrameRate:Int32 = 4
-//
-//            // Lower the min and max frame rate to recover from slow processing.
-//            let newFrameRate:Int32 = currentFrameRate - 1
-//            captureDevice!.activeVideoMinFrameDuration = CMTimeMake(value: 1, timescale: newFrameRate)
-//            captureDevice!.activeVideoMaxFrameDuration = CMTimeMake(value: 1, timescale: newFrameRate)
-//
-//            captureDevice!.unlockForConfiguration()
-//            captureSession.commitConfiguration()
-//        }
-//        catch {
-//            print("Failed to lock the device for configuration: \(error)")
-//        }
-//    }
-    
-    
     @objc func flipCamera() {
        UIView.transition(with: view, duration: 0.5, options: .transitionFlipFromLeft, animations: nil)
        captureSession.stopRunning()
@@ -405,9 +256,7 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
         tripleTapGesture = UITapGestureRecognizer(target: self, action:#selector(self.handleTripleTap(_:)))
         tripleTapGesture.numberOfTapsRequired = 3
         view.addGestureRecognizer(tripleTapGesture)
-        
         doubleTapGesture.require(toFail: tripleTapGesture)
-        
         
         backCam = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .back).devices.first!
         frontCam = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .front).devices.first!
@@ -423,7 +272,6 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
         previewLayer!.videoGravity = AVLayerVideoGravity.resizeAspectFill
         view.layer.addSublayer(previewLayer!)
         previewLayer!.frame = view.frame
-//        previewLayer!.frame = CGRect(x: 10, y: 20, width: 100, height: 50)
     }
     func setOutput() {
         let dataOutput = AVCaptureVideoDataOutput()
@@ -492,8 +340,6 @@ extension UIImage {
     var isLandscape: Bool    { size.width > size.height }
     var breadth:     CGFloat { min(size.width, size.height) }
     var breadthSize: CGSize  { .init(width: breadth, height: breadth) }
-//    var screenSize: CGSize  { .init(width: 500, height: 500)}
-
     
     func squared(isOpaque: Bool = false) -> UIImage? {
         guard let cgImage = cgImage?
@@ -524,8 +370,6 @@ extension UIImage {
         }
     }
 }
-
-
 
 extension UIImage {
     public convenience init?(pixelBuffer: CVPixelBuffer) {
