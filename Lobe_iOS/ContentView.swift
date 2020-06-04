@@ -93,7 +93,7 @@ struct ContentView: View {
                         Image("PhotoLib")
                             .renderingMode(.original)
                             .frame(width: geometry.size.width/3, height: geometry.size.height/16)
-                    }
+                    }.opacity(0)
 
                     // button for taking screenshot
                     Button(action: {
@@ -102,7 +102,7 @@ struct ContentView: View {
                         Image("Button")
                             .renderingMode(.original)
                             .frame(width: geometry.size.width/3, height: geometry.size.width/9)
-                    }
+                    }.opacity(0)
                     
                     // button for flipping the camera
                     Button(action: {
@@ -111,7 +111,7 @@ struct ContentView: View {
                         Image("Swap")
                             .renderingMode(.original)
                             .frame(width: geometry.size.width/3, height: geometry.size.height/16)
-                   }
+                    }.opacity(0)
 
                 }
                 .padding()
