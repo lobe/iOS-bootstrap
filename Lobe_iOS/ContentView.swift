@@ -47,18 +47,18 @@ struct ContentView: View {
                     )
                         .opacity(1/self.scaling.height < 1 ? 0.5: 1)
                 } else {
-//                    MyRepresentable(controller: self.controller)
-//                    .gesture(                                  // guesture for swiping up the photo library
-//                        DragGesture()
-//                        .onEnded {value in
-//                            if value.translation.height < 0 {
-//                                withAnimation{
-//                                    self.showImagePicker = true
-//                                }
-//                                self.controller.changeStatus(useCam: false, img: self.controller.camImage!)
-//                            }
-//                        }
-//                    )
+                    MyRepresentable(controller: self.controller)
+                    .gesture(                                  // guesture for swiping up the photo library
+                        DragGesture()
+                        .onEnded {value in
+                            if value.translation.height < 0 {
+                                withAnimation{
+                                    self.showImagePicker = true
+                                }
+                                self.controller.changeStatus(useCam: false, img: self.controller.camImage!)
+                            }
+                        }
+                    )
                 }
                 }
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
