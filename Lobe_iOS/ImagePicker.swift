@@ -36,7 +36,7 @@ class ImagePickerCoordinator: NSObject, UINavigationControllerDelegate, UIImageP
 
 }
 
-
+/* Image picker. */
 struct ImagePicker: UIViewControllerRepresentable {
     
     typealias UIViewControllerType = UIImagePickerController
