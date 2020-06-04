@@ -258,8 +258,14 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
     
     @objc func flipCamera() {
        UIView.transition(with: view, duration: 0.5, options: .transitionFlipFromLeft, animations: nil)
-       captureSession.stopRunning()
-       previewLayer?.removeFromSuperlayer()
+//       captureSession.stopRunning()
+//       previewLayer?.removeFromSuperlayer()
+//        UIView.animate(withDuration: 0.5, delay: 0, options: .transitionFlipFromLeft, animations: {
+////            self.captureSession.stopRunning()
+////            self.previewLayer?.removeFromSuperlayer()
+//        }, completion: nil)  // shutter animation
+//
+        
        if captureDevice == backCam{
            captureDevice = frontCam}
        else {
