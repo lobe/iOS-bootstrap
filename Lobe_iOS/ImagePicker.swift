@@ -25,16 +25,18 @@ class ImagePickerCoordinator: NSObject, UINavigationControllerDelegate, UIImageP
         if let uiImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
             image = uiImage
             isShown = false
+            useCamera = false
             controller.changeStatus(useCam: false, img: uiImage)
         }
     }
     func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
         isShown = false
+        self.controller.changeStatus(useCam: true, img: self.controller.camImage!)
     }
 
 }
 
-
+/* Image picker. */
 struct ImagePicker: UIViewControllerRepresentable {
     
     typealias UIViewControllerType = UIImagePickerController
@@ -54,6 +56,7 @@ struct ImagePicker: UIViewControllerRepresentable {
         let picker = UIImagePickerController()
         picker.sourceType = sourceType
         picker.delegate = context.coordinator
+        picker.modalPresentationStyle = .fullScreen
         return picker
     }
     
