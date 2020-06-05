@@ -118,7 +118,6 @@ struct ContentView: View {
                             .renderingMode(.original)
                             .frame(width: geometry.size.width / 3, height: geometry.size.height / 16)
                     }.opacity(0)  // not displaying the button
-
                 }
                 .frame(width: geometry.size.width,
                       height: geometry.size.height / 30, alignment: .bottom)
@@ -132,6 +131,7 @@ struct ContentView: View {
     }
 
 }
+
 
 /* Gadget to build colors from Hashtag Color Code Hex. */
 extension UIColor {
@@ -150,6 +150,7 @@ extension UIColor {
            blue: rgb & 0xFF
        )
    }
+
 }
 
 struct ContentView_Previews: PreviewProvider {
