@@ -1,4 +1,4 @@
-![](https://github.com/lobe/iOS-bootstrap/raw/niceDeveloperExperience/assets/header.png)
+![](https://github.com/lobe/iOS-bootstrap/raw/nicerDevExperience/assets/header.png)
 
 [Lobe](http://lobe.ai/) is an easy to use free tool to help you start working with machine learning.
 
@@ -8,11 +8,11 @@ This project was created to help you bootstrap your Lobe project on the iOS. Bui
 
 In the next few sections we’ll take you through the basics of creating your new project and getting started. At a high level, we’ll go over:
 
-1. [Installing your Development Environment](https://github.com/lobe/iOS-bootstrap/tree/niceDeveloperExperience#installing-your-development-environment)
-2. [Exporting your model from Lobe and integrating it into the code](https://github.com/lobe/iOS-bootstrap/blob/niceDeveloperExperience/README.md#exporting-your-model)
-3. [Deploying your app to the web](https://github.com/lobe/iOS-bootstrap/tree/niceDeveloperExperience#deploying-your-app)
-4. [Tips and Tricks for creating your own custom version of this app](https://github.com/lobe/iOS-bootstrap/tree/niceDeveloperExperience#tips-and-tricks)
-5. [Contributing](https://github.com/lobe/iOS-bootstrap/tree/niceDeveloperExperience#contributing)
+1. [Installing your Development Environment](https://github.com/lobe/iOS-bootstrap/tree/nicerDevExperience#installing-your-development-environment)
+2. [Exporting your model from Lobe and integrating it into the code](https://github.com/lobe/iOS-bootstrap/blob/nicerDevExperience/README.md#exporting-your-model)
+3. [Deploying your app to the web](https://github.com/lobe/iOS-bootstrap/tree/nicerDevExperience#deploying-your-app)
+4. [Tips and Tricks for creating your own custom version of this app](https://github.com/lobe/iOS-bootstrap/tree/nicerDevExperience#tips-and-tricks)
+5. [Contributing](https://github.com/lobe/iOS-bootstrap/tree/nicerDevExperience#contributing)
 
 ## Installing Your Development Environment
 
@@ -89,7 +89,7 @@ Next, we're going to drop in your new model. So first, let's open your project i
 
 Once you have the tensorflow model, you're going to follow [these instructions for converting the model to tensorflow.js](https://github.com/tensorflow/tfjs/tree/master/tfjs-converter). After that, drag in the converted model files into the `/public/model` folder to replace the exisiting sample model:
 
-![](https://github.com/lobe/iOS-bootstrap/raw/niceDeveloperExperience/assets/modeldrag.png)
+![](https://github.com/lobe/iOS-bootstrap/raw/nicerDevExperience/assets/modeldrag.png)
 
 Starting your app up again by running `yarn start` will reflect these changes and show you your model live! Congratulations! :tada:
 
