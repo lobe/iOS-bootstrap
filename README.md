@@ -16,7 +16,7 @@ In the next few sections we’ll take you through the basics of creating your ne
 
 ## Installing Your Development Environment
 
-In this stage we’re going to get your setup so you can launch and play with your app. These instructions are written for macOS, but will be fairly similar on a Windows machine. To start, we’re going to download this repository. To do this, we need to install a few things.
+In this stage we’re going to get your setup so you can launch and play with your app. These instructions are written for macOS, the only system you can run iOS app on. To start, we’re going to download this repository. To do this, we need to install a few things.
 
 ### Step 1 – Install [Homebrew](http://brew.sh/)
 
@@ -45,7 +45,9 @@ Now that we git installed, you can clone this repo with the following command. Y
 git clone https://github.com/lobe/iOS-bootstrap.git
 ```
 
-### Step 3 - Installing [Node](https://nodejs.org/en/)
+### Step 3 - Installing [Xcode](https://apps.apple.com/us/app/xcode/id497799835?mt=12)
+
+![](https://github.com/lobe/iOS-bootstrap/raw/nicerDevExperience/assets/xcodeDownload.png)
 
 Next, we’re going to get you setup to run Node applications. Node is a javascript runtime engine that will run our code on your computer. For managing Node versions, there’s a popular app called `nvm` (https://github.com/nvm-sh/nvm), and we’re going to use it to install the right version of Node. To install `nvm`, run this command in your terminal:
 
