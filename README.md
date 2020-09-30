@@ -1,4 +1,4 @@
-<div style="text-align:center; width:100;"><img src="https://github.com/lobe/iOS-bootstrap/raw/nicerDevExperience/assets/header.png" /></div>
+<div style="text-align:center" width:100px><img src="https://github.com/lobe/iOS-bootstrap/raw/nicerDevExperience/assets/header.png" /></div>
 
 [Lobe](http://lobe.ai/) is an easy to use free tool to help you start working with machine learning.
 
