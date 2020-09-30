@@ -1,4 +1,4 @@
-![](https://github.com/lobe/iOS-bootstrap/raw/nicerDevExperience/assets/header.png)
+<div style="text-align:center"><img src="https://github.com/lobe/iOS-bootstrap/raw/nicerDevExperience/assets/header.png" /></div>
 
 [Lobe](http://lobe.ai/) is an easy to use free tool to help you start working with machine learning.
 
