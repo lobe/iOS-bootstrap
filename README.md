@@ -20,7 +20,7 @@ In this stage we’re going to get your setup so you can launch and play with yo
 
 ### Step 1 – Install [Homebrew](http://brew.sh/)
 
-First, [open a terminal window](http//www.youtube.com/watch?v=zw7Nd67_aFw).
+First, [open a terminal window](http://www.youtube.com/watch?v=zw7Nd67_aFw).
 
 Next, copy & paste the following into a terminal window and hit return.
 
