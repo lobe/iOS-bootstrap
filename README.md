@@ -54,7 +54,7 @@ Once you have the CoreML model, rename it to `LobeModel.mlmodel` and drag it int
 
 ![](https://github.com/lobe/iOS-bootstrap/raw/master/assets/modeldrag.png)
 
-And we're done! Next let's get it on your phone so you can see it work live
+And we're done! Next let's get it on your phone so you can see it work live.
 
 
 ## Deploying your app
