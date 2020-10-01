@@ -16,11 +16,25 @@ In the next few sections we’ll take you through the basics of creating your ne
 
 ## Installing Your Development Environment
 
-In this stage we’re going to get your setup so you can launch and play with your app. These instructions are written for macOS, the only system you can run iOS app on. To start, we’re going to download this repository. To do this, we need to install a few things.
+In this stage we’re going to get your setup so you can launch and play with your app. These instructions are written for macOS, the only system you can run iOS app on. To start, we’re going to download this repository. To do this, we have a few options:
+
+### Option 1:
+
+Download the code by using the download as zip button from GitHub:
+
+![](https://github.com/lobe/iOS-bootstrap/raw/ImprovedReadme/assets/downloadProject.png)
+
+### Option 2:
+
+Install `git` (you maybe already have it installed) and fetch it that way. This will make contributing easier if that's what you'd like to.
+
+### Option 3:
+
+If you'd perfer to use the [GitHub Desktop](https://desktop.github.com) app. This app makes it pretty easy to fetch this repository and have all the advantages of a version control system.
 
 ### Step 1 – Install [Homebrew](http://brew.sh/)
 
-First, [open a terminal window](http://www.youtube.com/watch?v=zw7Nd67_aFw).
+First, [open a terminal window](http//www.youtube.com/watch?v=zw7Nd67_aFw).
 
 Next, copy & paste the following into a terminal window and hit return.
 
