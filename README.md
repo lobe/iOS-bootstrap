@@ -49,51 +49,19 @@ git clone https://github.com/lobe/iOS-bootstrap.git
 
 ![](https://github.com/lobe/iOS-bootstrap/raw/nicerDevExperience/assets/xcodeDownload.png)
 
-Next, we’re going to get you setup to run Node applications. Node is a javascript runtime engine that will run our code on your computer. For managing Node versions, there’s a popular app called `nvm` (https://github.com/nvm-sh/nvm), and we’re going to use it to install the right version of Node. To install `nvm`, run this command in your terminal:
-
-```shell
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.36.0/install.sh | bash
-```
-After `nvm` is installed run the following commands to install the right version of Node:
-
-```shell
-cd <path to this repository>
-nvm install
-```
-
-You can also use `n` or any other tool you'd like to get Node version 12.18.1 installed.
-
-### Step 4 - Installing [yarn](https://yarnpkg.com) and the node modules
-
-First, let's install `yarn`. It's a package manager that will help us install all of our javascript packages.
-
-```shell
-brew install yarn
-```
-
-Next, still in this repo's directory, run:
-
-```shell
-yarn install
-```
-
-And finally, let's start the app! By running the following you'll see the app pop up in your web browser:
-
-```shell
-yarn start
-```
+Next, we're going to install [Xcode from the App Store](https://apps.apple.com/us/app/xcode/id497799835?mt=12). This will be a fairly strightforward process that'll take about an hour as the Xcode app is pretty large. Once it's done, just double click on the `Lobe_iOS.xcodeproj` file and it'll open in Xcode! Now we need to export your custom model from Lobe. If you'd like, you and skip to the deploying you app section if you just want to see that app working with the sample model.
 
 ## Exporting your model
 
-Next, we're going to drop in your new model. So first, let's open your project in Lobe and export it by pressing `⌘-E` and selecting Tensorflow:
+Next, we're going to drop in your new model. So first, let's open your project in Lobe and export it by pressing `⌘-E` and selecting CoreML:
 
 ![](https://github.com/lobe/iOS-bootstrap/raw/nicerDevExperience/assets/exportHeader.png)
 
-Once you have the tensorflow model, you're going to follow [these instructions for converting the model to tensorflow.js](https://github.com/tensorflow/tfjs/tree/master/tfjs-converter). After that, drag in the converted model files into the `/public/model` folder to replace the exisiting sample model:
+Once you have the CoreML model, rename it to `LobeModel.mlmodel` and drag it into the root of this repo to replace the exisiting sample model:
 
 ![](https://github.com/lobe/iOS-bootstrap/raw/nicerDevExperience/assets/modeldrag.png)
 
-Starting your app up again by running `yarn start` will reflect these changes and show you your model live! Congratulations! :tada:
+And we're done! Next let's get it on your phone so you can see it work live
 
 
 ## Deploying your app
