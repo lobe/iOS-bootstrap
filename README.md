@@ -72,7 +72,7 @@ Next, we'll want to get this app onto your phone so you can see it working live 
 
 <div style="text-align:center"><img src="https://github.com/lobe/iOS-bootstrap/raw/master/assets/Xcode%20Play%20Button.png" /></div>
 
-And there you have it! You're app should be running on your device. If xcode pops up a message asking you to setup your team, just follow the steps it suggests or [take a look here](https://stackoverflow.com/questions/40475094/how-to-specify-development-team-in-xcode#40476567). And finally, if you'd like to post this app to the App Store, you're more then welcome to. To do so, [follow the instrustions here](https://developer.apple.com/app-store/submitting/) to get the process rolling. You'll need to have an Apple Developer account.
+And there you have it! You're app should be running on your device. If Xcode pops up a message asking you to setup your team, just follow the steps it suggests or [take a look here](https://stackoverflow.com/questions/40475094/how-to-specify-development-team-in-xcode#40476567). And finally, if you'd like to post this app to the App Store, you're more then welcome to. To do so, [follow the instrustions here](https://developer.apple.com/app-store/submitting/) to get the process rolling. You'll need to have an Apple Developer account.
 
 ## Tips and Tricks
 
@@ -88,7 +88,7 @@ This file contains all parts that needed to be done using the old style UIKit. M
 * This project contains a sample icon and other assets, feel free to use these or create your own.
 * When you're using the app, swiping up on the screen pulls open the image picker.
 * Double tapping flips the camera around to the front facing camera. Double tapping again filps the camera back to the front.
-* `UpdateTextViewExternal.swift` includes the small amount of SwiftUI for the prediction bar at the buttom of the screen.
+* `UpdateTextViewExternal.swift` includes the small amount of SwiftUI for the prediction bar at the bottom of the screen.
 
 ## Contributing
 
