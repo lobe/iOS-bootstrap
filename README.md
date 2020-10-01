@@ -95,6 +95,9 @@ This file contains all the main UI, built using SwiftUI. If you'd like to adjust
 ### `MyViewController.swift`
 This file contains all parts that needed to be done using the old style UIKit. Mainly this is making the camera view. Luckily, this is all ported back to SwiftUI using Apple's `UIViewControllerRepresentable` API. This allows us to make the camera view, and then use it like any other SwiftUI view above. You'll also see the CoreML prediction call here.
 
+### `UpdateTextViewExternal.swift`
+Includes the small amount of SwiftUI for the prediction bar at the bottom of the screen.
+
 ### Miscellaneous Pointers
 * This project contains a sample icon and other assets, feel free to use these or create your own.
 * When you're using the app, swiping up on the screen pulls open the image picker.
