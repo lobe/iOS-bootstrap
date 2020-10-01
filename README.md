@@ -68,7 +68,9 @@ And we're done! Next let's get it on your phone so you can see it work live
 
 ## Deploying your app
 
-Luckily for us, deploying on the web is much easier then on iOS or Android. You can deploy to a varitiy of cloud services, such as AWS, GCP, or Azure. One of the best choices is using GitHub pages: it's free and will give you a URL (`yourproject.github.io`) for you to use and share around the web. Because this is using tensorflow.js, all the inference is done client side, so using your app should remain fast for all users, regardness of how many there are! We recomend [this guide](https://github.com/gitname/react-gh-pages) that will take you through the steps.
+Next, we'll want to get this app onto your phone so you can see it working live with your device's camera. To do this, plug in your device via a USB-Lighting cabel and in the open xcode window, press the play button in the top left hard corner of the screen:
+
+<div style="text-align:center"><img src="https://github.com/lobe/iOS-bootstrap/raw/nicerDevExperience/assets/Xcode%20Play%20Button.png" /></div>
 
 ## Tips and Tricks
 
