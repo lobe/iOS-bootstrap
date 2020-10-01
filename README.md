@@ -88,6 +88,7 @@ This file contains all parts that needed to be done using the old style UIKit. M
 * This project contains a sample icon and other assets, feel free to use these or create your own.
 * When you're using the app, swiping up on the screen pulls open the image picker.
 * Double tapping flips the camera around to the front facing camera. Double tapping again filps the camera back to the front.
+* `UpdateTextViewExternal.swift` includes the small amount of SwiftUI for the prediction bar at the buttom of the screen.
 
 ## Contributing
 
