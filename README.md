@@ -72,21 +72,22 @@ Next, we'll want to get this app onto your phone so you can see it working live 
 
 <div style="text-align:center"><img src="https://github.com/lobe/iOS-bootstrap/raw/nicerDevExperience/assets/Xcode%20Play%20Button.png" /></div>
 
+And there you have it! You're app should be running on your device. If xcode pops up a message asking you to setup your team, just follow the steps it suggests or [take a look here](https://stackoverflow.com/questions/40475094/how-to-specify-development-team-in-xcode#40476567). And finally, if you'd like to post this app to the App Store, you're more then welcome to. To do so, [follow the instrustions here](https://developer.apple.com/app-store/submitting/) to get the process rolling. You'll need to have an Apple Developer account.
+
 ## Tips and Tricks
 
-You're more the welcome to use this app as a starting place for your own project. Below is a high level overview of the project to get you started. Like any good bootstrap app, this project has been kept intentionally simple. There are only two main components, the Camera, and the Prediction.
+You're more the welcome to use this app as a starting place for your own project. Below is a high level overview of the project to get you started. Like any good bootstrap app, this project has been kept intentionally simple. There are only two main components in two files, `ContentView.swift` and `MyViewController.swift`.
 
-### `Camera.js`
-The Camera is resonsible for displaying a live full screen view of the user's webcam. It can easily be modified to take input from any camera attached to your computer, so could hook this up to your sub telescope and use that!
+### `ContentView.swift`
+This file contains all the main UI, built using SwiftUI. If you'd like to adjust the plactment of any UI elements or add you own, start here. If you'd like a primer on SwiftUI, I'd start with this: [Build a SwiftUI app for iOS 14](https://designcode.io/swiftui2-course)
 
-### `Prediction.js`
-Our Prediction component is the box in the lower left hand corner. It's responsible for displaying the prediction results and their confidences.
+### `MyViewController.swift`
+This file contains all parts that needed to be done using the old style UIKit. Mainly this is making the camera view. Luckily, this is all ported back to SwiftUI using Apple's `UIViewControllerRepresentable` API. This allows us to make the camera view, and the use it like any other SwiftUI view above. Because this deals with the camera, you'll also see the CoreML prediction call here.
 
 ### Miscellaneous Pointers
-* There's a config file in `/src` that has various config options for the app. 
-* The prediction happens at a set interval (500ms), while the camera is kept showing a live feed regardless of the prediction frequency.
-* The shared css in the `App.css`
-* All the code is commented, this should help you explore and configure to create your own version
+* This project contains a sample icon and other assets, feel free to use these or create your own.
+* When you're using the app, swiping up on the screen pulls open the image picker.
+* Double tapping flips the camera around to the front facing camera. Double tapping again filps the camera back to the front.
 
 ## Contributing
 
