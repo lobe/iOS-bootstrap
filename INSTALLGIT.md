@@ -13,7 +13,7 @@ You will be offered to install the *Command Line Developer Tools* from *Apple*. 
 
 ### Step 2 – Installing [Git](https://git-scm.com)
 
-Feel free to skip second step if you already have git installed, or if you'd perfer to use the [GitHub Desktop](https://desktop.github.com) app. Otherwise, Copy & paste the following into the terminal window and hit return.
+Copy & paste the following into the terminal window and hit return.
 
 ```shell
 brew install git
