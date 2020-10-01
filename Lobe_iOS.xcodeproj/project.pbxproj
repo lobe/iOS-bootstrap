@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		76A9AF54247F138B002086F7 /* LobeModel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 76A9AF53247F138B002086F7 /* LobeModel.mlmodel */; };
 		76CDE1A4247F2E6D0096E882 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CDE1A3247F2E6D0096E882 /* ImagePicker.swift */; };
-		76ED73F124898282003B4F6B /* labgrotesque-bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 76ED73F024898282003B4F6B /* labgrotesque-bold.ttf */; };
 		76ED73F3248987E3003B4F6B /* MyViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76ED73F2248987E3003B4F6B /* MyViewController.swift */; };
 		76ED73F5248988AE003B4F6B /* UpdateTextViewExternal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76ED73F4248988AE003B4F6B /* UpdateTextViewExternal.swift */; };
 		9B7B03EB2475DBF300D34020 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B7B03EA2475DBF300D34020 /* AppDelegate.swift */; };
@@ -23,7 +22,6 @@
 /* Begin PBXFileReference section */
 		76A9AF53247F138B002086F7 /* LobeModel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = LobeModel.mlmodel; path = ../LobeModel.mlmodel; sourceTree = "<group>"; };
 		76CDE1A3247F2E6D0096E882 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; };
-		76ED73F024898282003B4F6B /* labgrotesque-bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "labgrotesque-bold.ttf"; sourceTree = "<group>"; };
 		76ED73F2248987E3003B4F6B /* MyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyViewController.swift; sourceTree = "<group>"; };
 		76ED73F4248988AE003B4F6B /* UpdateTextViewExternal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UpdateTextViewExternal.swift; sourceTree = "<group>"; };
 		9B7B03E72475DBF300D34020 /* Lobe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lobe.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -51,7 +49,6 @@
 			isa = PBXGroup;
 			children = (
 				9B7B03E92475DBF300D34020 /* Lobe_iOS */,
-				76ED73F024898282003B4F6B /* labgrotesque-bold.ttf */,
 				9B7B03E82475DBF300D34020 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -149,7 +146,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				9B7B03F72475DBF600D34020 /* LaunchScreen.storyboard in Resources */,
-				76ED73F124898282003B4F6B /* labgrotesque-bold.ttf in Resources */,
 				9B7B03F42475DBF600D34020 /* Preview Assets.xcassets in Resources */,
 				9B7B03F12475DBF600D34020 /* Assets.xcassets in Resources */,
 			);
@@ -306,7 +302,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Lobe_iOS/Preview Content\"";
-				DEVELOPMENT_TEAM = X2LUKUVHYY;
+				DEVELOPMENT_TEAM = NGV85M44ZU;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Lobe_iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -326,7 +322,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Lobe_iOS/Preview Content\"";
-				DEVELOPMENT_TEAM = X2LUKUVHYY;
+				DEVELOPMENT_TEAM = NGV85M44ZU;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Lobe_iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

@@ -10,7 +10,7 @@ In the next few sections we’ll take you through the basics of creating your ne
 
 1. [Installing your Development Environment](https://github.com/lobe/iOS-bootstrap/tree/master#installing-your-development-environment)
 2. [Exporting your model from Lobe and integrating it into the code](https://github.com/lobe/iOS-bootstrap/blob/master/README.md#exporting-your-model)
-3. [Deploying your app to the web](https://github.com/lobe/iOS-bootstrap/tree/master#deploying-your-app)
+3. [Deploying your app on your device](https://github.com/lobe/iOS-bootstrap/tree/master#deploying-your-app)
 4. [Tips and Tricks for creating your own custom version of this app](https://github.com/lobe/iOS-bootstrap/tree/master#tips-and-tricks)
 5. [Contributing](https://github.com/lobe/iOS-bootstrap/tree/master#contributing)
 

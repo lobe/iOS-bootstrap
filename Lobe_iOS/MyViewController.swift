@@ -26,9 +26,9 @@ struct MyRepresentable: UIViewControllerRepresentable{
 class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDelegate, ObservableObject {
 
     @Published var classificationLabel: String?
-    var backCam: AVCaptureDevice?
-    var frontCam: AVCaptureDevice?
-    var captureDevice: AVCaptureDevice?
+    var backCam: AVCaptureDevice!
+    var frontCam: AVCaptureDevice!
+    var captureDevice: AVCaptureDevice!
     var captureSession = AVCaptureSession()
     var previewLayer: AVCaptureVideoPreviewLayer?
     var useCam: Bool = true
@@ -87,7 +87,7 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
        else {
            captureDevice = backCam}
         captureSession = AVCaptureSession()
-        guard let input = try? AVCaptureDeviceInput(device: self.captureDevice!) else {return}
+        guard let input = try? AVCaptureDeviceInput(device: self.captureDevice) else {return}
         captureSession.addInput(input)
         captureSession.startRunning()
         setPreviewLayer()
@@ -105,10 +105,15 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
         view.addGestureRecognizer(tripleTapGesture)
         doubleTapGesture.require(toFail: tripleTapGesture)
         
-        backCam = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .back).devices.first!
-        frontCam = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .front).devices.first!
+        backCam = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .back).devices.first
+        frontCam = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .front).devices.first
         captureDevice = backCam
-        guard let input = try? AVCaptureDeviceInput(device: self.captureDevice!) else {return}
+        let input: AVCaptureInput!
+        if self.captureDevice != nil {
+            input = try! AVCaptureDeviceInput(device: self.captureDevice)
+        } else {
+            return
+        }
         captureSession.addInput(input)
         captureSession.startRunning()
         setPreviewLayer()
@@ -183,7 +188,7 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
     }
 }
 
-/* Gadgets for editing images. */
+/* Helpers for editing images. */
 import VideoToolbox
 extension UIImage {
     var isPortrait:  Bool    { size.height > size.width }

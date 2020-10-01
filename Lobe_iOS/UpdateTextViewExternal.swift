@@ -17,11 +17,10 @@ struct UpdateTextViewExternal: View {
     
     var body: some View {
         GeometryReader { geometry in
-            VStack {
+            VStack(alignment: .center) {
                 Spacer()
-                HStack {
+                HStack(alignment: .center) {
                     ZStack (alignment: .leading) {
-                        
                         Rectangle()
                             .foregroundColor(Color(UIColor(rgb: 0x33987A)))
                             .opacity(0.88)
@@ -31,17 +30,26 @@ struct UpdateTextViewExternal: View {
                             .frame(width: min(CGFloat(self.viewModel.confidence ?? 0) * geometry.size.width / 1.2, geometry.size.width / 1.2))
                             .animation(.linear)
                     
-                        Text(self.viewModel.classificationLabel ?? "default")
+                        Text(self.viewModel.classificationLabel ?? "Loading...")
                             .padding()
                             .foregroundColor(.white)
-                            .font(.custom("labgrotesque-bold", size: 28))
+                            .font(.system(size: 28))
                     }
                 }
                 .frame(width: geometry.size.width / 1.2,
-                       height: geometry.size.height / 13, alignment: .center)
+                       height: 65,
+                       alignment: .center
+                )
                 .cornerRadius(17.0)
                 .padding()
             }
+            .frame(width: geometry.size.width)
         }
+    }
+}
+
+struct UpdateTextViewExternal_Previews: PreviewProvider {
+    static var previews: some View {
+        UpdateTextViewExternal(viewModel: MyViewController())
     }
 }
