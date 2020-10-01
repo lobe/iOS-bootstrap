@@ -83,7 +83,7 @@ Next, we'll want to get this app onto your phone so you can see it working live 
 
 ![Screenshot of Xcode](https://github.com/lobe/iOS-bootstrap/raw/master/assets/Xcode%20Play%20Button.png)
 
-And there you have it! You're app should be running on your device. If Xcode pops up a message asking you to setup your team, just follow the steps it suggests or [take a look here](https://stackoverflow.com/questions/40475094/how-to-specify-development-team-in-xcode#40476567). And finally, if you'd like to post your app (running your custom image classification model) to the App Store, you're more than welcome to do so. [Follow the instrustions here](https://developer.apple.com/app-store/submitting/) to get the process rolling. You'll need to have an Apple Developer account.
+And there you have it! You're app should be running on your device. If Xcode pops up a message asking you to setup your team, just follow the steps it suggests or [take a look here](https://stackoverflow.com/questions/40475094/how-to-specify-development-team-in-xcode#40476567). And finally, if you'd like to post your app (running your custom image classification model) to the App Store, you're more than welcome to do so. [Follow the instructions here](https://developer.apple.com/app-store/submitting/) to get the process rolling. You'll need to have an Apple Developer account.
 
 ## Tips and Tricks
 
