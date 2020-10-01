@@ -47,7 +47,7 @@ git clone https://github.com/lobe/iOS-bootstrap.git
 
 ### Step 3 - Installing [Xcode](https://apps.apple.com/us/app/xcode/id497799835?mt=12)
 
-<div style="https://github.com/lobe/iOS-bootstrap/raw/nicerDevExperience/assets/xcodeDownload.png" /></div>
+<div style="text-align:center"><img src="https://github.com/lobe/iOS-bootstrap/raw/nicerDevExperience/assets/xcodeDownload.png" /></div>
 
 Next, we're going to install [Xcode from the App Store](https://apps.apple.com/us/app/xcode/id497799835?mt=12). This will be a fairly strightforward process that'll take about an hour as the Xcode app is pretty large. Once it's done, just double click on the `Lobe_iOS.xcodeproj` file and it'll open in Xcode! Now we need to export your custom model from Lobe. If you'd like, you and skip to the deploying you app section if you just want to see that app working with the sample model.
 
