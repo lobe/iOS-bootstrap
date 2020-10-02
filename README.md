@@ -60,9 +60,7 @@ Now we need to export your custom model from Lobe. If you'd like, you can skip t
 
 Once you've trained a custom model in Lobe, you can drop it into your app.
 
-First, let's open your project in Lobe and export it by pressing `⌘E` and selecting CoreML:
-
-![Screenshot of Export sheet in Lobe](https://github.com/lobe/iOS-bootstrap/raw/master/assets/exportHeader.png)
+First, let's open your project in Lobe and export it by pressing `⌘E` and selecting CoreML.
 
 Once you have the CoreML model, rename it to `LobeModel.mlmodel` and drag it into the root of this repo to replace the exisiting sample model:
 
