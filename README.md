@@ -22,7 +22,9 @@ To start, we’re going to download ("clone") this repository.
 
 If you already have `git` installed, skip to [Step 2](#clone-this-repository).
 
-If you prefer to use the [GitHub Desktop](https://desktop.github.com) app, click on the "Code" button above and click "Open with GitHub Desktop".
+If you prefer to use the [GitHub Desktop](https://desktop.github.com) app, click on the "Code" button above and click "Open with GitHub Desktop":
+
+![](https://github.com/lobe/iOS-bootstrap/raw/master/assets/downloadProject.png)
 
 Otherwise, we need to install a few things:
 
@@ -35,25 +37,16 @@ Next, copy & paste the following into a Terminal window and hit return.
 ```shell
 /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
 brew doctor
-```
-
-You will be offered to install the *Command Line Developer Tools* from *Apple*. Confirm by clicking *Install*. After the installation finished, continue installing *Homebrew* by hitting return again.
-
-Now paste the following into the Terminal window and hit return.
-
-```shell
 brew install git
 ```
 
-### Step 2 - Clone this repository
-
-Now that we have installed `git`, you can clone this repo with the following command. You'll want to navigate to a folder in Terminal where you'd like to store these files. If you need help, here's a [gentle introduction to navigation in the terminal](https://computers.tutsplus.com/tutorials/navigating-the-terminal-a-gentle-introduction--mac-3855).
+Now that we have installed `git`, you can clone this repo with the following command. You'll want to navigate to a folder in Terminal where you'd like to store these files. If you need help, here's a [gentle introduction to navigation in the terminal](http//www.youtube.com/watch?v=zw7Nd67_aFw).
 
 ```shell
 git clone https://github.com/lobe/iOS-bootstrap.git
 ```
 
-### Step 3 - Installing [Xcode](https://apps.apple.com/us/app/xcode/id497799835?mt=12)
+### Step 2 - Installing [Xcode](https://apps.apple.com/us/app/xcode/id497799835?mt=12)
 
 Next, we're going to install Xcode, a free tool from Apple, via the [App Store](https://apps.apple.com/us/app/xcode/id497799835?mt=12). This is a fairly straightforward process that could take an hour or more, as the Xcode app is pretty large. 
 
@@ -75,7 +68,7 @@ Once you have the CoreML model, rename it to `LobeModel.mlmodel` and drag it int
 
 ![Illustration of Finder](https://github.com/lobe/iOS-bootstrap/raw/master/assets/modeldrag.png)
 
-And we're done! Next let's get your app on your phone so you can see it work live
+And we're done! Next let's get it on your phone so you can see it work live.
 
 ## Deploying your app
 
