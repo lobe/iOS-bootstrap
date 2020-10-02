@@ -34,11 +34,17 @@ First, [open a Terminal window](http//www.youtube.com/watch?v=zw7Nd67_aFw).
 
 Next, copy & paste the following into a Terminal window and hit return.
 
---homebrew + git
+```shell
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+brew doctor
+brew install git
+```
 
-Now that we have installed `git`, you can clone this repo with the following command. You'll want to navigate to a folder in Terminal where you'd like to store these files. If you need help, here's a [gentle introduction to navigation in the terminal](https://computers.tutsplus.com/tutorials/navigating-the-terminal-a-gentle-introduction--mac-3855).
+Now that we have installed `git`, you can clone this repo with the following command. You'll want to navigate to a folder in Terminal where you'd like to store these files. If you need help, here's a [gentle introduction to navigation in the terminal](http//www.youtube.com/watch?v=zw7Nd67_aFw).
 
---git clone
+```shell
+git clone https://github.com/lobe/iOS-bootstrap.git
+```
 
 ### Step 2 - Installing [Xcode](https://apps.apple.com/us/app/xcode/id497799835?mt=12)
 
