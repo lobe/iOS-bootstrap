@@ -9,6 +9,12 @@
 import Foundation
 import SwiftUI
 
+struct VisualEffectView: UIViewRepresentable {
+    var effect: UIVisualEffect?
+    func makeUIView(context: UIViewRepresentableContext<Self>) -> UIVisualEffectView { UIVisualEffectView() }
+    func updateUIView(_ uiView: UIVisualEffectView, context: UIViewRepresentableContext<Self>) { uiView.effect = effect }
+}
+
 /* View for displaying the green bar containing the prediction label. */
 struct UpdateTextViewExternal: View {
     @ObservedObject var viewModel: MyViewController
@@ -50,6 +56,17 @@ struct UpdateTextViewExternal: View {
 
 struct UpdateTextViewExternal_Previews: PreviewProvider {
     static var previews: some View {
-        UpdateTextViewExternal(viewModel: MyViewController())
+        GeometryReader { geometry in
+            ZStack(alignment: .center) {
+                Image("testing_image")
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .edgesIgnoringSafeArea(.all)
+                    .frame(width: geometry.size.width,
+                           height: geometry.size.height)
+                UpdateTextViewExternal(viewModel: MyViewController()).zIndex(0)
+            }.frame(width: geometry.size.width,
+                    height: geometry.size.height)
+        }
     }
 }
