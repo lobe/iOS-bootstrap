@@ -127,7 +127,7 @@ struct ContentView: View {
             ImagePicker(image: self.$image, isShown: self.$showImagePicker, controller: self.controller, sourceType: .photoLibrary)
                 .edgesIgnoringSafeArea(.all)
                 .offset(x: 0, y: self.showImagePicker ? 0: UIApplication.shared.keyWindow?.frame.height ?? 0)
-        }
+        }.statusBar(hidden: true)
     }
 
 }
