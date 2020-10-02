@@ -16,31 +16,39 @@ In the next few sections we’ll take you through the basics of creating your ne
 
 ## Installing Your Development Environment
 
+In this stage we’re going to get you setup so you can build, launch, and play with your app. These instructions are written for macOS, the only system you can develop iOS apps on.
 
-In this stage we’re going to get your setup so you can launch and play with your app. These instructions are written for macOS, the only system you can run iOS app on.
+To start, we’re going to download ("clone") this repository.
 
-### Step 1 - Download this repository
+If you already have `git` installed, skip to [Step 2](#clone-this-repository).
 
-To start, we’re going to download this repository. To do this, we have a few options:
+If you prefer to use the [GitHub Desktop](https://desktop.github.com) app, click on the "Code" button above and click "Open with GitHub Desktop":
 
-#### Option 1:
+![](https://github.com/lobe/iOS-bootstrap/raw/master/assets/downloadProject.png)
 
-Download the code by using the download as zip button from GitHub:
+Otherwise, we need to install a few things:
 
-![](https://github.com/lobe/iOS-bootstrap/raw/ImprovedReadme/assets/downloadProject.png)
+### Step 1 – Install [Homebrew](http://brew.sh/) and [Git](https://git-scm.com)
 
-#### Option 2:
+First, [open a Terminal window](http//www.youtube.com/watch?v=zw7Nd67_aFw).
 
-[Install `git`](https://raw.githubusercontent.com/lobe/iOS-bootstrap/ImprovedReadme/InstallingGit.md) (you maybe already have it installed) and fetch it that way. This will make contributing easier if that's what you'd like to.
+Next, copy & paste the following into a Terminal window and hit return.
 
-#### Option 3:
+```shell
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+brew doctor
+brew install git
+```
 
-If you'd perfer to use the [GitHub Desktop](https://desktop.github.com) app. This app makes it pretty easy to fetch this repository and have all the advantages of a version control system.
+Now that we have installed `git`, you can clone this repo with the following command. You'll want to navigate to a folder in Terminal where you'd like to store these files. If you need help, here's a [gentle introduction to navigation in the terminal](http//www.youtube.com/watch?v=zw7Nd67_aFw).
 
+```shell
+git clone https://github.com/lobe/iOS-bootstrap.git
+```
 
 ### Step 2 - Installing [Xcode](https://apps.apple.com/us/app/xcode/id497799835?mt=12)
 
-Next, we're going to install Xcode, a free tool from Apple, via the [App Store](https://apps.apple.com/us/app/xcode/id497799835?mt=12). This is a fairly straightforward process that could take an hour or more, as the Xcode app is pretty large. 
+Next, we're going to install Xcode, a free tool from Apple, via the [App Store](https://apps.apple.com/us/app/xcode/id497799835?mt=12). This is a fairly straightforward process that could take an hour or more, as the Xcode app is pretty large.
 
 ![Screenshot of XCode installation](https://github.com/lobe/iOS-bootstrap/raw/master/assets/xcodeDownload.png)
 
@@ -60,7 +68,7 @@ Once you have the CoreML model, rename it to `LobeModel.mlmodel` and drag it int
 
 ![Illustration of Finder](https://github.com/lobe/iOS-bootstrap/raw/master/assets/modeldrag.png)
 
-And we're done! Next let's get your app on your phone so you can see it work live
+And we're done! Next let's get it on your phone so you can see it work live.
 
 ## Deploying your app
 
@@ -75,18 +83,22 @@ And there you have it! You're app should be running on your device. If Xcode pop
 This app is meant as a starting place for your own project. Below is a high level overview of the project to get you started. Like any good bootstrap app, this project has been kept intentionally simple. There are only two main components in two files, `ContentView.swift` and `MyViewController.swift`.
 
 ### `ContentView.swift`
+
 This file contains all the main UI, built using SwiftUI. If you'd like to adjust the placement of any UI elements or add you own, start here. If you'd like a primer on SwiftUI, start with this: [Build a SwiftUI app for iOS 14](https://designcode.io/swiftui2-course)
 
 ### `MyViewController.swift`
+
 This file contains all parts that needed to be done using the old style UIKit. Mainly this is making the camera view. Luckily, this is all ported back to SwiftUI using Apple's `UIViewControllerRepresentable` API. This allows us to make the camera view, and then use it like any other SwiftUI view above. You'll also see the CoreML prediction call here.
 
 ### `UpdateTextViewExternal.swift`
+
 Includes the small amount of SwiftUI for the prediction bar at the bottom of the screen.
 
 ### Miscellaneous Pointers
-* This project contains a sample icon and other assets, feel free to use these or create your own.
-* When you're using the app, swiping up on the screen pulls open the image picker.
-* Double tapping flips the camera around to the front facing camera. Double tapping again flips the camera back to the front.
+
+- This project contains a sample icon and other assets, feel free to use these or create your own.
+- When you're using the app, swiping up on the screen pulls open the image picker.
+- Double tapping flips the camera around to the front facing camera. Double tapping again flips the camera back to the front.
 
 ## Contributing
 
