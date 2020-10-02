@@ -24,7 +24,7 @@ If you already have `git` installed, skip to [Step 2](#clone-this-repository).
 
 If you prefer to use the [GitHub Desktop](https://desktop.github.com) app, click on the "Code" button above and click "Open with GitHub Desktop":
 
-![](https://github.com/lobe/iOS-bootstrap/raw/ImprovedReadme/assets/downloadProject.png)
+![](https://github.com/lobe/iOS-bootstrap/raw/master/assets/downloadProject.png)
 
 Otherwise, we need to install a few things:
 
