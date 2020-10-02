@@ -20,7 +20,7 @@ In this stage we’re going to get you setup so you can build, launch, and play 
 
 To start, we’re going to download ("clone") this repository.
 
-If you already have `git` installed, skip to [Step 2](#clone-this-repository).
+If you already have `git` installed know how to clone this repo, skip to [Step 2](#step-2---installing-xcode).
 
 If you prefer to use the [GitHub Desktop](https://desktop.github.com) app, click on the "Code" button above and click "Open with GitHub Desktop":
 
