@@ -1,4 +1,4 @@
-<div style="text-align:center"><img src="https://github.com/lobe/iOS-bootstrap/raw/master/assets/header.png" /></div>
+<div style="text-align:center"><img src="https://github.com/lobe/iOS-bootstrap/raw/newReadme/assets/header.png" /></div>
 
 [Lobe](http://lobe.ai/) is an easy-to-use free tool to help you start working with machine learning.
 
@@ -24,7 +24,7 @@ If you already have `git` installed and know how to clone this repo, skip to [St
 
 If you prefer to use the [GitHub Desktop](https://desktop.github.com) app, click on the "Code" button above and click "Open with GitHub Desktop":
 
-![](https://github.com/lobe/iOS-bootstrap/raw/master/assets/downloadProject.png)
+![](https://github.com/lobe/iOS-bootstrap/raw/newReadme/assets/downloadProject.png)
 
 Otherwise, we need to install a few things:
 
@@ -35,7 +35,7 @@ First, [open a Terminal window](http//www.youtube.com/watch?v=zw7Nd67_aFw).
 Next, copy & paste the following into a Terminal window and hit return.
 
 ```shell
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install.sh)"
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/newReadme/install.sh)"
 brew doctor
 brew install git
 ```
@@ -50,7 +50,7 @@ git clone https://github.com/lobe/iOS-bootstrap.git
 
 Next, we're going to install Xcode, a free tool from Apple, via the [App Store](https://apps.apple.com/us/app/xcode/id497799835?mt=12). This is a fairly straightforward process that could take an hour or more, as the Xcode app is pretty large.
 
-![Screenshot of XCode installation](https://github.com/lobe/iOS-bootstrap/raw/master/assets/xcodeDownload.png)
+![Screenshot of XCode installation](https://github.com/lobe/iOS-bootstrap/raw/newReadme/assets/xcodeDownload.png)
 
 Once it's done, double click on the `Lobe_iOS.xcodeproj` file in your project directory and it'll open in Xcode!
 
@@ -64,7 +64,7 @@ First, let's open your project in Lobe and export it by pressing `⌘E` and sele
 
 Once you have the CoreML model, rename it to `LobeModel.mlmodel` and drag it into the root of this repo to replace the exisiting sample model:
 
-![Illustration of Finder](https://github.com/lobe/iOS-bootstrap/raw/master/assets/modeldrag.png)
+![Illustration of Finder](https://github.com/lobe/iOS-bootstrap/raw/newReadme/assets/modeldrag.png)
 
 And we're done! Next let's get it on your phone so you can see it work live.
 
@@ -72,7 +72,7 @@ And we're done! Next let's get it on your phone so you can see it work live.
 
 Next, we'll want to get this app onto your phone so you can see it working live with your device's camera. To do this, plug in your device via a USB-Lightning cable and, in the open Xcode window, press the play button in the top left corner of the window:
 
-![Screenshot of Xcode](https://github.com/lobe/iOS-bootstrap/raw/master/assets/Xcode%20Play%20Button.png)
+![Screenshot of Xcode](https://github.com/lobe/iOS-bootstrap/raw/newReadme/assets/Xcode%20Play%20Button.png)
 
 And there you have it! You're app should be running on your device. If Xcode pops up a message asking you to setup your team, just follow the steps it suggests or [take a look here](https://stackoverflow.com/questions/40475094/how-to-specify-development-team-in-xcode#40476567). And finally, if you'd like to post your app (running your custom image classification model) to the App Store, you're more than welcome to do so. [Follow the instructions here](https://developer.apple.com/app-store/submitting/) to get the process rolling. You'll need to have an Apple Developer account.
 
