@@ -4,6 +4,8 @@
 
 iOS Bootstrap takes the machine learning model created in Lobe, and adds it to a project on iOS that uses CoreML and [SwiftUI](https://developer.apple.com/xcode/swiftui/). We help you along the way with everything you need to do to integrate it in your project.
 
+<br />
+
 ## Table of contents
 
 There are 5 steps to integrate your machine learning model in your project:
@@ -52,6 +54,8 @@ Once it's done, double click on the `Lobe_iOS.xcodeproj` file in your project di
 
 Now we need to export your custom model from Lobe. If you'd like, you can skip to the [deploying your app](#deploying-your-app) section if you just want to see this app working with the default sample model.
 
+<br />
+
 ## Exporting your model
 
 After your machine learning is done training, and you are getting good results, you can export your model by going into the file menu and clicking export. Lobe supports a bunch of industry standard platforms. For this project, we'll select CoreML, the standard for Apple's platforms.
@@ -59,6 +63,8 @@ After your machine learning is done training, and you are getting good results, 
 Once you have the CoreML model, rename it to `LobeModel.mlmodel` and drag it into the root of this repo to replace the exisiting sample model:
 
 ![Illustration of Finder](https://github.com/lobe/iOS-bootstrap/raw/newReadme/assets/modeldrag.png)
+
+<br />
 
 ## Deploying your app
 
@@ -73,6 +79,8 @@ And there you have it! You're app should be running on your device. If Xcode pop
 </p>
 
 And finally, if you'd like to post your app (running your custom image classification model) to the App Store, you're more than welcome to do so. [Follow the instructions here](https://developer.apple.com/app-store/submitting/) to get the process rolling. You'll need to have an Apple Developer account.
+
+<br />
 
 ## Tips and Tricks
 
@@ -95,6 +103,8 @@ Includes the small amount of SwiftUI for the prediction bar at the bottom of the
 - This project contains a sample icon and other assets, feel free to use these or create your own.
 - When you're using the app, swiping up on the screen pulls open the image picker.
 - Double tapping flips the camera around to the front facing camera. Double tapping again flips the camera back to the front.
+
+<br />
 
 ## Contributing
 
