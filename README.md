@@ -114,4 +114,4 @@ For project ideas or feedback, please visit our community on [Reddit](https://ww
 
 We look forward to seeing the awesome projects you put out there into the world! Cheers!
 
-– The Lobe Team
+![team sig](https://github.com/lobe/iOS-bootstrap/raw/newReadme/assets/lobeteam.png)
