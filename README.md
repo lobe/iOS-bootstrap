@@ -6,18 +6,6 @@ iOS Bootstrap takes the machine learning model created in Lobe, and adds it to a
 
 <br />
 
-## Table of contents
-
-There are 5 steps to integrate your machine learning model in your project:
-
-1. [Installing your Development Environment](#installing-your-development-environment)
-2. [Exporting your model from Lobe and integrating it into the code](#exporting-your-model)
-3. [Deploying your app on your device](#deploying-your-app)
-4. [Tips and Tricks for creating your own custom version of this app](#tips-and-tricks)
-5. [Contributing](#contributing)
-
-<br />
-
 ## Installing Your Development Environment
 
 You need to get you setup so you can build, launch, and play with your app. These instructions are written for macOS, the only system you can develop iOS apps on.
@@ -56,7 +44,7 @@ Now we need to export your custom model from Lobe. If you'd like, you can skip t
 
 <br />
 
-## Exporting your model
+### Step 3 - Exporting your model
 
 After your machine learning is done training, and you are getting good results, you can export your model by going into the file menu and clicking export. Lobe supports a bunch of industry standard platforms. For this project, we'll select CoreML, the standard for Apple's platforms.
 
@@ -66,7 +54,7 @@ Once you have the CoreML model, rename it to `LobeModel.mlmodel` and drag it int
 
 <br />
 
-## Deploying your app
+## Step 4 - Deploying your app
 
 Next, we'll want to get this app onto your phone so you can see it working live with your device's camera. To do this, plug in your device via a USB-Lightning cable and, in the open Xcode window, press the play button in the top left corner of the window:
 
