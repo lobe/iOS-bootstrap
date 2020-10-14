@@ -16,7 +16,7 @@ If you prefer to use the [GitHub Desktop](https://desktop.github.com) app, click
 
 ![](https://github.com/lobe/iOS-bootstrap/raw/master/assets/downloadProject.png)
 
-### Step 1 – Install [Homebrew](http://brew.sh/) and [Git](https://git-scm.com)
+### Step 1 - Install [Homebrew](http://brew.sh/) and [Git](https://git-scm.com)
 
 Type the following into a Terminal window:
 
