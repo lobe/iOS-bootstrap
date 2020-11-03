@@ -100,8 +100,6 @@ If you can think of anything you'd like to add, or bugs you find, please reach o
 
 For project ideas or feedback, please visit our community on [Reddit](https://www.reddit.com/r/Lobe/)!
 
-We look forward to seeing the awesome projects you put out there into the world!
-
-Cheers!
+We look forward to seeing the awesome projects you put out there into the world! Cheers!
 
 ![team sig](https://github.com/lobe/iOS-bootstrap/raw/master/assets/lobeteam.png)
