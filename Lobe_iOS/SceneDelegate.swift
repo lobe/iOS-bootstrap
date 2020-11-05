@@ -1,11 +1,3 @@
-//
-//  SceneDelegate.swift
-//  Lobe_iOS
-//
-//  Created by Adam Menges on 5/20/20.
-//  Copyright © 2020 Adam Menges. All rights reserved.
-//
-
 import UIKit
 import SwiftUI
 
