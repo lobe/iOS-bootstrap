@@ -14,11 +14,14 @@ import Vision
 struct MyRepresentable: UIViewControllerRepresentable{
     
     @State var controller: MyViewController
+    @Binding var project: Project?
+
     func makeUIViewController(context: Context) -> MyViewController {
         return self.controller
     }
     func updateUIViewController(_ uiViewController: MyViewController, context: Context) {
-        
+        guard let project = self.project else { return }
+        uiViewController.project = project
     }
 }
 
@@ -36,6 +39,7 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
     var confidence: Float?
     var camImage: UIImage?
     var totalFrameCount = 0
+    var project: Project?
 
     var tripleTapGesture = UITapGestureRecognizer()
     var doubleTapGesture = UITapGestureRecognizer()
@@ -156,8 +160,8 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
         /* Crop the captured image to be the size of the screen. */
         self.camImage = rotatedImage.crop(height: (previewLayer?.frame.height)!, width: (previewLayer?.frame.width)!)
         
-        guard let model = try? VNCoreMLModel(for: LobeModel().model) else { return }
-        let request = VNCoreMLRequest(model: model) { (finishReq, err) in
+        guard let project = self.project else { return }
+        let request = VNCoreMLRequest(model: project.model) { (finishReq, err) in
             self.processClassifications(for: finishReq, error: err)
         }
         
@@ -250,11 +254,5 @@ extension UIImage {
             return rotatedImage ?? self
         }
         return self
-    }
-}
-
-struct MyViewController_Previews: PreviewProvider {
-    static var previews: some View {
-        /*@START_MENU_TOKEN@*/Text("Hello, World!")/*@END_MENU_TOKEN@*/
     }
 }
