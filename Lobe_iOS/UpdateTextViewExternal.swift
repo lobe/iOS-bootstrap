@@ -1,3 +1,11 @@
+//
+//  UpdateTextViewExternal.swift
+//  Lobe_iOS
+//
+//  Created by Kathy Zhou on 6/4/20.
+//  Copyright © 2020 Microsoft. All rights reserved.
+//
+
 import Foundation
 import SwiftUI
 import Vision

@@ -1,3 +1,12 @@
+//
+//  ImagePicker.swift
+//  Lobe_iOS
+//
+//  Created by Kathy Zhou on 5/27/20.
+//  Copyright © 2020 Microsoft. All rights reserved.
+//
+
+
 import Foundation
 import SwiftUI
 
