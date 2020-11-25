@@ -19,6 +19,8 @@
 		9B7B03F72475DBF600D34020 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9B7B03F52475DBF600D34020 /* LaunchScreen.storyboard */; };
 		B53C73762533C150007A0231 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53C73752533C150007A0231 /* Project.swift */; };
 		B58A180C254FC4BE00AD32C1 /* ProjectPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58A180B254FC4BE00AD32C1 /* ProjectPickerViewController.swift */; };
+		B5A4C5FF256B7E0E0092DDD8 /* OpenScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4C5FE256B7E0E0092DDD8 /* OpenScreen.swift */; };
+		B5A4C603256B96BF0092DDD8 /* ProjectRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4C602256B96BF0092DDD8 /* ProjectRow.swift */; };
 		B5A9B5272557373E00FD595B /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5A9B5262557373E00FD595B /* CloudKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -37,6 +39,8 @@
 		9B7B03F82475DBF600D34020 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B53C73752533C150007A0231 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
 		B58A180B254FC4BE00AD32C1 /* ProjectPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPickerViewController.swift; sourceTree = "<group>"; };
+		B5A4C5FE256B7E0E0092DDD8 /* OpenScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenScreen.swift; sourceTree = "<group>"; };
+		B5A4C602256B96BF0092DDD8 /* ProjectRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRow.swift; sourceTree = "<group>"; };
 		B5A9B5232557372800FD595B /* Lobe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Lobe.entitlements; sourceTree = "<group>"; };
 		B5A9B5262557373E00FD595B /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -73,6 +77,7 @@
 		9B7B03E92475DBF300D34020 /* Lobe_iOS */ = {
 			isa = PBXGroup;
 			children = (
+				B5A4C601256B961D0092DDD8 /* OpenScreen */,
 				B5A9B5232557372800FD595B /* Lobe.entitlements */,
 				B53C73752533C150007A0231 /* Project.swift */,
 				9B7B03EA2475DBF300D34020 /* AppDelegate.swift */,
@@ -97,6 +102,15 @@
 				9B7B03F32475DBF600D34020 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		B5A4C601256B961D0092DDD8 /* OpenScreen */ = {
+			isa = PBXGroup;
+			children = (
+				B5A4C5FE256B7E0E0092DDD8 /* OpenScreen.swift */,
+				B5A4C602256B96BF0092DDD8 /* ProjectRow.swift */,
+			);
+			path = OpenScreen;
 			sourceTree = "<group>";
 		};
 		B5A9B5252557373E00FD595B /* Frameworks */ = {
@@ -183,8 +197,10 @@
 				76CDE1A4247F2E6D0096E882 /* ImagePicker.swift in Sources */,
 				9B7B03ED2475DBF300D34020 /* SceneDelegate.swift in Sources */,
 				76ED73F5248988AE003B4F6B /* UpdateTextViewExternal.swift in Sources */,
+				B5A4C603256B96BF0092DDD8 /* ProjectRow.swift in Sources */,
 				76ED73F3248987E3003B4F6B /* MyViewController.swift in Sources */,
 				B58A180C254FC4BE00AD32C1 /* ProjectPickerViewController.swift in Sources */,
+				B5A4C5FF256B7E0E0092DDD8 /* OpenScreen.swift in Sources */,
 				9B7B03EF2475DBF300D34020 /* ContentView.swift in Sources */,
 				B53C73762533C150007A0231 /* Project.swift in Sources */,
 			);

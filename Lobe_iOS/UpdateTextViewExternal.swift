@@ -8,7 +8,6 @@
 
 import Foundation
 import SwiftUI
-import Vision
 
 struct VisualEffectView: UIViewRepresentable {
     var effect: UIVisualEffect?
@@ -21,35 +20,10 @@ struct UpdateTextViewExternal: View {
     @ObservedObject var viewModel: MyViewController
     @State private var showImagePicker: Bool = false
     @State private var image: UIImage?
-    @State private var showProjectPicker = false
-    @Binding var project: Project?
     
     var body: some View {
         GeometryReader { geometry in
             VStack(alignment: .center) {
-                HStack(alignment: .center) {
-                    Button(action: {
-                        self.showProjectPicker.toggle()
-                    }) {
-                        ZStack (alignment: .center) {
-                            Rectangle()
-                                .foregroundColor(Color(.gray))
-                                .opacity(0.5)
-                            
-                            Text(self.project?.name ?? "No Project Loaded")
-                                .padding()
-                                .foregroundColor(.white)
-                                .font(.system(size: 18))
-                        }
-                    }.sheet(isPresented: $showProjectPicker) {
-                        ProjectPicker(selectedProject: $project)
-                    }
-                }
-                .frame(width: geometry.size.width / 1.2,
-                       height: 45,
-                       alignment: .center
-                )
-                .cornerRadius(17.0)
                 Spacer()
                 HStack(alignment: .center) {
                     ZStack (alignment: .leading) {
@@ -90,7 +64,7 @@ struct UpdateTextViewExternal_Previews: PreviewProvider {
                     .edgesIgnoringSafeArea(.all)
                     .frame(width: geometry.size.width,
                            height: geometry.size.height)
-                UpdateTextViewExternal(viewModel: MyViewController(), project: .constant(nil)).zIndex(0)
+                UpdateTextViewExternal(viewModel: MyViewController()).zIndex(0)
             }.frame(width: geometry.size.width,
                     height: geometry.size.height)
         }

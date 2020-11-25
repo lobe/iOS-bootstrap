@@ -11,5 +11,5 @@ import Vision
 
 public struct Project {
     var name: String
-    var model: VNCoreMLModel
+    var model: VNCoreMLModel?
 }

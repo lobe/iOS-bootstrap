@@ -14,7 +14,7 @@ import Vision
 struct MyRepresentable: UIViewControllerRepresentable{
     
     @State var controller: MyViewController
-    @Binding var project: Project?
+    var project: Project?
 
     func makeUIViewController(context: Context) -> MyViewController {
         return self.controller
@@ -160,8 +160,8 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
         /* Crop the captured image to be the size of the screen. */
         self.camImage = rotatedImage.crop(height: (previewLayer?.frame.height)!, width: (previewLayer?.frame.width)!)
         
-        guard let project = self.project else { return }
-        let request = VNCoreMLRequest(model: project.model) { (finishReq, err) in
+        guard let model = self.project?.model else { return }
+        let request = VNCoreMLRequest(model: model) { (finishReq, err) in
             self.processClassifications(for: finishReq, error: err)
         }
         

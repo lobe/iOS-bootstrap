@@ -22,7 +22,7 @@ class ProjectPickerViewController: UIDocumentPickerViewController {
 // MARK: - Coordinator class for documenter picker.
 struct ProjectPicker: UIViewControllerRepresentable {
     
-    @Binding var selectedProject: Project?
+    var selectedProject: Project?
     
     // dismisses view when document is selected
     @Environment(\.presentationMode) var presentationMode

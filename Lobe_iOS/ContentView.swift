@@ -8,21 +8,8 @@
 
 import SwiftUI
 import AVKit
-import Vision
 
 var useCamera: Bool = true
-
-// MARK: - Create instance of default Project
-func getDefaultProject() -> Project? {
-    do {
-        let defaultModelName = "MobileNet ImageNet Classifier"
-        let defaultModel = try VNCoreMLModel(for: LobeModel().model)
-        return Project(name: defaultModelName, model: defaultModel)
-    } catch {
-        print(error)
-    }
-    return nil
-}
 
 struct ContentView: View {
     
@@ -31,11 +18,10 @@ struct ContentView: View {
     @State private var image: UIImage?
     @State var scaling: CGSize = .init(width: 1, height: 1)
     @State private var offset = CGSize.zero
-    @State private var project = getDefaultProject()
+    var project: Project?
     
     var body: some View {
         GeometryReader { geometry in
-            
             VStack {
                  if (self.image != nil) {
                     /* Placeholder for displaying an image from the photo library. */
@@ -64,7 +50,7 @@ struct ContentView: View {
                         .opacity(1 / self.scaling.height < 1 ? 0.5: 1)
                 } else {
                     /* Background camera. */
-                    MyRepresentable(controller: self.controller, project: $project)
+                    MyRepresentable(controller: self.controller, project: project)
                         /* Gesture for swiping up the photo library. */
                         .gesture(
                             DragGesture()
@@ -99,7 +85,7 @@ struct ContentView: View {
             
             VStack {
                 Spacer()
-                UpdateTextViewExternal(viewModel: self.controller, project: $project)
+                UpdateTextViewExternal(viewModel: self.controller)
                 HStack {
                     
                     /* Button for openning the photo library. */
@@ -166,6 +152,6 @@ extension UIColor {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(project: Project(name: "Test"))
     }
 }
