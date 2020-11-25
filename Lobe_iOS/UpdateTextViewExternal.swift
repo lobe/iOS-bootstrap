@@ -20,6 +20,7 @@ struct UpdateTextViewExternal: View {
     @ObservedObject var viewModel: MyViewController
     @State private var showImagePicker: Bool = false
     @State private var image: UIImage?
+    var projectName: String?
     
     var body: some View {
         GeometryReader { geometry in
@@ -36,14 +37,19 @@ struct UpdateTextViewExternal: View {
                             .frame(width: min(CGFloat(self.viewModel.confidence ?? 0) * geometry.size.width / 1.2, geometry.size.width / 1.2))
                             .animation(.linear)
                     
-                        Text(self.viewModel.classificationLabel ?? "Loading...")
-                            .padding()
-                            .foregroundColor(.white)
-                            .font(.system(size: 28))
+                        VStack(alignment: .leading) {
+                            Text(self.viewModel.classificationLabel ?? "Loading...")
+                                .font(.system(size: 28))
+                            Text(self.projectName ?? "Project Not Loaded")
+                                .font(.system(size: 12))
+                                .fontWeight(.bold)
+                        }
+                        .foregroundColor(.white)
+                        .padding()
                     }
                 }
                 .frame(width: geometry.size.width / 1.2,
-                       height: 65,
+                       height: 75,
                        alignment: .center
                 )
                 .cornerRadius(17.0)
@@ -64,7 +70,7 @@ struct UpdateTextViewExternal_Previews: PreviewProvider {
                     .edgesIgnoringSafeArea(.all)
                     .frame(width: geometry.size.width,
                            height: geometry.size.height)
-                UpdateTextViewExternal(viewModel: MyViewController()).zIndex(0)
+                UpdateTextViewExternal(viewModel: MyViewController(), projectName: "Project Name").zIndex(0)
             }.frame(width: geometry.size.width,
                     height: geometry.size.height)
         }

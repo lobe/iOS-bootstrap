@@ -85,7 +85,7 @@ struct ContentView: View {
             
             VStack {
                 Spacer()
-                UpdateTextViewExternal(viewModel: self.controller)
+                UpdateTextViewExternal(viewModel: self.controller, projectName: project?.name)
                 HStack {
                     
                     /* Button for openning the photo library. */
