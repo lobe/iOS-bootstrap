@@ -141,7 +141,7 @@ struct ContentView: View {
                 .offset(x: 0, y: self.showImagePicker ? 0: UIApplication.shared.keyWindow?.frame.height ?? 0)
         }.statusBar(hidden: true)
         .navigationBarBackButtonHidden(true)
-        .navigationBarItems(trailing: openScreenButton)
+        .navigationBarItems(leading: openScreenButton)
     }
 }
 
