@@ -13,6 +13,7 @@ var useCamera: Bool = true
 
 struct ContentView: View {
     
+    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     var controller: MyViewController = MyViewController()
     @State var showImagePicker: Bool = false
     @State private var image: UIImage?
@@ -20,7 +21,19 @@ struct ContentView: View {
     @State private var offset = CGSize.zero
     var project: Project?
     
+    /// Button for return back to open screen
+    var openScreenButton : some View {
+        Button(action: {
+            self.presentationMode.wrappedValue.dismiss()
+        }) {
+            Image(systemName: "square.fill.on.square.fill")
+                .scaleEffect(1.5)
+                .padding()
+        }
+    }
+
     var body: some View {
+
         GeometryReader { geometry in
             VStack {
                  if (self.image != nil) {
@@ -127,6 +140,8 @@ struct ContentView: View {
                 .edgesIgnoringSafeArea(.all)
                 .offset(x: 0, y: self.showImagePicker ? 0: UIApplication.shared.keyWindow?.frame.height ?? 0)
         }.statusBar(hidden: true)
+        .navigationBarBackButtonHidden(true)
+        .navigationBarItems(trailing: openScreenButton)
     }
 }
 
