@@ -21,9 +21,6 @@ class ProjectPickerViewController: UIDocumentPickerViewController {
 
 // MARK: - Coordinator class for documenter picker.
 struct ProjectPicker: UIViewControllerRepresentable {
-    
-    var selectedProject: Project?
-    
     // dismisses view when document is selected
     @Environment(\.presentationMode) var presentationMode
     
@@ -47,28 +44,53 @@ struct ProjectPicker: UIViewControllerRepresentable {
             self.parent = parent
         }
 
-        // MARK: - Updates model after file selected.
+        /// Updates model after file selected.
         func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
             if !urls.isEmpty {
                 let url = urls[0]
                 do {
                     defer { parent.presentationMode.wrappedValue.dismiss() }
                     
+                    // Compile model on device
                     let fileName = url.lastPathComponent
-                    
                     let compiledUrl = try MLModel.compileModel(at: url)
-                    let model = try MLModel(contentsOf: compiledUrl)
-                    let coreMLModel = try VNCoreMLModel(for: model)
                     
-                    parent.selectedProject = Project(name: fileName, model: coreMLModel)
+                    // Save compiled model to permanent location on device
+                    saveToMemory(fileName: fileName, compiledModelURL: compiledUrl)       
                 } catch {
-                    print("Error: \(error)")
+                    print("Error compiling model: \(error)")
                 }
                 
             } else {
                 print("Error: no URLS found.")
             }
         }
+        
+        /// Saves project to Application Support.
+        func saveToMemory(fileName: String, compiledModelURL: URL) {
+            let fileManager = FileManager.default
+            let appSupportURL = fileManager.urls(for: .applicationSupportDirectory,
+                                                 in: .userDomainMask).first!
+            
+            // Create URL for permanent location in Application Support
+            let compiledModelName = fileName
+            let permanentURL = appSupportURL.appendingPathComponent(compiledModelName)
+            
+            // Create Application Support path if it doesn't exist
+            if !fileManager.fileExists(atPath: appSupportURL.path, isDirectory: nil) {
+                do {
+                    try fileManager.createDirectory(at: appSupportURL, withIntermediateDirectories: true, attributes: nil)
+                } catch {
+                    print("Error creating Application Support directory: \(error)")
+                }
+            }
+
+            // Copy the file to the to the permanent location, replacing it if necessary.
+            do {
+                _ = try fileManager.replaceItemAt(permanentURL, withItemAt: compiledModelURL)
+            } catch {
+                print("Error at saveToMemory: \(error)")
+            }
+        }
     }
-    
 }

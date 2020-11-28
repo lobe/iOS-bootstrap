@@ -23,20 +23,54 @@ func getDefaultProject() -> Project? {
     return defaultProject
 }
 
+/// Get list of imported projects.
+func getImportProjectList() -> [Project] {
+    var projectList: [Project] = []
+    let fileManager = FileManager.default
+    let appSupportURL = fileManager.urls(for: .applicationSupportDirectory,
+                                         in: .userDomainMask).first!
+   
+    // Get list of projects for Application Support
+    do {
+        let storedModelFiles = try fileManager.contentsOfDirectory(atPath: appSupportURL.path)
+        for fileName in storedModelFiles {
+            let fileURL = appSupportURL.appendingPathComponent(fileName)
+            let model = try MLModel(contentsOf: fileURL)
+            let coreMLModel = try VNCoreMLModel(for: model)
+            let project = Project(name: fileName, model: coreMLModel)
+            projectList.append(project)
+        }
+    } catch {
+        print("Error reading stored models: \(error)")
+    }
+    
+    return projectList
+}
+
 /// Open Screen shows list of imorted models.
 struct OpenScreen: View {
-    private var projectListImported: [Project] = []
     private var projectDefault = getDefaultProject()
+    private var projectListImported: [Project] = getImportProjectList()
     @State private var showProjectPicker = false
     
     var body: some View {
         NavigationView {
             List {
-                NavigationLink(destination: ContentView(project: projectDefault)) {
-                    ProjectRow(project: projectDefault)
+                Section {
+                    ForEach(projectListImported, id: \.name) { project in
+                        NavigationLink(destination: ContentView(project: project)) {
+                            ProjectRow(project: project)
+                        }
+                    }
+                }
+                Section(header: Text("Example Projects")) {
+                    NavigationLink(destination: ContentView(project: projectDefault)) {
+                        ProjectRow(project: projectDefault)
+                    }
                 }
             }
-            .navigationBarTitle(Text("Lobe"))
+            .listStyle(GroupedListStyle())
+            .navigationBarTitle(Text("Projects"))
             .navigationBarItems(trailing:
                                     Button("Import", action: {
                                         self.showProjectPicker.toggle()

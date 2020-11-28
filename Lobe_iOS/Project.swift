@@ -9,7 +9,7 @@
 import Foundation
 import Vision
 
-public struct Project {
+struct Project {
     var name: String
     var model: VNCoreMLModel?
 }
