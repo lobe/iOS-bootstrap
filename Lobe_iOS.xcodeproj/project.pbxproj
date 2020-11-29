@@ -18,6 +18,7 @@
 		9B7B03F42475DBF600D34020 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B7B03F32475DBF600D34020 /* Preview Assets.xcassets */; };
 		9B7B03F72475DBF600D34020 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9B7B03F52475DBF600D34020 /* LaunchScreen.storyboard */; };
 		B53C73762533C150007A0231 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53C73752533C150007A0231 /* Project.swift */; };
+		B55A1EC72572C8FD003EE8AD /* StorageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55A1EC62572C8FD003EE8AD /* StorageProvider.swift */; };
 		B58A180C254FC4BE00AD32C1 /* ProjectPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58A180B254FC4BE00AD32C1 /* ProjectPicker.swift */; };
 		B5A4C5FF256B7E0E0092DDD8 /* OpenScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4C5FE256B7E0E0092DDD8 /* OpenScreen.swift */; };
 		B5A4C603256B96BF0092DDD8 /* ProjectRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4C602256B96BF0092DDD8 /* ProjectRow.swift */; };
@@ -38,6 +39,7 @@
 		9B7B03F62475DBF600D34020 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9B7B03F82475DBF600D34020 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B53C73752533C150007A0231 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
+		B55A1EC62572C8FD003EE8AD /* StorageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageProvider.swift; sourceTree = "<group>"; };
 		B58A180B254FC4BE00AD32C1 /* ProjectPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPicker.swift; sourceTree = "<group>"; };
 		B5A4C5FE256B7E0E0092DDD8 /* OpenScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenScreen.swift; sourceTree = "<group>"; };
 		B5A4C602256B96BF0092DDD8 /* ProjectRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRow.swift; sourceTree = "<group>"; };
@@ -80,6 +82,7 @@
 				B5A4C601256B961D0092DDD8 /* OpenScreen */,
 				B58D97E6256F9B890050E2CD /* PlayView */,
 				B53C73752533C150007A0231 /* Project.swift */,
+				B55A1EC62572C8FD003EE8AD /* StorageProvider.swift */,
 				B5A9B5232557372800FD595B /* Lobe.entitlements */,
 				9B7B03EA2475DBF300D34020 /* AppDelegate.swift */,
 				9B7B03F52475DBF600D34020 /* LaunchScreen.storyboard */,
@@ -204,6 +207,7 @@
 				9B7B03EB2475DBF300D34020 /* AppDelegate.swift in Sources */,
 				76CDE1A4247F2E6D0096E882 /* ImagePicker.swift in Sources */,
 				9B7B03ED2475DBF300D34020 /* SceneDelegate.swift in Sources */,
+				B55A1EC72572C8FD003EE8AD /* StorageProvider.swift in Sources */,
 				76ED73F5248988AE003B4F6B /* UpdateTextViewExternal.swift in Sources */,
 				B5A4C603256B96BF0092DDD8 /* ProjectRow.swift in Sources */,
 				76ED73F3248987E3003B4F6B /* MyViewController.swift in Sources */,

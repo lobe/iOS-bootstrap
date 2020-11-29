@@ -24,6 +24,8 @@ struct ProjectPicker: UIViewControllerRepresentable {
     // dismisses view when document is selected
     @Environment(\.presentationMode) var presentationMode
     
+    @Binding var modelsImported: [Project]
+    
     func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
         let projectPicker = ProjectPickerViewController(documentTypes: ["public.data", "public.item"], in: .import)
         projectPicker.delegate = context.coordinator
@@ -56,40 +58,15 @@ struct ProjectPicker: UIViewControllerRepresentable {
                     let compiledUrl = try MLModel.compileModel(at: url)
                     
                     // Save compiled model to permanent location on device
-                    saveToMemory(fileName: fileName, compiledModelURL: compiledUrl)       
+                    StorageProvider.shared.saveImportedModel(for: compiledUrl, fileName: fileName, onSuccess: {
+                        self.parent.modelsImported = StorageProvider.shared.modelsImported
+                    })
                 } catch {
                     print("Error compiling model: \(error)")
                 }
                 
             } else {
                 print("Error: no URLS found.")
-            }
-        }
-        
-        /// Saves project to Application Support.
-        func saveToMemory(fileName: String, compiledModelURL: URL) {
-            let fileManager = FileManager.default
-            let appSupportURL = fileManager.urls(for: .applicationSupportDirectory,
-                                                 in: .userDomainMask).first!
-            
-            // Create URL for permanent location in Application Support
-            let compiledModelName = fileName
-            let permanentURL = appSupportURL.appendingPathComponent(compiledModelName)
-            
-            // Create Application Support path if it doesn't exist
-            if !fileManager.fileExists(atPath: appSupportURL.path, isDirectory: nil) {
-                do {
-                    try fileManager.createDirectory(at: appSupportURL, withIntermediateDirectories: true, attributes: nil)
-                } catch {
-                    print("Error creating Application Support directory: \(error)")
-                }
-            }
-
-            // Copy the file to the to the permanent location, replacing it if necessary.
-            do {
-                _ = try fileManager.replaceItemAt(permanentURL, withItemAt: compiledModelURL)
-            } catch {
-                print("Error at saveToMemory: \(error)")
             }
         }
     }

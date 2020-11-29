@@ -1,5 +1,5 @@
 //
-//  ContentView.swift
+//  PlayView.swift
 //  Lobe_iOS
 //
 //  Created by Adam Menges on 5/20/20.
@@ -11,7 +11,7 @@ import AVKit
 
 var useCamera: Bool = true
 
-struct ContentView: View {
+struct PlayView: View {
     
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     var controller: MyViewController = MyViewController()
@@ -167,6 +167,6 @@ extension UIColor {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(project: Project(name: "Test"))
+        PlayView(project: Project(name: "Test"))
     }
 }
