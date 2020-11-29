@@ -11,15 +11,14 @@ import SwiftUI
 import UIKit
 import Vision
 
-// MARK: - View controller for document picker
+/// View controller for document picker.
 class ProjectPickerViewController: UIDocumentPickerViewController {
-    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
 }
 
-// MARK: - Coordinator class for documenter picker.
+/// Coordinator class for documenter picker.
 struct ProjectPicker: UIViewControllerRepresentable {
     // dismisses view when document is selected
     @Environment(\.presentationMode) var presentationMode
