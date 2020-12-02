@@ -1,8 +1,28 @@
+//
+//  ContentView.swift
+//  Lobe_iOS
+//
+//  Created by Adam Menges on 5/20/20.
+//  Copyright © 2020 Microsoft. All rights reserved.
+//
+
 import SwiftUI
 import AVKit
 import Vision
 
 var useCamera: Bool = true
+
+// MARK: - Create instance of default Project
+func getDefaultProject() -> Project? {
+    do {
+        let defaultModelName = "MobileNet ImageNet Classifier"
+        let defaultModel = try VNCoreMLModel(for: LobeModel().model)
+        return Project(name: defaultModelName, model: defaultModel)
+    } catch {
+        print(error)
+    }
+    return nil
+}
 
 struct ContentView: View {
     
@@ -11,6 +31,7 @@ struct ContentView: View {
     @State private var image: UIImage?
     @State var scaling: CGSize = .init(width: 1, height: 1)
     @State private var offset = CGSize.zero
+    @State private var project = getDefaultProject()
     
     var body: some View {
         GeometryReader { geometry in
@@ -43,7 +64,7 @@ struct ContentView: View {
                         .opacity(1 / self.scaling.height < 1 ? 0.5: 1)
                 } else {
                     /* Background camera. */
-                    MyRepresentable(controller: self.controller)
+                    MyRepresentable(controller: self.controller, project: $project)
                         /* Gesture for swiping up the photo library. */
                         .gesture(
                             DragGesture()
@@ -78,7 +99,7 @@ struct ContentView: View {
             
             VStack {
                 Spacer()
-                UpdateTextViewExternal(viewModel: self.controller)
+                UpdateTextViewExternal(viewModel: self.controller, project: $project)
                 HStack {
                     
                     /* Button for openning the photo library. */
@@ -121,9 +142,7 @@ struct ContentView: View {
                 .offset(x: 0, y: self.showImagePicker ? 0: UIApplication.shared.keyWindow?.frame.height ?? 0)
         }.statusBar(hidden: true)
     }
-
 }
-
 
 /* Gadget to build colors from Hashtag Color Code Hex. */
 extension UIColor {
