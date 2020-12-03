@@ -8,6 +8,7 @@
 
 import Foundation
 import SwiftUI
+import Vision
 
 struct VisualEffectView: UIViewRepresentable {
     var effect: UIVisualEffect?
@@ -20,11 +21,35 @@ struct UpdateTextViewExternal: View {
     @ObservedObject var viewModel: MyViewController
     @State private var showImagePicker: Bool = false
     @State private var image: UIImage?
-    var projectName: String?
+    @State private var showProjectPicker = false
+    @Binding var project: Project?
     
     var body: some View {
         GeometryReader { geometry in
             VStack(alignment: .center) {
+                HStack(alignment: .center) {
+                    Button(action: {
+                        self.showProjectPicker.toggle()
+                    }) {
+                        ZStack (alignment: .center) {
+                            Rectangle()
+                                .foregroundColor(Color(.gray))
+                                .opacity(0.5)
+                            
+                            Text(self.project?.name ?? "No Project Loaded")
+                                .padding()
+                                .foregroundColor(.white)
+                                .font(.system(size: 18))
+                        }
+                    }.sheet(isPresented: $showProjectPicker) {
+                        ProjectPicker(selectedProject: $project)
+                    }
+                }
+                .frame(width: geometry.size.width / 1.2,
+                       height: 45,
+                       alignment: .center
+                )
+                .cornerRadius(17.0)
                 Spacer()
                 HStack(alignment: .center) {
                     ZStack (alignment: .leading) {
@@ -37,19 +62,14 @@ struct UpdateTextViewExternal: View {
                             .frame(width: min(CGFloat(self.viewModel.confidence ?? 0) * geometry.size.width / 1.2, geometry.size.width / 1.2))
                             .animation(.linear)
                     
-                        VStack(alignment: .leading) {
-                            Text(self.viewModel.classificationLabel ?? "Loading...")
-                                .font(.system(size: 28))
-                            Text(self.projectName ?? "Project Not Loaded")
-                                .font(.system(size: 12))
-                                .fontWeight(.bold)
-                        }
-                        .foregroundColor(.white)
-                        .padding()
+                        Text(self.viewModel.classificationLabel ?? "Loading...")
+                            .padding()
+                            .foregroundColor(.white)
+                            .font(.system(size: 28))
                     }
                 }
                 .frame(width: geometry.size.width / 1.2,
-                       height: 75,
+                       height: 65,
                        alignment: .center
                 )
                 .cornerRadius(17.0)
@@ -70,7 +90,7 @@ struct UpdateTextViewExternal_Previews: PreviewProvider {
                     .edgesIgnoringSafeArea(.all)
                     .frame(width: geometry.size.width,
                            height: geometry.size.height)
-                UpdateTextViewExternal(viewModel: MyViewController(), projectName: "Project Name").zIndex(0)
+                UpdateTextViewExternal(viewModel: MyViewController(), project: .constant(nil)).zIndex(0)
             }.frame(width: geometry.size.width,
                     height: geometry.size.height)
         }

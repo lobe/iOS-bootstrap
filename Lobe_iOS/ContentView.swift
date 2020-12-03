@@ -1,5 +1,5 @@
 //
-//  PlayView.swift
+//  ContentView.swift
 //  Lobe_iOS
 //
 //  Created by Adam Menges on 5/20/20.
@@ -8,33 +8,34 @@
 
 import SwiftUI
 import AVKit
+import Vision
 
 var useCamera: Bool = true
 
-struct PlayView: View {
+// MARK: - Create instance of default Project
+func getDefaultProject() -> Project? {
+    do {
+        let defaultModelName = "MobileNet ImageNet Classifier"
+        let defaultModel = try VNCoreMLModel(for: LobeModel().model)
+        return Project(name: defaultModelName, model: defaultModel)
+    } catch {
+        print(error)
+    }
+    return nil
+}
+
+struct ContentView: View {
     
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     var controller: MyViewController = MyViewController()
     @State var showImagePicker: Bool = false
     @State private var image: UIImage?
     @State var scaling: CGSize = .init(width: 1, height: 1)
     @State private var offset = CGSize.zero
-    var project: Project?
+    @State private var project = getDefaultProject()
     
-    /// Button for return back to open screen
-    var openScreenButton : some View {
-        Button(action: {
-            self.presentationMode.wrappedValue.dismiss()
-        }) {
-            Image(systemName: "square.fill.on.square.fill")
-                .scaleEffect(1.5)
-                .padding()
-        }
-    }
-
     var body: some View {
-
         GeometryReader { geometry in
+            
             VStack {
                  if (self.image != nil) {
                     /* Placeholder for displaying an image from the photo library. */
@@ -63,7 +64,7 @@ struct PlayView: View {
                         .opacity(1 / self.scaling.height < 1 ? 0.5: 1)
                 } else {
                     /* Background camera. */
-                    MyRepresentable(controller: self.controller, project: project)
+                    MyRepresentable(controller: self.controller, project: $project)
                         /* Gesture for swiping up the photo library. */
                         .gesture(
                             DragGesture()
@@ -98,7 +99,7 @@ struct PlayView: View {
             
             VStack {
                 Spacer()
-                UpdateTextViewExternal(viewModel: self.controller, projectName: project?.name)
+                UpdateTextViewExternal(viewModel: self.controller, project: $project)
                 HStack {
                     
                     /* Button for openning the photo library. */
@@ -140,8 +141,6 @@ struct PlayView: View {
                 .edgesIgnoringSafeArea(.all)
                 .offset(x: 0, y: self.showImagePicker ? 0: UIApplication.shared.keyWindow?.frame.height ?? 0)
         }.statusBar(hidden: true)
-        .navigationBarBackButtonHidden(true)
-        .navigationBarItems(leading: openScreenButton)
     }
 }
 
@@ -167,6 +166,6 @@ extension UIColor {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        PlayView(project: Project(name: "Test"))
+        ContentView()
     }
 }

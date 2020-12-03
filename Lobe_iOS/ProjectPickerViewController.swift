@@ -21,10 +21,11 @@ class ProjectPickerViewController: UIDocumentPickerViewController {
 
 // MARK: - Coordinator class for documenter picker.
 struct ProjectPicker: UIViewControllerRepresentable {
+    
+    @Binding var selectedProject: Project?
+    
     // dismisses view when document is selected
     @Environment(\.presentationMode) var presentationMode
-    
-    @Binding var modelsImported: [Project]
     
     func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
         let projectPicker = ProjectPickerViewController(documentTypes: ["public.data", "public.item"], in: .import)
@@ -46,23 +47,22 @@ struct ProjectPicker: UIViewControllerRepresentable {
             self.parent = parent
         }
 
-        /// Updates model after file selected.
+        // MARK: - Updates model after file selected.
         func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
             if !urls.isEmpty {
                 let url = urls[0]
                 do {
                     defer { parent.presentationMode.wrappedValue.dismiss() }
                     
-                    // Compile model on device
                     let fileName = url.lastPathComponent
-                    let compiledUrl = try MLModel.compileModel(at: url)
                     
-                    // Save compiled model to permanent location on device
-                    StorageProvider.shared.saveImportedModel(for: compiledUrl, fileName: fileName, onSuccess: {
-                        self.parent.modelsImported = StorageProvider.shared.modelsImported
-                    })
+                    let compiledUrl = try MLModel.compileModel(at: url)
+                    let model = try MLModel(contentsOf: compiledUrl)
+                    let coreMLModel = try VNCoreMLModel(for: model)
+                    
+                    parent.selectedProject = Project(name: fileName, model: coreMLModel)
                 } catch {
-                    print("Error compiling model: \(error)")
+                    print("Error: \(error)")
                 }
                 
             } else {
@@ -70,4 +70,5 @@ struct ProjectPicker: UIViewControllerRepresentable {
             }
         }
     }
+    
 }
