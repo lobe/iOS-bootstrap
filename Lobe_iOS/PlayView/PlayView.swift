@@ -148,6 +148,10 @@ extension UIColor {
 struct PlayView_Previews: PreviewProvider {
     static var previews: some View {
         let viewModel = PlayViewModel(project: Project(name: "Test", model: nil))
-        PlayView(viewModel: viewModel)
+        return Group {
+            PlayView(viewModel: viewModel)
+            PlayView(viewModel: viewModel)
+                .previewDevice("iPad Pro (11-inch) (2nd generation)")
+        }
     }
 }

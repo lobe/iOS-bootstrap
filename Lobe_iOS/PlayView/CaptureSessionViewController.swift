@@ -54,6 +54,18 @@ class CaptureSessionViewController: UIViewController {
         self.captureSession?.stopRunning()
     }
     
+    /// Set video configuration for subview layout
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+        self.configureVideoOrientation(for: self.previewLayer)
+    }
+    
+    /// Update video configuration when device orientation changes
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        self.configureVideoOrientation(for: self.previewLayer)
+    }
+    
     /// Double tap flips camera.
     @objc func handleDoubleTap(_ sender: UITapGestureRecognizer? = nil) {
         self.flipCamera(inView: view)
@@ -100,8 +112,9 @@ class CaptureSessionViewController: UIViewController {
         }
         let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
+        configureVideoOrientation(for: previewLayer)
         view.layer.addSublayer(previewLayer)
-        previewLayer.frame = view.frame
+        
         self.previewLayer = previewLayer
     }
 
@@ -114,6 +127,36 @@ class CaptureSessionViewController: UIViewController {
     func getDevice(position: AVCaptureDevice.Position) -> AVCaptureDevice? {
         let cam = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: position).devices
         return cam.first
+    }
+    
+    /// Configures orientation of preview layer for AVCapture session.
+    private func configureVideoOrientation(for previewLayer: AVCaptureVideoPreviewLayer?) {
+        if let preview = previewLayer,
+           let connection = preview.connection {
+            let orientation = UIDevice.current.orientation
+            
+            if connection.isVideoOrientationSupported {
+                var videoOrientation: AVCaptureVideoOrientation
+                
+                switch orientation {
+                case .portrait:
+                    videoOrientation = .portrait
+                case .portraitUpsideDown:
+                    videoOrientation = .portraitUpsideDown
+                case .landscapeLeft:
+                    videoOrientation = .landscapeRight
+                case .landscapeRight:
+                    videoOrientation = .landscapeLeft
+                default:
+                    videoOrientation = UIApplication.shared.windows.first?.windowScene?.interfaceOrientation.asAVCaptureVideoOrientation() ?? .portrait
+                }
+                preview.frame = self.view.bounds
+                connection.videoOrientation = videoOrientation
+            }
+            
+            preview.frame = self.view.bounds
+            
+        }
     }
 }
 
@@ -204,5 +247,23 @@ extension UIImage {
             return rotatedImage ?? self
         }
         return self
+    }
+}
+
+/// Conversion helper for AVCaptureSession orientation changes.
+extension UIInterfaceOrientation {
+    func asAVCaptureVideoOrientation() -> AVCaptureVideoOrientation {
+        switch self {
+        case .portrait:
+            return .portrait
+        case .landscapeLeft:
+            return .landscapeLeft
+        case .landscapeRight:
+            return .landscapeRight
+        case .portraitUpsideDown:
+            return .portraitUpsideDown
+        default:
+            return .portrait
+        }
     }
 }
