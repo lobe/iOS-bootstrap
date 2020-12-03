@@ -1,40 +1,20 @@
-//
-//  PlayView.swift
-//  Lobe_iOS
-//
-//  Created by Adam Menges on 5/20/20.
-//  Copyright © 2020 Microsoft. All rights reserved.
-//
-
 import SwiftUI
 import AVKit
+import Vision
 
 var useCamera: Bool = true
 
-struct PlayView: View {
+struct ContentView: View {
     
-    @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     var controller: MyViewController = MyViewController()
     @State var showImagePicker: Bool = false
     @State private var image: UIImage?
     @State var scaling: CGSize = .init(width: 1, height: 1)
     @State private var offset = CGSize.zero
-    var project: Project?
     
-    /// Button for return back to open screen
-    var openScreenButton : some View {
-        Button(action: {
-            self.presentationMode.wrappedValue.dismiss()
-        }) {
-            Image(systemName: "square.fill.on.square.fill")
-                .scaleEffect(1.5)
-                .padding()
-        }
-    }
-
     var body: some View {
-
         GeometryReader { geometry in
+            
             VStack {
                  if (self.image != nil) {
                     /* Placeholder for displaying an image from the photo library. */
@@ -63,7 +43,7 @@ struct PlayView: View {
                         .opacity(1 / self.scaling.height < 1 ? 0.5: 1)
                 } else {
                     /* Background camera. */
-                    MyRepresentable(controller: self.controller, project: project)
+                    MyRepresentable(controller: self.controller)
                         /* Gesture for swiping up the photo library. */
                         .gesture(
                             DragGesture()
@@ -98,7 +78,7 @@ struct PlayView: View {
             
             VStack {
                 Spacer()
-                UpdateTextViewExternal(viewModel: self.controller, projectName: project?.name)
+                UpdateTextViewExternal(viewModel: self.controller)
                 HStack {
                     
                     /* Button for openning the photo library. */
@@ -140,10 +120,10 @@ struct PlayView: View {
                 .edgesIgnoringSafeArea(.all)
                 .offset(x: 0, y: self.showImagePicker ? 0: UIApplication.shared.keyWindow?.frame.height ?? 0)
         }.statusBar(hidden: true)
-        .navigationBarBackButtonHidden(true)
-        .navigationBarItems(leading: openScreenButton)
     }
+
 }
+
 
 /* Gadget to build colors from Hashtag Color Code Hex. */
 extension UIColor {
@@ -167,6 +147,6 @@ extension UIColor {
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        PlayView(project: Project(name: "Test"))
+        ContentView()
     }
 }

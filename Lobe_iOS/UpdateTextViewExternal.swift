@@ -1,11 +1,3 @@
-//
-//  UpdateTextViewExternal.swift
-//  Lobe_iOS
-//
-//  Created by Kathy Zhou on 6/4/20.
-//  Copyright © 2020 Microsoft. All rights reserved.
-//
-
 import Foundation
 import SwiftUI
 
@@ -18,9 +10,8 @@ struct VisualEffectView: UIViewRepresentable {
 /* View for displaying the green bar containing the prediction label. */
 struct UpdateTextViewExternal: View {
     @ObservedObject var viewModel: MyViewController
-    @State private var showImagePicker: Bool = false
+    @State var showImagePicker: Bool = false
     @State private var image: UIImage?
-    var projectName: String?
     
     var body: some View {
         GeometryReader { geometry in
@@ -37,19 +28,14 @@ struct UpdateTextViewExternal: View {
                             .frame(width: min(CGFloat(self.viewModel.confidence ?? 0) * geometry.size.width / 1.2, geometry.size.width / 1.2))
                             .animation(.linear)
                     
-                        VStack(alignment: .leading) {
-                            Text(self.viewModel.classificationLabel ?? "Loading...")
-                                .font(.system(size: 28))
-                            Text(self.projectName ?? "Project Not Loaded")
-                                .font(.system(size: 12))
-                                .fontWeight(.bold)
-                        }
-                        .foregroundColor(.white)
-                        .padding()
+                        Text(self.viewModel.classificationLabel ?? "Loading...")
+                            .padding()
+                            .foregroundColor(.white)
+                            .font(.system(size: 28))
                     }
                 }
                 .frame(width: geometry.size.width / 1.2,
-                       height: 75,
+                       height: 65,
                        alignment: .center
                 )
                 .cornerRadius(17.0)
@@ -70,7 +56,7 @@ struct UpdateTextViewExternal_Previews: PreviewProvider {
                     .edgesIgnoringSafeArea(.all)
                     .frame(width: geometry.size.width,
                            height: geometry.size.height)
-                UpdateTextViewExternal(viewModel: MyViewController(), projectName: "Project Name").zIndex(0)
+                UpdateTextViewExternal(viewModel: MyViewController()).zIndex(0)
             }.frame(width: geometry.size.width,
                     height: geometry.size.height)
         }
