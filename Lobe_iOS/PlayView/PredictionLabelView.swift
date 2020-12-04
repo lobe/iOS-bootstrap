@@ -1,5 +1,5 @@
 //
-//  UpdateTextViewExternal.swift
+//  PredictionLabelView.swift
 //  Lobe_iOS
 //
 //  Created by Kathy Zhou on 6/4/20.
@@ -16,11 +16,11 @@ struct VisualEffectView: UIViewRepresentable {
 }
 
 /* View for displaying the green bar containing the prediction label. */
-struct UpdateTextViewExternal: View {
-    @ObservedObject var viewModel: MyViewController
+struct PredictionLabelView: View {
     @State private var showImagePicker: Bool = false
-    @State private var image: UIImage?
-    var projectName: String?
+    @Binding var classificationLabel: String?
+    @Binding var confidence: Float?
+    var projectName: String
     
     var body: some View {
         GeometryReader { geometry in
@@ -34,13 +34,13 @@ struct UpdateTextViewExternal: View {
                         
                         Rectangle()
                             .foregroundColor(Color(UIColor(rgb: 0x00DDAD)))
-                            .frame(width: min(CGFloat(self.viewModel.confidence ?? 0) * geometry.size.width / 1.2, geometry.size.width / 1.2))
+                            .frame(width: min(CGFloat(self.confidence ?? 0) * geometry.size.width / 1.2, geometry.size.width / 1.2))
                             .animation(.linear)
                     
                         VStack(alignment: .leading) {
-                            Text(self.viewModel.classificationLabel ?? "Loading...")
+                            Text(self.classificationLabel ?? "Loading...")
                                 .font(.system(size: 28))
-                            Text(self.projectName ?? "Project Not Loaded")
+                            Text(self.projectName)
                                 .font(.system(size: 12))
                                 .fontWeight(.bold)
                         }
@@ -60,6 +60,7 @@ struct UpdateTextViewExternal: View {
     }
 }
 
+
 struct UpdateTextViewExternal_Previews: PreviewProvider {
     static var previews: some View {
         GeometryReader { geometry in
@@ -70,7 +71,7 @@ struct UpdateTextViewExternal_Previews: PreviewProvider {
                     .edgesIgnoringSafeArea(.all)
                     .frame(width: geometry.size.width,
                            height: geometry.size.height)
-                UpdateTextViewExternal(viewModel: MyViewController(), projectName: "Project Name").zIndex(0)
+                PredictionLabelView(classificationLabel: .constant(nil), confidence: .constant(nil), projectName: "Test")
             }.frame(width: geometry.size.width,
                     height: geometry.size.height)
         }

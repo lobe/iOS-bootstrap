@@ -9,25 +9,36 @@
 import Foundation
 import SwiftUI
 
+/// View model for Open Screen
+class OpenScreenViewModel: ObservableObject {
+    @Published var modelsImported = StorageProvider.shared.modelsImported
+    @Published var showProjectPicker = false
+    var modelExample = StorageProvider.shared.modelExample
+}
+
 /// Open Screen shows list of imorted models.
 struct OpenScreen: View {
-    private var modelExample = StorageProvider.shared.modelExample
-    @State private var showProjectPicker = false
-    @State private var modelsImported = StorageProvider.shared.modelsImported
+    @ObservedObject var viewModel: OpenScreenViewModel
+    
+    init(viewModel: OpenScreenViewModel) {
+        self.viewModel = viewModel
+    }
     
     var body: some View {
         NavigationView {
             List {
                 Section {
-                    ForEach(modelsImported, id: \.name) { project in
-                        NavigationLink(destination: PlayView(project: project)) {
+                    ForEach(viewModel.modelsImported, id: \.name) { project in
+                        let playViewModel = PlayViewModel(project: project)
+                        NavigationLink(destination: PlayView(viewModel: playViewModel)) {
                             ProjectRow(project: project)
                         }
                     }
                 }
                 Section(header: Text("Example Projects")) {
-                    NavigationLink(destination: PlayView(project: modelExample)) {
-                        ProjectRow(project: modelExample)
+                    let playViewModel = PlayViewModel(project: viewModel.modelExample)
+                    NavigationLink(destination: PlayView(viewModel: playViewModel)) {
+                        ProjectRow(project: viewModel.modelExample)
                     }
                 }
             }
@@ -35,23 +46,25 @@ struct OpenScreen: View {
             .navigationBarTitle(Text("Projects"))
             .navigationBarItems(trailing:
                                     Button("Import", action: {
-                                        self.showProjectPicker.toggle()
+                                        viewModel.showProjectPicker.toggle()
                                     })
             )
         }
         .navigationViewStyle(StackNavigationViewStyle())
-        .sheet(isPresented: $showProjectPicker) {
-            ProjectPicker(modelsImported: $modelsImported)
+        .sheet(isPresented: $viewModel.showProjectPicker) {
+            ProjectPicker(modelsImported: $viewModel.modelsImported)
         }
     }
 }
 
 struct OpenScreen_Previews: PreviewProvider {
     static var previews: some View {
+        let viewModel = OpenScreenViewModel()
+
         Group {
-            OpenScreen()
+            OpenScreen(viewModel: viewModel)
                 .preferredColorScheme(.light)
-            OpenScreen()
+            OpenScreen(viewModel: viewModel)
                 .previewDevice("iPad Pro (11-inch) (2nd generation)")
                 .preferredColorScheme(.dark)
         }
