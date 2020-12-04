@@ -1,3 +1,11 @@
+//
+//  MyViewController.swift
+//  Lobe_iOS
+//
+//  Created by Kathy Zhou on 6/4/20.
+//  Copyright © 2020 Microsoft. All rights reserved.
+//
+
 import Foundation
 import SwiftUI
 import AVKit
@@ -6,11 +14,14 @@ import Vision
 struct MyRepresentable: UIViewControllerRepresentable{
     
     @State var controller: MyViewController
+    var project: Project?
+
     func makeUIViewController(context: Context) -> MyViewController {
         return self.controller
     }
     func updateUIViewController(_ uiViewController: MyViewController, context: Context) {
-        
+        guard let project = self.project else { return }
+        uiViewController.project = project
     }
 }
 
@@ -20,7 +31,7 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
     @Published var classificationLabel: String?
     var backCam: AVCaptureDevice!
     var frontCam: AVCaptureDevice!
-    var captureDevice: AVCaptureDevice!
+    var captureDevice: AVCaptureDevice?
     var captureSession = AVCaptureSession()
     var previewLayer: AVCaptureVideoPreviewLayer?
     var useCam: Bool = true
@@ -28,6 +39,7 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
     var confidence: Float?
     var camImage: UIImage?
     var totalFrameCount = 0
+    var project: Project?
 
     var tripleTapGesture = UITapGestureRecognizer()
     var doubleTapGesture = UITapGestureRecognizer()
@@ -79,7 +91,8 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
        else {
            captureDevice = backCam}
         captureSession = AVCaptureSession()
-        guard let input = try? AVCaptureDeviceInput(device: self.captureDevice) else {return}
+        guard let captureDevice = self.captureDevice,
+              let input = try? AVCaptureDeviceInput(device: captureDevice) else {return}
         captureSession.addInput(input)
         captureSession.startRunning()
         setPreviewLayer()
@@ -99,14 +112,25 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
         
         backCam = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .back).devices.first
         frontCam = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .front).devices.first
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        self.captureSession = AVCaptureSession()
         captureDevice = backCam
         let input: AVCaptureInput!
-        if self.captureDevice != nil {
-            input = try! AVCaptureDeviceInput(device: self.captureDevice)
-        } else {
+        guard let captureDevice = self.captureDevice else {
+            print("Caputure device not found")
             return
         }
-        captureSession.addInput(input)
+        
+        do {
+            let input = try AVCaptureDeviceInput(device: captureDevice)
+            captureSession.addInput(input)
+        } catch {
+            print("Error setting capture session input: \(error)")
+            return
+        }
         captureSession.startRunning()
         setPreviewLayer()
         setOutput()
@@ -148,7 +172,7 @@ class MyViewController: UIViewController, AVCaptureVideoDataOutputSampleBufferDe
         /* Crop the captured image to be the size of the screen. */
         self.camImage = rotatedImage.crop(height: (previewLayer?.frame.height)!, width: (previewLayer?.frame.width)!)
         
-        guard let model = try? VNCoreMLModel(for: LobeModel().model) else { return }
+        guard let model = self.project?.model else { return }
         let request = VNCoreMLRequest(model: model) { (finishReq, err) in
             self.processClassifications(for: finishReq, error: err)
         }

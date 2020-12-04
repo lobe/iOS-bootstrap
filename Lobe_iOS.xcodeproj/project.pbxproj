@@ -13,10 +13,16 @@
 		76ED73F5248988AE003B4F6B /* UpdateTextViewExternal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76ED73F4248988AE003B4F6B /* UpdateTextViewExternal.swift */; };
 		9B7B03EB2475DBF300D34020 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B7B03EA2475DBF300D34020 /* AppDelegate.swift */; };
 		9B7B03ED2475DBF300D34020 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B7B03EC2475DBF300D34020 /* SceneDelegate.swift */; };
-		9B7B03EF2475DBF300D34020 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B7B03EE2475DBF300D34020 /* ContentView.swift */; };
+		9B7B03EF2475DBF300D34020 /* PlayView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9B7B03EE2475DBF300D34020 /* PlayView.swift */; };
 		9B7B03F12475DBF600D34020 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B7B03F02475DBF600D34020 /* Assets.xcassets */; };
 		9B7B03F42475DBF600D34020 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B7B03F32475DBF600D34020 /* Preview Assets.xcassets */; };
 		9B7B03F72475DBF600D34020 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9B7B03F52475DBF600D34020 /* LaunchScreen.storyboard */; };
+		B53C73762533C150007A0231 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53C73752533C150007A0231 /* Project.swift */; };
+		B55A1EC72572C8FD003EE8AD /* StorageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55A1EC62572C8FD003EE8AD /* StorageProvider.swift */; };
+		B58A180C254FC4BE00AD32C1 /* ProjectPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58A180B254FC4BE00AD32C1 /* ProjectPicker.swift */; };
+		B5A4C5FF256B7E0E0092DDD8 /* OpenScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4C5FE256B7E0E0092DDD8 /* OpenScreen.swift */; };
+		B5A4C603256B96BF0092DDD8 /* ProjectRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4C602256B96BF0092DDD8 /* ProjectRow.swift */; };
+		B5A9B5272557373E00FD595B /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5A9B5262557373E00FD595B /* CloudKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -27,11 +33,18 @@
 		9B7B03E72475DBF300D34020 /* Lobe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Lobe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		9B7B03EA2475DBF300D34020 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		9B7B03EC2475DBF300D34020 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		9B7B03EE2475DBF300D34020 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		9B7B03EE2475DBF300D34020 /* PlayView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayView.swift; sourceTree = "<group>"; };
 		9B7B03F02475DBF600D34020 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9B7B03F32475DBF600D34020 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9B7B03F62475DBF600D34020 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9B7B03F82475DBF600D34020 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B53C73752533C150007A0231 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
+		B55A1EC62572C8FD003EE8AD /* StorageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageProvider.swift; sourceTree = "<group>"; };
+		B58A180B254FC4BE00AD32C1 /* ProjectPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPicker.swift; sourceTree = "<group>"; };
+		B5A4C5FE256B7E0E0092DDD8 /* OpenScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenScreen.swift; sourceTree = "<group>"; };
+		B5A4C602256B96BF0092DDD8 /* ProjectRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRow.swift; sourceTree = "<group>"; };
+		B5A9B5232557372800FD595B /* Lobe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Lobe.entitlements; sourceTree = "<group>"; };
+		B5A9B5262557373E00FD595B /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -39,6 +52,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B5A9B5272557373E00FD595B /* CloudKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -50,6 +64,7 @@
 			children = (
 				9B7B03E92475DBF300D34020 /* Lobe_iOS */,
 				9B7B03E82475DBF300D34020 /* Products */,
+				B5A9B5252557373E00FD595B /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -64,14 +79,15 @@
 		9B7B03E92475DBF300D34020 /* Lobe_iOS */ = {
 			isa = PBXGroup;
 			children = (
+				B5A4C601256B961D0092DDD8 /* OpenScreen */,
+				B58D97E6256F9B890050E2CD /* PlayView */,
+				B53C73752533C150007A0231 /* Project.swift */,
+				B55A1EC62572C8FD003EE8AD /* StorageProvider.swift */,
+				B5A9B5232557372800FD595B /* Lobe.entitlements */,
 				9B7B03EA2475DBF300D34020 /* AppDelegate.swift */,
-				9B7B03EC2475DBF300D34020 /* SceneDelegate.swift */,
-				9B7B03EE2475DBF300D34020 /* ContentView.swift */,
-				76ED73F4248988AE003B4F6B /* UpdateTextViewExternal.swift */,
-				76ED73F2248987E3003B4F6B /* MyViewController.swift */,
-				76CDE1A3247F2E6D0096E882 /* ImagePicker.swift */,
-				9B7B03F02475DBF600D34020 /* Assets.xcassets */,
 				9B7B03F52475DBF600D34020 /* LaunchScreen.storyboard */,
+				9B7B03EC2475DBF300D34020 /* SceneDelegate.swift */,
+				9B7B03F02475DBF600D34020 /* Assets.xcassets */,
 				76A9AF53247F138B002086F7 /* LobeModel.mlmodel */,
 				9B7B03F82475DBF600D34020 /* Info.plist */,
 				9B7B03F22475DBF600D34020 /* Preview Content */,
@@ -85,6 +101,35 @@
 				9B7B03F32475DBF600D34020 /* Preview Assets.xcassets */,
 			);
 			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		B58D97E6256F9B890050E2CD /* PlayView */ = {
+			isa = PBXGroup;
+			children = (
+				9B7B03EE2475DBF300D34020 /* PlayView.swift */,
+				76ED73F4248988AE003B4F6B /* UpdateTextViewExternal.swift */,
+				76ED73F2248987E3003B4F6B /* MyViewController.swift */,
+				76CDE1A3247F2E6D0096E882 /* ImagePicker.swift */,
+			);
+			path = PlayView;
+			sourceTree = "<group>";
+		};
+		B5A4C601256B961D0092DDD8 /* OpenScreen */ = {
+			isa = PBXGroup;
+			children = (
+				B5A4C5FE256B7E0E0092DDD8 /* OpenScreen.swift */,
+				B5A4C602256B96BF0092DDD8 /* ProjectRow.swift */,
+				B58A180B254FC4BE00AD32C1 /* ProjectPicker.swift */,
+			);
+			path = OpenScreen;
+			sourceTree = "<group>";
+		};
+		B5A9B5252557373E00FD595B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				B5A9B5262557373E00FD595B /* CloudKit.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -114,8 +159,8 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1140;
-				LastUpgradeCheck = 1140;
-				ORGANIZATIONNAME = "Adam Menges";
+				LastUpgradeCheck = 1200;
+				ORGANIZATIONNAME = Microsoft;
 				TargetAttributes = {
 					9B7B03E62475DBF300D34020 = {
 						CreatedOnToolsVersion = 11.4.1;
@@ -162,9 +207,14 @@
 				9B7B03EB2475DBF300D34020 /* AppDelegate.swift in Sources */,
 				76CDE1A4247F2E6D0096E882 /* ImagePicker.swift in Sources */,
 				9B7B03ED2475DBF300D34020 /* SceneDelegate.swift in Sources */,
+				B55A1EC72572C8FD003EE8AD /* StorageProvider.swift in Sources */,
 				76ED73F5248988AE003B4F6B /* UpdateTextViewExternal.swift in Sources */,
+				B5A4C603256B96BF0092DDD8 /* ProjectRow.swift in Sources */,
 				76ED73F3248987E3003B4F6B /* MyViewController.swift in Sources */,
-				9B7B03EF2475DBF300D34020 /* ContentView.swift in Sources */,
+				B58A180C254FC4BE00AD32C1 /* ProjectPicker.swift in Sources */,
+				B5A4C5FF256B7E0E0092DDD8 /* OpenScreen.swift in Sources */,
+				9B7B03EF2475DBF300D34020 /* PlayView.swift in Sources */,
+				B53C73762533C150007A0231 /* Project.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -208,6 +258,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -268,6 +319,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -300,17 +352,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Lobe_iOS/Lobe.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Lobe_iOS/Preview Content\"";
-				DEVELOPMENT_TEAM = NGV85M44ZU;
+				DEVELOPMENT_TEAM = UBF8T346G9;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Lobe_iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "adammenges.Lobe-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.lobe;
 				PRODUCT_NAME = Lobe;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -320,17 +375,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Lobe_iOS/Lobe.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Lobe_iOS/Preview Content\"";
-				DEVELOPMENT_TEAM = NGV85M44ZU;
+				DEVELOPMENT_TEAM = UBF8T346G9;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Lobe_iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "adammenges.Lobe-iOS";
+				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.lobe;
 				PRODUCT_NAME = Lobe;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
