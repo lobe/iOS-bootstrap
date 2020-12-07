@@ -23,7 +23,7 @@ struct ProjectPicker: UIViewControllerRepresentable {
     // dismisses view when document is selected
     @Environment(\.presentationMode) var presentationMode
     
-    @Binding var modelsImported: [Project]
+    @Binding var storageOperation: AnyPublisher<Void, Error>?
     
     func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
         let projectPicker = ProjectPickerViewController(documentTypes: ["public.data", "public.item"], in: .import)
@@ -40,8 +40,6 @@ struct ProjectPicker: UIViewControllerRepresentable {
     
     class Coordinator: NSObject, UIDocumentPickerDelegate, UINavigationControllerDelegate {
         var parent: ProjectPicker
-    
-        private var disposables = Set<AnyCancellable>()
         
         init(_ parent: ProjectPicker) {
             self.parent = parent
@@ -62,14 +60,9 @@ struct ProjectPicker: UIViewControllerRepresentable {
                     let fileDestinationName = url.lastPathComponent
                     let fileDestination = fileDestinationDir.appendingPathComponent(fileDestinationName)
                     
-                    FileManager.default.replaceItemAtFuture(fileDestination, withItemAt: fileOrigin)
+                    self.parent.storageOperation = FileManager.default.replaceItemAtFuture(fileDestination, withItemAt: fileOrigin)
+                        .compactMap({ _ in () })
                         .eraseToAnyPublisher()
-                        .replaceError(with: nil)
-                        .receive(on: DispatchQueue.main)
-                        .sink(receiveValue: { _ in
-                            self.parent.modelsImported = StorageProvider.shared.getImportedProjects()
-                        })
-                        .store(in: &disposables)
                 } catch {
                     print("Error compiling model: \(error)")
                 }
