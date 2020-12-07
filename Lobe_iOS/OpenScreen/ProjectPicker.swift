@@ -6,7 +6,7 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
-import CoreML
+import Combine
 import SwiftUI
 import UIKit
 import Vision
@@ -40,6 +40,8 @@ struct ProjectPicker: UIViewControllerRepresentable {
     
     class Coordinator: NSObject, UIDocumentPickerDelegate, UINavigationControllerDelegate {
         var parent: ProjectPicker
+    
+        private var disposables = Set<AnyCancellable>()
         
         init(_ parent: ProjectPicker) {
             self.parent = parent
@@ -47,19 +49,27 @@ struct ProjectPicker: UIViewControllerRepresentable {
 
         /// Updates model after file selected.
         func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
+            
+            
             if !urls.isEmpty {
                 let url = urls[0]
                 do {
                     defer { parent.presentationMode.wrappedValue.dismiss() }
                     
                     // Compile model on device
-                    let fileName = url.lastPathComponent
-                    let compiledUrl = try MLModel.compileModel(at: url)
+                    let fileOrigin = try MLModel.compileModel(at: url)
+                    let fileDestinationDir = StorageProvider.shared.modelsImportedDirectory
+                    let fileDestinationName = url.lastPathComponent
+                    let fileDestination = fileDestinationDir.appendingPathComponent(fileDestinationName)
                     
-                    // Save compiled model to permanent location on device
-                    StorageProvider.shared.saveImportedModel(for: compiledUrl, fileName: fileName, onSuccess: {
-                        self.parent.modelsImported = StorageProvider.shared.modelsImported
-                    })
+                    FileManager.default.replaceItemAtFuture(fileDestination, withItemAt: fileOrigin)
+                        .eraseToAnyPublisher()
+                        .replaceError(with: nil)
+                        .receive(on: DispatchQueue.main)
+                        .sink(receiveValue: { _ in
+                            self.parent.modelsImported = StorageProvider.shared.getImportedProjects()
+                        })
+                        .store(in: &disposables)
                 } catch {
                     print("Error compiling model: \(error)")
                 }

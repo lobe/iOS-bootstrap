@@ -6,52 +6,60 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
-import Foundation
+import Combine
 import Vision
+
 
 /// Storage singleton layer, used for storing and getting .mlmodel files.
 class StorageProvider {
     static let shared = StorageProvider()
     
-    var fileManager: FileManager
-    var appSupportURL: URL
-    var modelsImported: [Project] {
-        get {
-            return self.getImportedProjects()
-        }
+    var modelsImportedDirectory: URL {
+        return self.getURL(forPath: Paths.modelsImported)
     }
+    private var fileManager: FileManager
+    private var appSupportURL: URL
+    
     lazy var modelExample: Project = self.getModelExample()
     
     init() {
         self.fileManager = FileManager.default
         self.appSupportURL = fileManager.urls(for: .applicationSupportDirectory,                                              in: .userDomainMask).first!
+        
+        // Create directory if it doesn't exist
+        for path in Paths.allCases {
+            let directoryPath = appSupportURL.appendingPathComponent(path.rawValue)
+            if !self.fileManager.fileExists(atPath: directoryPath.absoluteString, isDirectory: nil) {
+                do {
+                    try self.fileManager.createDirectory(at: directoryPath, withIntermediateDirectories: true, attributes: nil)
+                } catch {
+                    print("Could not create directory for: \(directoryPath)\n\(error)")
+                }
+            }
+        }
     }
     
     /// Enum used for storage locations.
-    enum Paths: String {
+    enum Paths: String, CaseIterable {
         case modelsImported
     }
     
-    // TO-DO: Errors
-    
-
-    
-    /// Add model to imported projects list.
-    func saveImportedModel(for compiledModelURL: URL, fileName: String, onSuccess: (() -> Void)?) {
-        self.saveFile(atPath: Paths.modelsImported, originURL: compiledModelURL, fileName: fileName, onSuccess: onSuccess)
+    /// Returns full URL for given Path.
+    func getURL(forPath path: Paths) -> URL {
+        return appSupportURL.appendingPathComponent(path.rawValue)
     }
-    
+
     /// Get list of files for imported models.
-    private func getImportedProjects() -> [Project] {
+    func getImportedProjects() -> [Project] {
         var projectList: [Project] = []
         let files = self.contentsOfDirectory(atPath: Paths.modelsImported)
-        
+
         for fileURL in files {
             let fileName = fileURL.lastPathComponent
             let project = Project(name: fileName, modelFileURL: fileURL)
             projectList.append(project)
         }
-        
+
         return projectList
     }
     
@@ -70,41 +78,6 @@ class StorageProvider {
         return files
     }
     
-    /// Private helper which saves file at specified location.
-    private func saveFile(atPath filePath: Paths, originURL: URL, fileName: String, onSuccess: (() -> Void)?) {
-        // Create URL for permanent location in Application Support
-        let dir = appSupportURL
-            .appendingPathComponent(filePath.rawValue)
-
-        // Create Application Support path if it doesn't exist
-        if !fileManager.fileExists(atPath: dir.absoluteString, isDirectory: nil) {
-            do {
-                try fileManager.createDirectory(at: dir, withIntermediateDirectories: true, attributes: nil)
-            } catch {
-                print("Error creating Application Support directory: \(error)")
-            }
-        }
-        // Use dispatch group to notify completion
-        let group = DispatchGroup()
-        group.enter()
-
-        DispatchQueue.main.async { [weak self] in
-            // Copy the file to the to the permanent location, replacing it if necessary.
-            do {
-                let fileDestination = dir.appendingPathComponent(fileName)
-                _ = try self?.fileManager.replaceItemAt(fileDestination, withItemAt: originURL)
-            } catch {
-                print("Error at saveFile: \(error)")
-            }
-        }
-        group.leave()
-        
-        /// `notify` only calls when the above is complete.
-        group.notify(queue: .main) {
-            onSuccess?()
-        }
-    }
-    
     /// Gets default model instance.
     private func getModelExample() -> Project {
         var defaultModel: VNCoreMLModel?
@@ -116,5 +89,20 @@ class StorageProvider {
         }
         let defaultProject = Project(name: defaultModelName, model: defaultModel)
         return defaultProject
+    }
+}
+
+extension FileManager {
+    /// Returns a Future wrapper for `replaceItemAt` method for installing models.
+    func replaceItemAtFuture(_ originalItemURL: URL, withItemAt newItemURL: URL, backupItemName: String? = nil, options: FileManager.ItemReplacementOptions = []) -> Future<URL?, Error> {
+        return Future { promise in
+            do {
+                let url = try self.replaceItemAt(originalItemURL, withItemAt: newItemURL)
+                promise(.success(url))
+            } catch {
+                print("Could not save file: \(error)")
+                promise(.failure(error))
+            }
+        }
     }
 }

@@ -6,14 +6,18 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
-import Foundation
+import Combine
 import SwiftUI
 
 /// View model for Open Screen
 class OpenScreenViewModel: ObservableObject {
-    @Published var modelsImported = StorageProvider.shared.modelsImported
+    @Published var modelsImported: [Project]
     @Published var showProjectPicker = false
     var modelExample = StorageProvider.shared.modelExample
+    
+    init() {
+        self.modelsImported = StorageProvider.shared.getImportedProjects()
+    }
 }
 
 /// Open Screen shows list of imorted models.
