@@ -24,9 +24,11 @@ extension Project {
     }
     
     /// Initialize Project instance with MLModel.
-    init(name: String, model: MLModel) {
+    init(name: String, mlModel: MLModel?) {
         self.name = name
-        self.model = try? VNCoreMLModel(for: model)
+        if let mlModel = mlModel {
+            self.model = try? VNCoreMLModel(for: mlModel)
+        }
     }
     
     /// Returns `VNCoreMLModel` instance from stored file location.

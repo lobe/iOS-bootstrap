@@ -21,7 +21,9 @@ class OpenScreenViewModel: ObservableObject {
     
     init() {
         // load all data
-        self.modelExample = Project(name: "MobileNet ImageNet Classifier", model: LobeModel().model)
+        let imageNetURL = LobeModel.urlOfModelInThisBundle
+        let imageNetModel = try? LobeModel(contentsOf: imageNetURL).model
+        self.modelExample = Project(name: "MobileNet ImageNet Classifier", mlModel: imageNetModel)
         self.updateImportedProjects()
         
         // Refresh view given a storage operation
