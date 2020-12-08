@@ -8,24 +8,48 @@
 
 import Combine
 import SwiftUI
+import Vision
 
 /// View model for Open Screen
 class OpenScreenViewModel: ObservableObject {
-    @Published var modelsImported: [Project]
+    @Published var modelsImported: [Project] = []
     @Published var showProjectPicker = false
     @Published var storageOperation: AnyPublisher<Void, Error>?
-    var modelExample = StorageProvider.shared.modelExample
+    var storage = StorageProvider.shared
+    var modelExample: Project
     private var disposables = Set<AnyCancellable>()
     
     init() {
-        self.modelsImported = StorageProvider.shared.getImportedProjects()
+        // load all data
+        self.modelExample = Project(name: "MobileNet ImageNet Classifier", model: LobeModel().model)
+        self.updateImportedProjects()
         
         // Refresh view given a storage operation
         $storageOperation
             .receive(on: DispatchQueue.main)
-            .sink(receiveValue: { _ in
-                self.modelsImported = StorageProvider.shared.getImportedProjects()
+            .sink(receiveValue: { [weak self] _ in
+                self?.updateImportedProjects()
             })
             .store(in: &disposables)
+    }
+    
+    /// Get list of files for imported models.
+    private func updateImportedProjects() {
+        var projectList: [Project] = []
+        let storagePath = storage.modelsImportedDirectory
+        
+        do {
+            let files = try FileManager.default.contentsOfDirectory(at: storagePath, includingPropertiesForKeys: nil)
+
+            for fileURL in files {
+                let fileName = fileURL.lastPathComponent
+                let project = Project(name: fileName, modelFileURL: fileURL)
+                projectList.append(project)
+            }
+        } catch {
+            print("Unable to read imported projects: \(error)")
+        }
+        
+        self.modelsImported = projectList
     }
 }

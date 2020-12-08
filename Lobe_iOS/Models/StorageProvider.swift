@@ -9,8 +9,7 @@
 import Combine
 import Vision
 
-
-/// Storage singleton layer, used for storing and getting .mlmodel files.
+/// Storage singleton layer which configures folder structure.
 class StorageProvider {
     static let shared = StorageProvider()
     
@@ -20,11 +19,9 @@ class StorageProvider {
     private var fileManager: FileManager
     private var appSupportURL: URL
     
-    lazy var modelExample: Project = self.getModelExample()
-    
     init() {
         self.fileManager = FileManager.default
-        self.appSupportURL = fileManager.urls(for: .applicationSupportDirectory,                                              in: .userDomainMask).first!
+        self.appSupportURL = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first!
         
         // Create directory if it doesn't exist
         for path in Paths.allCases {
@@ -45,50 +42,8 @@ class StorageProvider {
     }
     
     /// Returns full URL for given Path.
-    func getURL(forPath path: Paths) -> URL {
+    private func getURL(forPath path: Paths) -> URL {
         return appSupportURL.appendingPathComponent(path.rawValue)
-    }
-
-    /// Get list of files for imported models.
-    func getImportedProjects() -> [Project] {
-        var projectList: [Project] = []
-        let files = self.contentsOfDirectory(atPath: Paths.modelsImported)
-
-        for fileURL in files {
-            let fileName = fileURL.lastPathComponent
-            let project = Project(name: fileName, modelFileURL: fileURL)
-            projectList.append(project)
-        }
-
-        return projectList
-    }
-    
-    /// Private helper which returns all fiels in a directory.
-    private func contentsOfDirectory(atPath filePath: Paths) -> [URL] {
-        var files: [URL] = []
-        let path = appSupportURL.appendingPathComponent(filePath.rawValue)
-        
-        // Get list of projects for Application Support
-        do {
-            files = try fileManager.contentsOfDirectory(at: path, includingPropertiesForKeys: nil)
-        } catch {
-            print("Error reading file contents: \(error)")
-        }
-        
-        return files
-    }
-    
-    /// Gets default model instance.
-    private func getModelExample() -> Project {
-        var defaultModel: VNCoreMLModel?
-        let defaultModelName = "MobileNet ImageNet Classifier"
-        do {
-            defaultModel = try VNCoreMLModel(for: LobeModel().model)
-        } catch {
-            print("Error getting default project: \(error)")
-        }
-        let defaultProject = Project(name: defaultModelName, model: defaultModel)
-        return defaultProject
     }
 }
 
