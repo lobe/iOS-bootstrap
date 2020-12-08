@@ -47,8 +47,6 @@ struct ProjectPicker: UIViewControllerRepresentable {
 
         /// Updates model after file selected.
         func documentPicker(_ controller: UIDocumentPickerViewController, didPickDocumentsAt urls: [URL]) {
-            
-            
             if !urls.isEmpty {
                 let url = urls[0]
                 do {

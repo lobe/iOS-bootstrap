@@ -16,7 +16,7 @@ class StorageProvider {
     var modelsImportedDirectory: URL {
         return self.getURL(forPath: Paths.modelsImported)
     }
-    private var fileManager: FileManager
+    var fileManager: FileManager
     private var appSupportURL: URL
     
     init() {

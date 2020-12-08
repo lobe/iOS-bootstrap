@@ -35,6 +35,21 @@ class OpenScreenViewModel: ObservableObject {
             .store(in: &disposables)
     }
     
+    /// Removes project from storage
+    func deleteItems(at offsets: IndexSet) {
+        let projectsToDelete = offsets.map { self.modelsImported[$0].name }
+
+        /// Remove from UI
+        self.modelsImported.remove(atOffsets: offsets)
+        
+        /// Remove from storage
+        let pathURL = storage.modelsImportedDirectory
+        projectsToDelete.forEach { name in
+            let fileToRemove = pathURL.appendingPathComponent(name)
+            try? self.storage.fileManager.removeItem(at: fileToRemove)
+        }
+    }
+    
     /// Get list of files for imported models.
     private func updateImportedProjects() {
         var projectList: [Project] = []

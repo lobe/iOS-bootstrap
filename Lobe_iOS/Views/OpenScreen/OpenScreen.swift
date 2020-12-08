@@ -26,6 +26,7 @@ struct OpenScreen: View {
                             ProjectRow(project: project)
                         }
                     }
+                    .onDelete(perform: viewModel.deleteItems)
                 }
                 Section(header: Text("Example Projects")) {
                     let playViewModel = PlayViewModel(project: viewModel.modelExample)
