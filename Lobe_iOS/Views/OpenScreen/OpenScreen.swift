@@ -37,10 +37,11 @@ struct OpenScreen: View {
             }
             .listStyle(GroupedListStyle())
             .navigationBarTitle(Text("Projects"))
-            .navigationBarItems(trailing:
+            .navigationBarItems(leading:
                                     Button("Import", action: {
                                         viewModel.showProjectPicker.toggle()
-                                    })
+                                    }),
+                                trailing: EditButton()
             )
         }
         .navigationViewStyle(StackNavigationViewStyle())
