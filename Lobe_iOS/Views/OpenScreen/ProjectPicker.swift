@@ -6,7 +6,7 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
-import CoreML
+import Combine
 import SwiftUI
 import UIKit
 import Vision
@@ -23,7 +23,7 @@ struct ProjectPicker: UIViewControllerRepresentable {
     // dismisses view when document is selected
     @Environment(\.presentationMode) var presentationMode
     
-    @Binding var modelsImported: [Project]
+    @Binding var storageOperation: AnyPublisher<Void, Error>?
     
     func makeUIViewController(context: Context) -> UIDocumentPickerViewController {
         let projectPicker = ProjectPickerViewController(documentTypes: ["public.data", "public.item"], in: .import)
@@ -53,13 +53,14 @@ struct ProjectPicker: UIViewControllerRepresentable {
                     defer { parent.presentationMode.wrappedValue.dismiss() }
                     
                     // Compile model on device
-                    let fileName = url.lastPathComponent
-                    let compiledUrl = try MLModel.compileModel(at: url)
+                    let fileOrigin = try MLModel.compileModel(at: url)
+                    let fileDestinationDir = StorageProvider.shared.modelsImportedDirectory
+                    let fileDestinationName = url.lastPathComponent
+                    let fileDestination = fileDestinationDir.appendingPathComponent(fileDestinationName)
                     
-                    // Save compiled model to permanent location on device
-                    StorageProvider.shared.saveImportedModel(for: compiledUrl, fileName: fileName, onSuccess: {
-                        self.parent.modelsImported = StorageProvider.shared.modelsImported
-                    })
+                    self.parent.storageOperation = FileManager.default.replaceItemAtFuture(fileDestination, withItemAt: fileOrigin)
+                        .compactMap({ _ in () })
+                        .eraseToAnyPublisher()
                 } catch {
                     print("Error compiling model: \(error)")
                 }

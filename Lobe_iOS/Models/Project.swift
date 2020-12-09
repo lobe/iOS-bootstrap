@@ -23,6 +23,14 @@ extension Project {
         self.model = convertFileToCoreML(atFileURL: modelFileURL)
     }
     
+    /// Initialize Project instance with MLModel.
+    init(name: String, mlModel: MLModel?) {
+        self.name = name
+        if let mlModel = mlModel {
+            self.model = try? VNCoreMLModel(for: mlModel)
+        }
+    }
+    
     /// Returns `VNCoreMLModel` instance from stored file location.
     private func convertFileToCoreML(atFileURL fileURL: URL) -> VNCoreMLModel? {
         var coreMLModel: VNCoreMLModel?

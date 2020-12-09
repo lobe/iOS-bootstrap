@@ -6,15 +6,7 @@
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
-import Foundation
 import SwiftUI
-
-/// View model for Open Screen
-class OpenScreenViewModel: ObservableObject {
-    @Published var modelsImported = StorageProvider.shared.modelsImported
-    @Published var showProjectPicker = false
-    var modelExample = StorageProvider.shared.modelExample
-}
 
 /// Open Screen shows list of imorted models.
 struct OpenScreen: View {
@@ -34,6 +26,7 @@ struct OpenScreen: View {
                             ProjectRow(project: project)
                         }
                     }
+                    .onDelete(perform: viewModel.deleteItems)
                 }
                 Section(header: Text("Example Projects")) {
                     let playViewModel = PlayViewModel(project: viewModel.modelExample)
@@ -44,15 +37,16 @@ struct OpenScreen: View {
             }
             .listStyle(GroupedListStyle())
             .navigationBarTitle(Text("Projects"))
-            .navigationBarItems(trailing:
+            .navigationBarItems(leading:
                                     Button("Import", action: {
                                         viewModel.showProjectPicker.toggle()
-                                    })
+                                    }),
+                                trailing: EditButton()
             )
         }
         .navigationViewStyle(StackNavigationViewStyle())
         .sheet(isPresented: $viewModel.showProjectPicker) {
-            ProjectPicker(modelsImported: $viewModel.modelsImported)
+            ProjectPicker(storageOperation: self.$viewModel.storageOperation)
         }
     }
 }
