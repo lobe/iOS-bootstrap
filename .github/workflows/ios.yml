@@ -1,4 +1,4 @@
-name: iOS starter workflow
+name: App-CI
 
 on:
   push:
@@ -8,8 +8,8 @@ on:
 
 jobs:
   build:
-    name: Build and Test default scheme using any available iPhone simulator
-    runs-on: macos-latest
+    name: Build and Test Default Scheme
+    runs-on: macos-11.0
 
     steps:
       - name: Checkout
