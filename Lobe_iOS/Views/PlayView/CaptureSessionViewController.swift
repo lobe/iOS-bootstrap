@@ -153,7 +153,6 @@ class CaptureSessionViewController: UIViewController {
                 preview.frame = self.view.bounds
                 connection.videoOrientation = videoOrientation
             }
-            
             preview.frame = self.view.bounds
             
         }
@@ -169,16 +168,40 @@ extension CaptureSessionViewController: AVCaptureVideoDataOutputSampleBufferDele
         
         guard let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer),
               let curImg = UIImage(pixelBuffer: pixelBuffer),
-              let previewLayer = self.previewLayer
+              let previewLayer = self.previewLayer,
+              let videoOrientation = previewLayer.connection?.videoOrientation
         else {
             print("Failed creating image at captureOutput.")
             return
         }
+        
+        var radiansToRotate = CGFloat(0)
+        switch videoOrientation {
+            case .portrait:
+                radiansToRotate = .pi / 2
+                break
+            case .portraitUpsideDown:
+                radiansToRotate = (3 * .pi) / 2
+                break
+            case .landscapeLeft:
+                if (self.captureDevice == self.backCam) {
+                    radiansToRotate = .pi
+                }
+                break
+            case .landscapeRight:
+                if (self.captureDevice == self.frontCam) {
+                    radiansToRotate = .pi
+                }
+                break
+            default:
+                break
+        }
 
-        let rotatedImage = curImg.rotate(radians: .pi / 2)
+        // rotatedimage is 1000% broken
+        let rotatedImage = curImg.rotate(radians: radiansToRotate)
 
         /* Crop the captured image to be the size of the screen. */
-        guard let croppedImage = rotatedImage.crop(height: previewLayer.frame.height, width: previewLayer.frame.width) else {
+        guard let croppedImage = rotatedImage.crop(height: previewLayer.bounds.height, width: previewLayer.bounds.width) else {
             fatalError("Could not crop image.")
         }
         
@@ -248,6 +271,33 @@ extension UIImage {
         }
         return self
     }
+    
+//    func rotated(byDegrees degrees: CGFloat) -> UIImage! {
+//        // calculate the size of the rotated view's containing box for our drawing space
+//        let rotatedViewBox = UIView(frame: CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height))
+//        let t = CGAffineTransform(rotationAngle: DegreesToRadians(degrees))
+//        rotatedViewBox.transform = t
+//        let rotatedSize = rotatedViewBox.frame.size
+//
+//        // Create the bitmap context
+//        UIGraphicsBeginImageContext(rotatedSize)
+//        let bitmap = UIGraphicsGetCurrentContext()
+//
+//        // Move the origin to the middle of the image so we will rotate and scale around the center.
+//        bitmap?.translateBy(x: rotatedSize.width/2, y: rotatedSize.height/2)
+//
+//        //   // Rotate the image context
+//        bitmap?.rotate(by: DegreesToRadians(degrees))
+//
+//        // Now, draw the rotated/scaled image into the context
+//        bitmap?.scaleBy(x: 1.0, y: -1.0)
+//        bitmap?.draw(self.cgImage!, in: CGRect(x: -self.size.width / 2, y: -self.size.height / 2, width: self.size.width, height: self.size.height))
+//
+//        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+//        UIGraphicsEndImageContext()
+//        return newImage
+//
+//    }
 }
 
 /// Conversion helper for AVCaptureSession orientation changes.

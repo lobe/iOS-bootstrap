@@ -33,7 +33,6 @@ class PlayViewModel: ObservableObject {
         // Subscribe to changes on image
         $image
             .drop(while: { $0 == nil })
-            .receive(on: DispatchQueue.main)
             .sink(receiveValue: fetchPrediction(forImage:))
             .store(in: &disposables)
     }
@@ -45,18 +44,20 @@ class PlayViewModel: ObservableObject {
         }
         self.imagePredicter
             .getPrdiction(forImage: image, onComplete: { [weak self] request in
-                guard let classifications = request.results as? [VNClassificationObservation] else {
-                    self?.classificationLabel = "Classification Error"
-                    return
-                }
-                
-                if classifications.isEmpty {
-                    self?.classificationLabel = "No Labels Found"
-                } else {
-                    /* Display top classifications ranked by confidence in the UI. */
-                    let topClassifications = classifications.prefix(1)
-                    self?.classificationLabel = topClassifications[0].identifier
-                    self?.confidence = topClassifications[0].confidence
+                DispatchQueue.main.async { [weak self] in
+                    guard let classifications = request.results as? [VNClassificationObservation] else {
+                        self?.classificationLabel = "Classification Error"
+                        return
+                    }
+                    
+                    if classifications.isEmpty {
+                        self?.classificationLabel = "No Labels Found"
+                    } else {
+                        /* Display top classifications ranked by confidence in the UI. */
+                        let topClassifications = classifications.prefix(1)
+                        self?.classificationLabel = topClassifications[0].identifier
+                        self?.confidence = topClassifications[0].confidence
+                    }
                 }
             }, onError: { [weak self] error in
                 self?.classificationLabel = "Classification Error"
