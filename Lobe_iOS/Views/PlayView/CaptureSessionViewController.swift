@@ -197,12 +197,10 @@ extension CaptureSessionViewController: AVCaptureVideoDataOutputSampleBufferDele
                 break
         }
 
-        // rotatedimage is 1000% broken
-        let rotatedImage = curImg.rotate(radians: radiansToRotate)
-
-        /* Crop the captured image to be the size of the screen. */
-        guard let croppedImage = rotatedImage.crop(height: previewLayer.bounds.height, width: previewLayer.bounds.width) else {
-            fatalError("Could not crop image.")
+        /* Rotate and crop the captured image to be the size of the screen. */
+        guard let rotatedImage = curImg.rotate(radians: radiansToRotate),
+            let croppedImage = rotatedImage.crop(height: previewLayer.bounds.height, width: previewLayer.bounds.width) else {
+            fatalError("Could not rotate or crop image.")
         }
         
         self.delegate?.setCameraImage(with: croppedImage)
@@ -253,51 +251,29 @@ extension UIImage {
         
         self.init(cgImage: myImage)
     }
-    func rotate(radians: CGFloat) -> UIImage {
-        let rotatedSize = CGRect(origin: .zero, size: size)
-            .applying(CGAffineTransform(rotationAngle: CGFloat(radians)))
-            .integral.size
-        UIGraphicsBeginImageContext(rotatedSize)
-        if let context = UIGraphicsGetCurrentContext() {
-            let origin = CGPoint(x: rotatedSize.width / 2.0,
-                                 y: rotatedSize.height / 2.0)
-            context.translateBy(x: origin.x, y: origin.y)
-            context.rotate(by: radians)
-            draw(in: CGRect(x: -origin.y, y: -origin.x,
-                            width: size.width, height: size.height))
-            let rotatedImage = UIGraphicsGetImageFromCurrentImageContext()
-            UIGraphicsEndImageContext()
-            return rotatedImage ?? self
-        }
-        return self
-    }
     
-//    func rotated(byDegrees degrees: CGFloat) -> UIImage! {
-//        // calculate the size of the rotated view's containing box for our drawing space
-//        let rotatedViewBox = UIView(frame: CGRect(x: 0, y: 0, width: self.size.width, height: self.size.height))
-//        let t = CGAffineTransform(rotationAngle: DegreesToRadians(degrees))
-//        rotatedViewBox.transform = t
-//        let rotatedSize = rotatedViewBox.frame.size
-//
-//        // Create the bitmap context
-//        UIGraphicsBeginImageContext(rotatedSize)
-//        let bitmap = UIGraphicsGetCurrentContext()
-//
-//        // Move the origin to the middle of the image so we will rotate and scale around the center.
-//        bitmap?.translateBy(x: rotatedSize.width/2, y: rotatedSize.height/2)
-//
-//        //   // Rotate the image context
-//        bitmap?.rotate(by: DegreesToRadians(degrees))
-//
-//        // Now, draw the rotated/scaled image into the context
-//        bitmap?.scaleBy(x: 1.0, y: -1.0)
-//        bitmap?.draw(self.cgImage!, in: CGRect(x: -self.size.width / 2, y: -self.size.height / 2, width: self.size.width, height: self.size.height))
-//
-//        let newImage = UIGraphicsGetImageFromCurrentImageContext()
-//        UIGraphicsEndImageContext()
-//        return newImage
-//
-//    }
+    func rotate(radians: CGFloat) -> UIImage? {
+        var newSize = CGRect(origin: CGPoint.zero, size: self.size).applying(CGAffineTransform(rotationAngle: CGFloat(radians))).size
+        // Trim off the extremely small float value to prevent core graphics from rounding it up
+        newSize.width = floor(newSize.width)
+        newSize.height = floor(newSize.height)
+
+        UIGraphicsBeginImageContextWithOptions(newSize, false, self.scale)
+        let context = UIGraphicsGetCurrentContext()!
+
+        // Move origin to middle
+        context.translateBy(x: newSize.width/2, y: newSize.height/2)
+        // Rotate around middle
+        context.rotate(by: CGFloat(radians))
+        
+        // Draw the image at its center
+        self.draw(in: CGRect(x: -self.size.width/2, y: -self.size.height/2, width: self.size.width, height: self.size.height))
+
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return newImage
+    }
 }
 
 /// Conversion helper for AVCaptureSession orientation changes.
