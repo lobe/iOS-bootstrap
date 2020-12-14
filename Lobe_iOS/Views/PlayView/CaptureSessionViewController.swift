@@ -167,7 +167,7 @@ extension CaptureSessionViewController: AVCaptureVideoDataOutputSampleBufferDele
         if totalFrameCount % 20 != 0{ return }
         
         guard let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer),
-              let curImg = UIImage(pixelBuffer: pixelBuffer),
+              let image = UIImage(pixelBuffer: pixelBuffer),
               let previewLayer = self.previewLayer,
               let videoOrientation = previewLayer.connection?.videoOrientation
         else {
@@ -198,7 +198,8 @@ extension CaptureSessionViewController: AVCaptureVideoDataOutputSampleBufferDele
         }
 
         /* Rotate and crop the captured image to be the size of the screen. */
-        guard let rotatedImage = curImg.rotate(radians: radiansToRotate),
+        let isUsingFrontCam = self.captureDevice == self.frontCam
+        guard let rotatedImage = image.rotate(radians: radiansToRotate, flipX: isUsingFrontCam),
             let croppedImage = rotatedImage.crop(height: previewLayer.bounds.height, width: previewLayer.bounds.width) else {
             fatalError("Could not rotate or crop image.")
         }
@@ -252,7 +253,7 @@ extension UIImage {
         self.init(cgImage: myImage)
     }
     
-    func rotate(radians: CGFloat) -> UIImage? {
+    func rotate(radians: CGFloat, flipX: Bool = false) -> UIImage? {
         var newSize = CGRect(origin: CGPoint.zero, size: self.size).applying(CGAffineTransform(rotationAngle: CGFloat(radians))).size
         // Trim off the extremely small float value to prevent core graphics from rounding it up
         newSize.width = floor(newSize.width)
@@ -263,9 +264,13 @@ extension UIImage {
 
         // Move origin to middle
         context.translateBy(x: newSize.width/2, y: newSize.height/2)
+        
+        // Flip x-axis if specified (used to correct front-facing cam
+        if flipX { context.scaleBy(x: -1, y: 1) }
+
         // Rotate around middle
         context.rotate(by: CGFloat(radians))
-        
+
         // Draw the image at its center
         self.draw(in: CGRect(x: -self.size.width/2, y: -self.size.height/2, width: self.size.width, height: self.size.height))
 
