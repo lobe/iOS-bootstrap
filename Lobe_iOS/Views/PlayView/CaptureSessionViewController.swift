@@ -162,7 +162,7 @@ class CaptureSessionViewController: UIViewController {
 /// Defines delegate method.
 extension CaptureSessionViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
     func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        /* Skip frames to optimize. */
+        // Skip frames to optimize.
         totalFrameCount += 1
         if totalFrameCount % 20 != 0{ return }
         
@@ -175,6 +175,7 @@ extension CaptureSessionViewController: AVCaptureVideoDataOutputSampleBufferDele
             return
         }
         
+        // Determine rotation by radians given device orientation and camera device
         var radiansToRotate = CGFloat(0)
         switch videoOrientation {
             case .portrait:
@@ -197,7 +198,7 @@ extension CaptureSessionViewController: AVCaptureVideoDataOutputSampleBufferDele
                 break
         }
 
-        /* Rotate and crop the captured image to be the size of the screen. */
+        // Rotate and crop the captured image to be the size of the screen.
         let isUsingFrontCam = self.captureDevice == self.frontCam
         guard let rotatedImage = image.rotate(radians: radiansToRotate, flipX: isUsingFrontCam),
             let croppedImage = rotatedImage.crop(height: previewLayer.bounds.height, width: previewLayer.bounds.width) else {
