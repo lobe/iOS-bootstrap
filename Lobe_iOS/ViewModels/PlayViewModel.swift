@@ -33,6 +33,7 @@ class PlayViewModel: ObservableObject {
         // Subscribe to changes on image
         $image
             .drop(while: { $0 == nil })
+            .receive(on: DispatchQueue.global(qos: .userInitiated))
             .sink(receiveValue: fetchPrediction(forImage:))
             .store(in: &disposables)
     }
