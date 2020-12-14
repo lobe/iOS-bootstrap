@@ -17,6 +17,7 @@
 		9B7B03F12475DBF600D34020 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B7B03F02475DBF600D34020 /* Assets.xcassets */; };
 		9B7B03F42475DBF600D34020 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9B7B03F32475DBF600D34020 /* Preview Assets.xcassets */; };
 		9B7B03F72475DBF600D34020 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9B7B03F52475DBF600D34020 /* LaunchScreen.storyboard */; };
+		B513D84525809D62009D91E2 /* LobeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B513D84425809D62009D91E2 /* LobeTests.swift */; };
 		B5173D5725774E990065A01F /* PlayViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5173D5625774E990065A01F /* PlayViewModel.swift */; };
 		B5173D5B25774F400065A01F /* ImagePreview.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5173D5A25774F400065A01F /* ImagePreview.swift */; };
 		B53C73762533C150007A0231 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53C73752533C150007A0231 /* Project.swift */; };
@@ -29,6 +30,16 @@
 		B5A4C603256B96BF0092DDD8 /* ProjectRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4C602256B96BF0092DDD8 /* ProjectRow.swift */; };
 		B5A9B5272557373E00FD595B /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5A9B5262557373E00FD595B /* CloudKit.framework */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		B513D84725809D62009D91E2 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9B7B03DF2475DBF300D34020 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 9B7B03E62475DBF300D34020;
+			remoteInfo = Lobe_iOS;
+		};
+/* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		76A9AF53247F138B002086F7 /* LobeModel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = LobeModel.mlmodel; path = ../LobeModel.mlmodel; sourceTree = "<group>"; };
@@ -43,6 +54,9 @@
 		9B7B03F32475DBF600D34020 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		9B7B03F62475DBF600D34020 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		9B7B03F82475DBF600D34020 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B513D84225809D62009D91E2 /* LobeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = LobeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		B513D84425809D62009D91E2 /* LobeTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LobeTests.swift; sourceTree = "<group>"; };
+		B513D84625809D62009D91E2 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B5173D5625774E990065A01F /* PlayViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayViewModel.swift; sourceTree = "<group>"; };
 		B5173D5A25774F400065A01F /* ImagePreview.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePreview.swift; sourceTree = "<group>"; };
 		B53C73752533C150007A0231 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
@@ -66,6 +80,13 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B513D83F25809D62009D91E2 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -73,6 +94,7 @@
 			isa = PBXGroup;
 			children = (
 				9B7B03E92475DBF300D34020 /* Lobe_iOS */,
+				B513D84325809D62009D91E2 /* LobeTests */,
 				9B7B03E82475DBF300D34020 /* Products */,
 				B5A9B5252557373E00FD595B /* Frameworks */,
 			);
@@ -82,6 +104,7 @@
 			isa = PBXGroup;
 			children = (
 				9B7B03E72475DBF300D34020 /* Lobe.app */,
+				B513D84225809D62009D91E2 /* LobeTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -112,7 +135,16 @@
 			path = "Preview Content";
 			sourceTree = "<group>";
 		};
-		B5173D5E257757910065A01F /* Models */ = {
+		B513D84325809D62009D91E2 /* LobeTests */ = {
+			isa = PBXGroup;
+			children = (
+				B513D84425809D62009D91E2 /* LobeTests.swift */,
+				B513D84625809D62009D91E2 /* Info.plist */,
+			);
+			path = LobeTests;
+			sourceTree = "<group>";
+		};
+		B5173D5E257757910065A01F /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				B55A1ED725760BAC003EE8AD /* PredictionLayer.swift */,
@@ -191,18 +223,40 @@
 			productReference = 9B7B03E72475DBF300D34020 /* Lobe.app */;
 			productType = "com.apple.product-type.application";
 		};
+		B513D84125809D62009D91E2 /* LobeTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B513D84B25809D62009D91E2 /* Build configuration list for PBXNativeTarget "LobeTests" */;
+			buildPhases = (
+				B513D83E25809D62009D91E2 /* Sources */,
+				B513D83F25809D62009D91E2 /* Frameworks */,
+				B513D84025809D62009D91E2 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				B513D84825809D62009D91E2 /* PBXTargetDependency */,
+			);
+			name = LobeTests;
+			productName = LobeTests;
+			productReference = B513D84225809D62009D91E2 /* LobeTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
 		9B7B03DF2475DBF300D34020 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastSwiftUpdateCheck = 1140;
+				LastSwiftUpdateCheck = 1220;
 				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = Microsoft;
 				TargetAttributes = {
 					9B7B03E62475DBF300D34020 = {
 						CreatedOnToolsVersion = 11.4.1;
+					};
+					B513D84125809D62009D91E2 = {
+						CreatedOnToolsVersion = 12.2;
+						TestTargetID = 9B7B03E62475DBF300D34020;
 					};
 				};
 			};
@@ -220,6 +274,7 @@
 			projectRoot = "";
 			targets = (
 				9B7B03E62475DBF300D34020 /* Lobe_iOS */,
+				B513D84125809D62009D91E2 /* LobeTests */,
 			);
 		};
 /* End PBXProject section */
@@ -232,6 +287,13 @@
 				9B7B03F72475DBF600D34020 /* LaunchScreen.storyboard in Resources */,
 				9B7B03F42475DBF600D34020 /* Preview Assets.xcassets in Resources */,
 				9B7B03F12475DBF600D34020 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		B513D84025809D62009D91E2 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,7 +324,23 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		B513D83E25809D62009D91E2 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B513D84525809D62009D91E2 /* LobeTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		B513D84825809D62009D91E2 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 9B7B03E62475DBF300D34020 /* Lobe_iOS */;
+			targetProxy = B513D84725809D62009D91E2 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
 		9B7B03F52475DBF600D34020 /* LaunchScreen.storyboard */ = {
@@ -438,6 +516,48 @@
 			};
 			name = Release;
 		};
+		B513D84925809D62009D91E2 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UBF8T346G9;
+				INFOPLIST_FILE = LobeTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = test.LobeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lobe.app/Lobe";
+			};
+			name = Debug;
+		};
+		B513D84A25809D62009D91E2 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = UBF8T346G9;
+				INFOPLIST_FILE = LobeTests/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.2;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+					"@loader_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = test.LobeTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Lobe.app/Lobe";
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -455,6 +575,15 @@
 			buildConfigurations = (
 				9B7B03FC2475DBF600D34020 /* Debug */,
 				9B7B03FD2475DBF600D34020 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B513D84B25809D62009D91E2 /* Build configuration list for PBXNativeTarget "LobeTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B513D84925809D62009D91E2 /* Debug */,
+				B513D84A25809D62009D91E2 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
