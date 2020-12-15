@@ -201,11 +201,11 @@ extension CaptureSessionViewController: AVCaptureVideoDataOutputSampleBufferDele
         // Rotate and crop the captured image to be the size of the screen.
         let isUsingFrontCam = self.captureDevice == self.frontCam
         guard let rotatedImage = image.rotate(radians: radiansToRotate, flipX: isUsingFrontCam),
-            let croppedImage = rotatedImage.crop(height: previewLayer.bounds.height, width: previewLayer.bounds.width) else {
+              let squaredImage = rotatedImage.squared() else {
             fatalError("Could not rotate or crop image.")
         }
         
-        self.delegate?.setCameraImage(with: croppedImage)
+        self.delegate?.setCameraImage(with: squaredImage)
     }
 }
 
@@ -226,21 +226,6 @@ extension UIImage {
         return UIGraphicsImageRenderer(size: breadthSize, format: format).image { _ in
             UIImage(cgImage: cgImage, scale: 1, orientation: imageOrientation)
                 .draw(in: .init(origin: .zero, size: breadthSize))
-        }
-    }
-    func crop(isOpaque: Bool = false, height: CGFloat, width: CGFloat) -> UIImage? {
-        let newWidth = size.width
-        let newHeight = height / width * size.width
-        var screenSize: CGSize  { .init(width: newWidth, height: newHeight)}
-        guard let cgImage = cgImage?
-                .cropping(to: .init(origin: .init(x: 0,
-                                                  y: ((size.height - newHeight) / 2)),
-                                    size: screenSize)) else { return nil }
-        let format = imageRendererFormat
-        format.opaque = isOpaque
-        return UIGraphicsImageRenderer(size: screenSize, format: format).image { _ in
-            UIImage(cgImage: cgImage, scale: 1, orientation: imageOrientation)
-                .draw(in: .init(origin: .zero, size: screenSize))
         }
     }
     public convenience init?(pixelBuffer: CVPixelBuffer) {
