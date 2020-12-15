@@ -41,14 +41,18 @@ struct CameraView: UIViewControllerRepresentable {
         init(_ parent: CameraView) {
             self.parent = parent
         }
-        /// Wrapper for screen shot..
+        /// Wrapper for screen shot, which saves to storage the image which gets used for inference.
         func takeScreenShot(inView view: UIView) {
             guard let camImage = self.parent.viewModel.image else {
                 fatalError("Could not call takeScreenShot")
             }
+
+            /// Create a `UIImageView` for overlaying the shutter animation over the camera view.
+            /// Remove it from the super view after image is saved to storage.
             let imageView = UIImageView(image: camImage)
             screenShotAnimate(inView: view, imageView: imageView)
-            screenShotSaveToLibrary(imageView: imageView)
+            UIImageWriteToSavedPhotosAlbum(camImage, nil, nil, nil)
+            imageView.removeFromSuperview()
         }
         
         /// Provides flash animation when screenshot is triggered.
@@ -67,39 +71,6 @@ struct CameraView: UIViewControllerRepresentable {
             UIView.animate(withDuration: 0.3, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: {
                 blackView.alpha = 0
             }, completion: nil)
-            
-            if self.parent.viewModel.viewMode == .Camera {
-                UIView.transition(with: view, duration: 1, options: .curveEaseIn, animations: nil)
-                view.addSubview(imageView)
-                self.parent.viewModel.viewMode = .ImagePreview
-            }
-        }
-        
-        /// Saves screen shot photo to library.
-        private func screenShotSaveToLibrary(imageView: UIImageView) {
-            guard let layer = UIApplication.shared.windows.first(where: \.isKeyWindow)?.layer else {
-                fatalError("Could not get layer for keyWindow")
-            }
-            
-            // Must be called before screenshot context is gathered
-            let scale = UIScreen.main.scale
-            UIGraphicsBeginImageContextWithOptions(layer.frame.size, false, scale)
-            
-            // Get screenshot data
-            guard let uiGraphicsCtx = UIGraphicsGetCurrentContext() else {
-                fatalError("Could not get screenshot context")
-            }
-            layer.render(in: uiGraphicsCtx)
-            let screenshot = UIGraphicsGetImageFromCurrentImageContext()
-            
-            UIGraphicsEndImageContext()
-            guard let camImage = self.parent.viewModel.image, screenshot != nil else {
-                fatalError("Unable to save screenshot")
-            }
-            UIImageWriteToSavedPhotosAlbum(screenshot!, nil, nil, nil)
-            imageView.removeFromSuperview()
-            self.parent.viewModel.viewMode = .Camera
-            self.parent.viewModel.image = camImage
         }
         
         /// Sets view model image.
