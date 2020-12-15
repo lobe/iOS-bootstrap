@@ -46,11 +46,6 @@ struct PlayView: View {
             .edgesIgnoringSafeArea(.all)
 
             VStack {
-                if let image = self.viewModel.image {
-                    Image(uiImage: image)
-                        .resizable()
-                        .aspectRatio(image.size, contentMode: .fit)
-                }
                 Spacer()
                 PredictionLabelView(classificationLabel: self.$viewModel.classificationLabel, confidence: self.$viewModel.confidence, projectName: self.viewModel.project.name)
             }
