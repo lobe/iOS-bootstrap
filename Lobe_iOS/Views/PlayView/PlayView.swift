@@ -42,7 +42,6 @@ struct PlayView: View {
                 }
             }
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-            .background(Color.black)
             .edgesIgnoringSafeArea(.all)
 
             VStack {
@@ -52,7 +51,17 @@ struct PlayView: View {
         }
         .statusBar(hidden: true)
         .navigationBarBackButtonHidden(true)
-        .navigationBarItems(leading: openScreenButton, trailing: closeImagePreviewButton)
+        .navigationBarItems(leading: openScreenButton, trailing:
+            HStack {
+                /// Photo picker button if in camera mode, else we show button to toggle to camera mode
+                if (self.viewModel.viewMode == .Camera) {
+                    openPhotoPickerButton                    
+                } else {
+                    showCameraModeButton
+                }
+            }
+                                .buttonStyle(PlayViewButtonStyle())
+        )
         .sheet(isPresented: self.$viewModel.showImagePicker) {
             ImagePicker(image: self.$viewModel.image, viewMode: self.$viewModel.viewMode, sourceType: .photoLibrary)
                 .edgesIgnoringSafeArea(.all)
@@ -61,68 +70,51 @@ struct PlayView: View {
 }
 
 extension PlayView {
+    /// Button style for navigation row
+    struct PlayViewButtonStyle: ButtonStyle {
+        func makeBody(configuration: Configuration) -> some View {
+            configuration.label
+                .padding(10)
+                .foregroundColor(.white)
+                .background(Color.black.opacity(0.35).blur(radius: 20))
+                .cornerRadius(8)
+        }
+    }
+
     /// Button for return back to open screen
     var openScreenButton: some View {
         Button(action: {
             self.presentationMode.wrappedValue.dismiss()
         }) {
-            Image(systemName: "square.fill.on.square.fill")
-                .scaleEffect(1.5)
-                .padding()
+            HStack {
+                Image(systemName: "chevron.left")
+                Text("Projects")
+            }
+        }
+        .buttonStyle(PlayViewButtonStyle())
+    }
+    
+    /// Button for opening photo picker
+    var openPhotoPickerButton: some View {
+        Button(action: {
+            self.viewModel.showImagePicker.toggle()
+        }) {
+            Image(systemName: "photo.fill")
         }
     }
     
-    var closeImagePreviewButton: some View {
+    /// Button for enabling camera mode
+    var showCameraModeButton: some View {
         let isVisible = self.viewModel.viewMode == .ImagePreview
         
         return (
             Button(action: { self.viewModel.viewMode = .Camera }) {
-                Image(systemName: "xmark")
-                    .scaleEffect(1.5)
-                    .padding()
+                Image(systemName: "camera.viewfinder")
             }
             .opacity(isVisible ? 1 : 0)
             .disabled(!isVisible)
         )
     }
-    
-    
-    // TO-DO: get below buttons to work again
-    //                HStack {
-    //
-    //                    /* Button for openning the photo library. */
-    //                    Button(action: {
-    //                        withAnimation {
-    //                            self.showImagePicker = true
-    //                        }
-    //                        viewModel.changeStatus(useCam: false, img: self.controller.camImage!)
-    //                    }) {
-    //                        Image("PhotoLib")
-    //                            .renderingMode(.original)
-    //                            .frame(width: geometry.size.width / 3, height: geometry.size.height / 16)
-    //                    }.opacity(0)  // not displaying the button
-    //
-    //                    /* button for taking screenshot. */
-    //                    Button(action: {
-    //                        self.controller.takeScreenShot()
-    //                    }) {
-    //                        Image("Button")
-    //                            .renderingMode(.original)
-    //                            .frame(width: geometry.size.width / 3, height: geometry.size.width / 9)
-    //                    }.opacity(0)  // not displaying the button
-    //
-    //                    /* button for flipping the camera. */
-    //                    Button(action: {
-    //                        self.controller.flipCamera()
-    //                    }) {
-    //                        Image("Swap")
-    //                            .renderingMode(.original)
-    //                            .frame(width: geometry.size.width / 3, height: geometry.size.height / 16)
-    //                    }.opacity(0)  // not displaying the button
-    //                }
-    //                .frame(width: geometry.size.width,
-    //                      height: geometry.size.height / 30, alignment: .bottom)
-    //                .opacity(self.image == nil ? 1: 0)  // hide the buttons when displaying an image from the photo library
 }
 
 /// Gadget to build colors from Hashtag Color Code Hex.
@@ -146,12 +138,31 @@ extension UIColor {
 }
 
 struct PlayView_Previews: PreviewProvider {
+    struct TestImage: View {
+        var body: some View {
+            Image("testing_image")
+                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                .edgesIgnoringSafeArea(.all)
+        }
+    }
+    
     static var previews: some View {
         let viewModel = PlayViewModel(project: Project(name: "Test", model: nil))
+        viewModel.viewMode = .Camera
+
         return Group {
-            PlayView(viewModel: viewModel)
-            PlayView(viewModel: viewModel)
-                .previewDevice("iPad Pro (11-inch) (2nd generation)")
+            NavigationView {
+                ZStack {
+                    TestImage()
+                    PlayView(viewModel: viewModel)
+                }
+            }
+            .previewDevice("iPhone 12")
+            ZStack {
+                TestImage()
+                PlayView(viewModel: viewModel)
+            }
+            .previewDevice("iPad Pro (11-inch) (2nd generation)")
         }
     }
 }
