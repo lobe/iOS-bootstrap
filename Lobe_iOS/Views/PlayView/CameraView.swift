@@ -11,14 +11,6 @@ import SwiftUI
 import UIKit
 import Vision
 
-protocol CameraViewDelegate: class {
-    /// Signals to delegate when screenshot is ready to be taken.
-    func takeScreenShot(inView view: UIView)
-    
-    /// Binds camera image to delegate.
-    func setCameraImage(with croppedImage: UIImage)
-}
-
 struct CameraView: UIViewControllerRepresentable {
     // TO-DO: think about renaming viewmodel here
     
@@ -28,7 +20,6 @@ struct CameraView: UIViewControllerRepresentable {
 
     func makeUIViewController(context: Context) -> CaptureSessionViewController {
         let vc = CaptureSessionViewController(viewModel: captureSessionViewModel)
-        vc.delegate = context.coordinator
         return vc
     }
     
@@ -37,7 +28,21 @@ struct CameraView: UIViewControllerRepresentable {
         // TO-DO: need a check here so that this doesn't crash device
         if self.captureSessionViewModel.captureSession != nil {
             uiViewController.setPreviewLayer()
-            uiViewController.setOutput()
+//            uiViewController.setOutput()
+
+            /// Set data output
+            let dataOutput = AVCaptureVideoDataOutput()
+
+            guard let captureSession = self.captureSessionViewModel.captureSession,
+                  captureSession.canAddOutput(dataOutput) else {
+                print("Cannot add output to capture session")
+                return
+            }
+            
+            print("success")
+            dataOutput.setSampleBufferDelegate(context.coordinator, queue: DispatchQueue(label: "videoQueue"))
+
+            captureSession.addOutput(dataOutput)
         }
     }
     
@@ -45,13 +50,63 @@ struct CameraView: UIViewControllerRepresentable {
         Coordinator(self)
     }
     
-    class Coordinator: NSObject, CameraViewDelegate {
+    class Coordinator: NSObject, AVCaptureVideoDataOutputSampleBufferDelegate {
         var parent: CameraView
+        var totalFrameCount = 0
         
         init(_ parent: CameraView) {
             self.parent = parent
         }
-        /// Wrapper for screen shot, which saves to storage the image which gets used for inference.
+        
+        /// Delegate method for `AVCaptureVideoDataOutputSampleBufferDelegate`: formats image for inference
+        func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+            // Skip frames to optimize.
+            totalFrameCount += 1
+            if totalFrameCount % 20 != 0{ return }
+            
+            guard let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer),
+                  let image = UIImage(pixelBuffer: pixelBuffer)
+                //   let previewLayer = self.previewLayer,
+                //   let videoOrientation = previewLayer.connection?.videoOrientation
+            else {
+                print("Failed creating image at captureOutput.")
+                return
+            }
+            
+            // Determine rotation by radians given device orientation and camera device
+            // var radiansToRotate = CGFloat(0)
+            // switch videoOrientation {
+            //     case .portrait:
+            //         radiansToRotate = .pi / 2
+            //         break
+            //     case .portraitUpsideDown:
+            //         radiansToRotate = (3 * .pi) / 2
+            //         break
+            //     case .landscapeLeft:
+            //         if (self.captureDevice == self.backCam) {
+            //             radiansToRotate = .pi
+            //         }
+            //         break
+            //     case .landscapeRight:
+            //         if (self.captureDevice == self.frontCam) {
+            //             radiansToRotate = .pi
+            //         }
+            //         break
+            //     default:
+            //         break
+            // }
+
+            // Rotate and crop the captured image to be the size of the screen.
+            // let isUsingFrontCam = self.captureDevice == self.frontCam
+            // guard let rotatedImage = image.rotate(radians: radiansToRotate, flipX: isUsingFrontCam),
+            //       let squaredImage = rotatedImage.squared() else {
+            //     fatalError("Could not rotate or crop image.")
+            // }
+            
+            // self.setCameraImage(with: squaredImage)
+        }
+
+        /// Wrapper for screen shot.
         func takeScreenShot(inView view: UIView) {
             // guard let camImage = self.parent.viewModel.image else {
             //     fatalError("Could not call takeScreenShot")

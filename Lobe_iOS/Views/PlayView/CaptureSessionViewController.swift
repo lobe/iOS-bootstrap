@@ -13,11 +13,7 @@ import VideoToolbox
 /// View controller for setting camera output to UI view.
 class CaptureSessionViewController: UIViewController {
     var previewLayer: AVCaptureVideoPreviewLayer?
-    var totalFrameCount = 0
-    var tripleTapGesture: UITapGestureRecognizer?
-    var doubleTapGesture: UITapGestureRecognizer?
 
-    var delegate: CameraViewDelegate?
     var viewModel: CaptureSessionViewModel?
     
     required init?(coder: NSCoder) {
@@ -31,21 +27,6 @@ class CaptureSessionViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // TO-DO: move this to view model
-        
-        // Define gesture event listeners
-        let doubleTapGesture = UITapGestureRecognizer(target: self, action:#selector(self.handleDoubleTap(_:)))
-        doubleTapGesture.numberOfTapsRequired = 2
-        view.addGestureRecognizer(doubleTapGesture)
-        
-        let tripleTapGesture = UITapGestureRecognizer(target: self, action:#selector(self.handleTripleTap(_:)))
-        tripleTapGesture.numberOfTapsRequired = 3
-        view.addGestureRecognizer(tripleTapGesture)
-        doubleTapGesture.require(toFail: tripleTapGesture)
-        
-        self.doubleTapGesture = doubleTapGesture
-        self.tripleTapGesture = tripleTapGesture
     }
     
     /// Set video configuration for subview layout
@@ -60,24 +41,14 @@ class CaptureSessionViewController: UIViewController {
         self.configureVideoOrientation(for: self.previewLayer)
     }
     
-    /// Double tap flips camera.
-    @objc func handleDoubleTap(_ sender: UITapGestureRecognizer? = nil) {
-        self.flipCamera(inView: view)
-    }
-    
-    /// Triple tap creates screen shot.
-    @objc func handleTripleTap(_ sender: UITapGestureRecognizer? = nil) {
-        self.delegate?.takeScreenShot(inView: view)
-    }
-    
     /// Swaps camera view between front and back
-    @objc func flipCamera(inView view: UIView) {
-        UIView.transition(with: view, duration: 0.5, options: .transitionFlipFromLeft, animations: nil)
+//    @objc func flipCamera(inView view: UIView) {
+//        UIView.transition(with: view, duration: 0.5, options: .transitionFlipFromLeft, animations: nil)
 //        self.captureDevice = (captureDevice == backCam) ? frontCam : backCam
 //
 //        self.captureSession?.stopRunning()
 //        startCaptureSession()
-    }
+//    }
 
     func setPreviewLayer() {
         // TO-DO: 1. move this to view model
@@ -94,26 +65,6 @@ class CaptureSessionViewController: UIViewController {
         view.layer.addSublayer(previewLayer)
         
         self.previewLayer = previewLayer
-    }
-
-    func setOutput() {
-        let dataOutput = AVCaptureVideoDataOutput()
-
-        guard let captureSession = self.viewModel?.captureSession,
-              captureSession.canAddOutput(dataOutput) else {
-            print("Cannot add output to capture session")
-            return
-        }
-        
-        print("success")
-        dataOutput.setSampleBufferDelegate(self, queue: DispatchQueue(label: "videoQueue"))
-
-        captureSession.addOutput(dataOutput)
-    }
-
-    func getDevice(position: AVCaptureDevice.Position) -> AVCaptureDevice? {
-        let cam = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: position).devices
-        return cam.first
     }
     
     /// Configures orientation of preview layer for AVCapture session.
@@ -143,56 +94,6 @@ class CaptureSessionViewController: UIViewController {
             preview.frame = self.view.bounds
             
         }
-    }
-}
-
-/// Defines delegate method.
-extension CaptureSessionViewController: AVCaptureVideoDataOutputSampleBufferDelegate {
-    func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        // Skip frames to optimize.
-        totalFrameCount += 1
-        if totalFrameCount % 20 != 0{ return }
-        
-        guard let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer),
-              let image = UIImage(pixelBuffer: pixelBuffer),
-              let previewLayer = self.previewLayer,
-              let videoOrientation = previewLayer.connection?.videoOrientation
-        else {
-            print("Failed creating image at captureOutput.")
-            return
-        }
-        
-        // Determine rotation by radians given device orientation and camera device
-        var radiansToRotate = CGFloat(0)
-        switch videoOrientation {
-            case .portrait:
-                radiansToRotate = .pi / 2
-                break
-            case .portraitUpsideDown:
-                radiansToRotate = (3 * .pi) / 2
-                break
-            case .landscapeLeft:
-                if (self.captureDevice == self.backCam) {
-                    radiansToRotate = .pi
-                }
-                break
-            case .landscapeRight:
-                if (self.captureDevice == self.frontCam) {
-                    radiansToRotate = .pi
-                }
-                break
-            default:
-                break
-        }
-
-        // Rotate and crop the captured image to be the size of the screen.
-        let isUsingFrontCam = self.captureDevice == self.frontCam
-        guard let rotatedImage = image.rotate(radians: radiansToRotate, flipX: isUsingFrontCam),
-              let squaredImage = rotatedImage.squared() else {
-            fatalError("Could not rotate or crop image.")
-        }
-        
-        self.delegate?.setCameraImage(with: squaredImage)
     }
 }
 
