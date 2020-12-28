@@ -13,8 +13,11 @@ struct PlayView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @ObservedObject var viewModel: PlayViewModel
     
+    @ObservedObject var captureSessionViewModel: CaptureSessionViewModel
+    
     init(viewModel: PlayViewModel) {
         self.viewModel = viewModel
+        self.captureSessionViewModel = CaptureSessionViewModel()
     }
     
     var body: some View {
@@ -23,7 +26,7 @@ struct PlayView: View {
                 switch(self.viewModel.viewMode) {
                     // Background camera view.
                     case .Camera:
-                        CameraView(viewModel: viewModel)
+                        CameraView(captureSessionViewModel: captureSessionViewModel)
                         // Gesture for swiping up the photo library.
                         .gesture(
                             DragGesture()
@@ -55,7 +58,8 @@ struct PlayView: View {
             HStack {
                 /// Photo picker button if in camera mode, else we show button to toggle to camera mode
                 if (self.viewModel.viewMode == .Camera) {
-                    openPhotoPickerButton                    
+                    rotateCameraButton
+                    openPhotoPickerButton
                 } else {
                     showCameraModeButton
                 }
@@ -65,6 +69,12 @@ struct PlayView: View {
         .sheet(isPresented: self.$viewModel.showImagePicker) {
             ImagePicker(image: self.$viewModel.image, viewMode: self.$viewModel.viewMode, sourceType: .photoLibrary)
                 .edgesIgnoringSafeArea(.all)
+        }
+        .onAppear {
+            self.captureSessionViewModel.isEnabled = true
+        }
+        .onDisappear {
+            self.captureSessionViewModel.isEnabled = false
         }
     }
 }
@@ -105,15 +115,16 @@ extension PlayView {
     
     /// Button for enabling camera mode
     var showCameraModeButton: some View {
-        let isVisible = self.viewModel.viewMode == .ImagePreview
-        
-        return (
-            Button(action: { self.viewModel.viewMode = .Camera }) {
-                Image(systemName: "camera.viewfinder")
-            }
-            .opacity(isVisible ? 1 : 0)
-            .disabled(!isVisible)
-        )
+        Button(action: { self.viewModel.viewMode = .Camera }) {
+            Image(systemName: "camera.viewfinder")
+        }
+    }
+    
+    /// Button for rotating camera
+    var rotateCameraButton: some View {
+        Button(action: { self.captureSessionViewModel.rotateCamera() }) {
+            Image(systemName: "camera.rotate.fill")
+        }
     }
 }
 

@@ -10,21 +10,29 @@ import AVKit
 import Foundation
 import VideoToolbox
 
-/// Camera session; ML request handling.
+/// View controller for setting camera output to UI view.
 class CaptureSessionViewController: UIViewController {
-    var backCam: AVCaptureDevice?
-    var frontCam: AVCaptureDevice?
-    var captureDevice: AVCaptureDevice?
-    var captureSession: AVCaptureSession?
     var previewLayer: AVCaptureVideoPreviewLayer?
     var totalFrameCount = 0
     var tripleTapGesture: UITapGestureRecognizer?
     var doubleTapGesture: UITapGestureRecognizer?
 
     var delegate: CameraViewDelegate?
+    var viewModel: CaptureSessionViewModel?
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    init(viewModel: CaptureSessionViewModel) {
+        super.init(nibName: nil, bundle: nil)
+        self.viewModel = viewModel
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        // TO-DO: move this to view model
         
         // Define gesture event listeners
         let doubleTapGesture = UITapGestureRecognizer(target: self, action:#selector(self.handleDoubleTap(_:)))
@@ -38,20 +46,6 @@ class CaptureSessionViewController: UIViewController {
         
         self.doubleTapGesture = doubleTapGesture
         self.tripleTapGesture = tripleTapGesture
-        self.backCam = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .back).devices.first
-        self.frontCam = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .front).devices.first
-        
-        self.captureDevice = backCam
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        startCaptureSession()
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        self.captureSession?.stopRunning()
     }
     
     /// Set video configuration for subview layout
@@ -79,35 +73,19 @@ class CaptureSessionViewController: UIViewController {
     /// Swaps camera view between front and back
     @objc func flipCamera(inView view: UIView) {
         UIView.transition(with: view, duration: 0.5, options: .transitionFlipFromLeft, animations: nil)
-        self.captureDevice = (captureDevice == backCam) ? frontCam : backCam
-
-        self.captureSession?.stopRunning()
-        startCaptureSession()
-    }
-
-    func startCaptureSession() {
-        self.captureSession = AVCaptureSession()
-        guard let captureSession = self.captureSession,
-              let captureDevice = self.captureDevice
-        else {
-            print("Could not instantiate capture session on viewDidLoad")
-            return
-        }
-
-        do {
-            let input = try AVCaptureDeviceInput(device: captureDevice)
-            captureSession.addInput(input)
-        } catch {
-            print("Could not create AVCaptureDeviceInput in viewDidLoad.")
-        }
-        
-        captureSession.startRunning()
-        setPreviewLayer()
-        setOutput()
+//        self.captureDevice = (captureDevice == backCam) ? frontCam : backCam
+//
+//        self.captureSession?.stopRunning()
+//        startCaptureSession()
     }
 
     func setPreviewLayer() {
-        guard let captureSession = self.captureSession else {
+        // TO-DO: 1. move this to view model
+        // TO-DO: 2. fix the number of calls amde here
+        
+        
+        
+        guard let captureSession = self.viewModel?.captureSession else {
             fatalError("Preview layer not set.")
         }
         let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
@@ -120,8 +98,17 @@ class CaptureSessionViewController: UIViewController {
 
     func setOutput() {
         let dataOutput = AVCaptureVideoDataOutput()
+
+        guard let captureSession = self.viewModel?.captureSession,
+              captureSession.canAddOutput(dataOutput) else {
+            print("Cannot add output to capture session")
+            return
+        }
+        
+        print("success")
         dataOutput.setSampleBufferDelegate(self, queue: DispatchQueue(label: "videoQueue"))
-        self.captureSession?.addOutput(dataOutput)
+
+        captureSession.addOutput(dataOutput)
     }
 
     func getDevice(position: AVCaptureDevice.Position) -> AVCaptureDevice? {
