@@ -31,11 +31,11 @@ class PredictionLayer: NSObject, ImageClassificationPredicter {
         
         try? requestHandler.perform([request])
     }
-
+    
+    /// Creates request handler and formats image for prediciton processing.
     func createPredictionRequestHandler(forImage image: UIImage) -> VNImageRequestHandler {
         /* Crop to square images and send to the model. */
-        let _cgImage = image.squared()?.cgImage
-        guard let cgImage = _cgImage else {
+        guard let cgImage = image.cgImage else {
             fatalError("Could not create cgImage in captureOutput")
         }
         

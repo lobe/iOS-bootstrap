@@ -44,7 +44,7 @@ struct PlayView: View {
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
             .background(Color.black)
             .edgesIgnoringSafeArea(.all)
-            
+
             VStack {
                 Spacer()
                 PredictionLabelView(classificationLabel: self.$viewModel.classificationLabel, confidence: self.$viewModel.confidence, projectName: self.viewModel.project.name)
