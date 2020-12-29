@@ -12,13 +12,14 @@ import SwiftUI
 struct PlayView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @ObservedObject var viewModel: PlayViewModel
+    @State var imageForPreview: UIImage?
     
     // TO-DO: move this out of playview
     @ObservedObject var captureSessionViewModel: CaptureSessionViewModel
     
     init(viewModel: PlayViewModel) {
         self.viewModel = viewModel
-        self.captureSessionViewModel = CaptureSessionViewModel()
+        self.captureSessionViewModel = CaptureSessionViewModel(predictionLayer: viewModel.imagePredicter)
     }
     
     var body: some View {
@@ -27,7 +28,7 @@ struct PlayView: View {
                 switch(self.viewModel.viewMode) {
                     // Background camera view.
                     case .Camera:
-                        CameraView(viewModel: captureSessionViewModel, imageForInference: $viewModel.image)
+                        CameraView(viewModel: captureSessionViewModel)
                         // Gesture for swiping up the photo library.
                         .gesture(
                             DragGesture()
@@ -42,7 +43,11 @@ struct PlayView: View {
 
                     // Placeholder for displaying an image from the photo library.
                     case .ImagePreview:
-                        ImagePreview(image: self.$viewModel.image, viewMode: self.$viewModel.viewMode)
+                        ImagePreview(image: self.$imageForPreview, viewMode: self.$viewModel.viewMode)
+                            .onDisappear {
+                                /// Re-enable capture session when image preview disappears
+                                self.captureSessionViewModel.isEnabled = true
+                            }
                 }
             }
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
@@ -68,7 +73,7 @@ struct PlayView: View {
                                 .buttonStyle(PlayViewButtonStyle())
         )
         .sheet(isPresented: self.$viewModel.showImagePicker) {
-            ImagePicker(image: self.$viewModel.image, viewMode: self.$viewModel.viewMode, sourceType: .photoLibrary)
+            ImagePicker(image: self.$imageForPreview, viewMode: self.$viewModel.viewMode, predictionLayer: self.viewModel.imagePredicter, sourceType: .photoLibrary)
                 .edgesIgnoringSafeArea(.all)
         }
         .onAppear {
@@ -109,6 +114,7 @@ extension PlayView {
     var openPhotoPickerButton: some View {
         Button(action: {
             self.viewModel.showImagePicker.toggle()
+            self.captureSessionViewModel.isEnabled = false
         }) {
             Image(systemName: "photo.fill")
         }
@@ -116,7 +122,10 @@ extension PlayView {
     
     /// Button for enabling camera mode
     var showCameraModeButton: some View {
-        Button(action: { self.viewModel.viewMode = .Camera }) {
+        Button(action: {
+            self.viewModel.viewMode = .Camera
+            self.captureSessionViewModel.isEnabled = true
+        }) {
             Image(systemName: "camera.viewfinder")
         }
     }

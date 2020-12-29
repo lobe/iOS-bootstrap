@@ -8,7 +8,6 @@
 
 import Combine
 import SwiftUI
-import Vision
 
 enum PlayViewMode {
     case Camera
@@ -20,48 +19,27 @@ class PlayViewModel: ObservableObject {
     @Published var classificationLabel: String?
     @Published var confidence: Float?
     @Published var viewMode: PlayViewMode = PlayViewMode.Camera
-    @Published var image: UIImage?
     @Published var showImagePicker: Bool = false
     let project: Project
-    private let imagePredicter: PredictionLayer
+    let imagePredicter: PredictionLayer
     private var disposables = Set<AnyCancellable>()
     
     init(project: Project) {
         self.project = project
         self.imagePredicter = PredictionLayer(model: project.model)
         
-        // Subscribe to changes on image
-        $image
-            .drop(while: { $0 == nil })
-            .receive(on: DispatchQueue.global(qos: .userInitiated))
-            .sink(receiveValue: fetchPrediction(forImage:))
-            .store(in: &disposables)
-    }
-    
-    func fetchPrediction(forImage image: UIImage?) {
-        guard let image = image else {
-            print("Image not found")
-            return
-        }
-        self.imagePredicter
-            .getPrdiction(forImage: image, onComplete: { [weak self] request in
-                DispatchQueue.main.async { [weak self] in
-                    guard let classifications = request.results as? [VNClassificationObservation] else {
-                        self?.classificationLabel = "Classification Error"
-                        return
-                    }
-                    
-                    if classifications.isEmpty {
-                        self?.classificationLabel = "No Labels Found"
-                    } else {
-                        /* Display top classifications ranked by confidence in the UI. */
-                        let topClassifications = classifications.prefix(1)
-                        self?.classificationLabel = topClassifications[0].identifier
-                        self?.confidence = topClassifications[0].confidence
-                    }
+        /// Subscribe to classifier results from prediction layer
+        self.imagePredicter.$classificationResult
+            .receive(on: DispatchQueue.main)
+            .sink(receiveValue: {[weak self] classificationResult in
+                guard let _classificationResult = classificationResult else {
+                    self?.classificationLabel = "Loading Results..."
+                    return
                 }
-            }, onError: { [weak self] error in
-                self?.classificationLabel = "Classification Error"
+                self?.classificationLabel = _classificationResult.identifier
+                self?.confidence = _classificationResult.confidence
+                
             })
+            .store(in: &disposables)
     }
 }

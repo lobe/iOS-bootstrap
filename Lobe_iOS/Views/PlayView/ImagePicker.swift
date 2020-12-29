@@ -21,6 +21,7 @@ struct ImagePicker: UIViewControllerRepresentable {
     
     @Binding var image: UIImage?
     @Binding var viewMode: PlayViewMode
+    let predictionLayer: PredictionLayer
     
     var sourceType: UIImagePickerController.SourceType = .camera
     
@@ -51,6 +52,7 @@ struct ImagePicker: UIViewControllerRepresentable {
 
             if let uiImage = info[UIImagePickerController.InfoKey.originalImage] as? UIImage {
                 self.parent.image = uiImage
+                self.parent.predictionLayer.getPrediction(forImage: uiImage)
                 self.parent.viewMode = .ImagePreview
             }
         }

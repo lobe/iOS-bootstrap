@@ -15,13 +15,16 @@ class CaptureSessionViewModel: ObservableObject {
     @Published var captureDevice: AVCaptureDevice?
     @Published var isEnabled = false
     @Published var previewLayer: AVCaptureVideoPreviewLayer?
+    let predictionLayer: PredictionLayer
     var captureSession: AVCaptureSession?
     var backCam: AVCaptureDevice?
     var frontCam: AVCaptureDevice?
     var dataOutput: AVCaptureVideoDataOutput?
     private var disposables = Set<AnyCancellable>()
     
-    init() {
+    init(predictionLayer: PredictionLayer) {
+        self.predictionLayer = predictionLayer
+        
         /// Init devices.
         self.backCam = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .back).devices.first
         self.frontCam = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .front).devices.first
@@ -53,7 +56,7 @@ class CaptureSessionViewModel: ObservableObject {
             .store(in: &disposables)
     }
     
-    /// Resets camera feed, which does:
+    /// Resets camera feed, which:
     /// 1. Creates capture session for specified device.
     /// 2. Creates preview layer.
     /// 3. Creates new video data output.
@@ -71,6 +74,10 @@ class CaptureSessionViewModel: ObservableObject {
         let captureSession = self.createCaptureSession(for: captureDevice)
         let previewLayer = self.createPreviewLayer(for: captureSession)
         let dataOutput = AVCaptureVideoDataOutput()
+
+        /// Set delegate of video output buffer to the prediction layer, which handles all inference logic
+        /// from the input buffer.
+        dataOutput.setSampleBufferDelegate(self.predictionLayer, queue: DispatchQueue(label: "videoQueue"))
         captureSession.startRunning()
         captureSession.addOutput(dataOutput)
         
