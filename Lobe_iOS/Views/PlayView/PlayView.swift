@@ -13,6 +13,7 @@ struct PlayView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @ObservedObject var viewModel: PlayViewModel
     
+    // TO-DO: move this out of playview
     @ObservedObject var captureSessionViewModel: CaptureSessionViewModel
     
     init(viewModel: PlayViewModel) {
@@ -26,7 +27,7 @@ struct PlayView: View {
                 switch(self.viewModel.viewMode) {
                     // Background camera view.
                     case .Camera:
-                        CameraView(captureSessionViewModel: captureSessionViewModel)
+                        CameraView(viewModel: captureSessionViewModel, imageForInference: $viewModel.image)
                         // Gesture for swiping up the photo library.
                         .gesture(
                             DragGesture()

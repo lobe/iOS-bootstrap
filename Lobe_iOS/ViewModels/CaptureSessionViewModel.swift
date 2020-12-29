@@ -18,15 +18,16 @@ class CaptureSessionViewModel: ObservableObject {
     var captureSession: AVCaptureSession?
     var backCam: AVCaptureDevice?
     var frontCam: AVCaptureDevice?
+    var dataOutput: AVCaptureVideoDataOutput?
     private var disposables = Set<AnyCancellable>()
     
     init() {
+        /// Init devices.
         self.backCam = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .back).devices.first
         self.frontCam = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .front).devices.first
-        
         self.captureDevice = backCam
-        self.captureSession = AVCaptureSession()
         
+        /// Reset camera feed if capture device changes.
         $captureDevice
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] _ in
@@ -37,6 +38,7 @@ class CaptureSessionViewModel: ObservableObject {
             })
             .store(in: &disposables)
         
+        /// Reset camera feed if capture session is enabled, or tear-down if disabled.
         $isEnabled
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] _isEnabled in
@@ -53,18 +55,28 @@ class CaptureSessionViewModel: ObservableObject {
     
     /// Resets camera feed, which does:
     /// 1. Creates capture session for specified device.
-    /// 2. Creates preview layaer.
-    /// 3. Starts capture session.
+    /// 2. Creates preview layer.
+    /// 3. Creates new video data output.
+    /// 4. Starts capture session.
     func resetCameraFeed() {
         guard let captureDevice = self.captureDevice else {
             print("No capture device found on reset camera feed.")
             return
         }
+        /// Tear down existing capture session to remove output for buffer delegate.
+        self.captureSession = nil
+        self.dataOutput = nil
+
+        /// Create new capture session and preview layer.
         let captureSession = self.createCaptureSession(for: captureDevice)
         let previewLayer = self.createPreviewLayer(for: captureSession)
+        let dataOutput = AVCaptureVideoDataOutput()
         captureSession.startRunning()
+        captureSession.addOutput(dataOutput)
+        
         self.captureSession = captureSession
         self.previewLayer = previewLayer
+        self.dataOutput = dataOutput
     }
     
     /// Creates a capture session given input device as param.

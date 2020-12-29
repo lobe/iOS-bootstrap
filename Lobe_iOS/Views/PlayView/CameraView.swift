@@ -12,38 +12,24 @@ import UIKit
 import Vision
 
 struct CameraView: UIViewControllerRepresentable {
-    // TO-DO: think about renaming viewmodel here
-    
-
-//    @ObservedObject var viewModel: PlayViewModel
-    @ObservedObject var captureSessionViewModel: CaptureSessionViewModel
+    @ObservedObject var viewModel: CaptureSessionViewModel
+    @Binding var imageForInference: UIImage?
 
     func makeUIViewController(context: Context) -> CaptureSessionViewController {
-        CaptureSessionViewController()
+        self.viewModel.dataOutput?.setSampleBufferDelegate(context.coordinator, queue: DispatchQueue(label: "videoQueue"))
+        return CaptureSessionViewController()
     }
     
     /// Update preview layer when state changes for camera device
     func updateUIViewController(_ uiViewController: CaptureSessionViewController, context: Context) {
-        // TO-DO: need a check here so that this doesn't crash device
-
-        guard let captureSession = self.captureSessionViewModel.captureSession,
-              let previewLayer = self.captureSessionViewModel.previewLayer else {
-            print("Could not create video data output.")
-            return
-        }
-        
-        /// Set view
+        /// Set view with previewlayer
+        let previewLayer = self.viewModel.previewLayer
         uiViewController.previewLayer = previewLayer
         uiViewController.configureVideoOrientation(for: previewLayer)
-        uiViewController.view.layer.addSublayer(previewLayer)
+        if previewLayer != nil { uiViewController.view.layer.addSublayer(previewLayer!) }
         
-        /// Set data output
-        let dataOutput = AVCaptureVideoDataOutput()
-        
-        print("success")
-        dataOutput.setSampleBufferDelegate(context.coordinator, queue: DispatchQueue(label: "videoQueue"))
-
-        captureSession.addOutput(dataOutput)
+        /// Set data output delegate
+        self.viewModel.dataOutput?.setSampleBufferDelegate(context.coordinator, queue: DispatchQueue(label: "videoQueue"))
     }
     
     func makeCoordinator() -> Coordinator {
@@ -66,7 +52,7 @@ struct CameraView: UIViewControllerRepresentable {
             
             guard let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer),
                   let image = UIImage(pixelBuffer: pixelBuffer),
-                  let previewLayer = self.parent.captureSessionViewModel.previewLayer,
+                  let previewLayer = self.parent.viewModel.previewLayer,
                   let videoOrientation = previewLayer.connection?.videoOrientation else {
                 print("Failed creating image at captureOutput.")
                 return
@@ -82,12 +68,12 @@ struct CameraView: UIViewControllerRepresentable {
                 radiansToRotate = (3 * .pi) / 2
                 break
             case .landscapeLeft:
-                if (self.parent.captureSessionViewModel.captureDevice == self.parent.captureSessionViewModel.backCam) {
+                if (self.parent.viewModel.captureDevice == self.parent.viewModel.backCam) {
                     radiansToRotate = .pi
                 }
                 break
             case .landscapeRight:
-                if (self.parent.captureSessionViewModel.captureDevice == self.parent.captureSessionViewModel.frontCam) {
+                if (self.parent.viewModel.captureDevice == self.parent.viewModel.frontCam) {
                     radiansToRotate = .pi
                 }
                 break
@@ -96,13 +82,13 @@ struct CameraView: UIViewControllerRepresentable {
             }
             
             // Rotate and crop the captured image to be the size of the screen.
-            let isUsingFrontCam = self.parent.captureSessionViewModel.captureDevice == self.parent.captureSessionViewModel.frontCam
+            let isUsingFrontCam = self.parent.viewModel.captureDevice == self.parent.viewModel.frontCam
             guard let rotatedImage = image.rotate(radians: radiansToRotate, flipX: isUsingFrontCam),
                   let squaredImage = rotatedImage.squared() else {
                 fatalError("Could not rotate or crop image.")
             }
             
-            self.setCameraImage(with: squaredImage)
+//            self.setCameraImage(with: squaredImage)
         }
 
         /// Wrapper for screen shot.
@@ -135,13 +121,6 @@ struct CameraView: UIViewControllerRepresentable {
             // UIView.animate(withDuration: 0.3, delay: 0, options: UIView.AnimationOptions.curveLinear, animations: {
             //     blackView.alpha = 0
             // }, completion: nil)
-        }
-        
-        /// Sets view model image.
-        func setCameraImage(with croppedImage: UIImage) {
-//            DispatchQueue.main.async { [weak self] in
-//                self?.parent.viewModel.image = croppedImage
-//            }
         }
     }
 }
