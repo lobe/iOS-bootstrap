@@ -12,11 +12,12 @@ import SwiftUI
 
 /// View model for camera view.
 class CaptureSessionViewModel: ObservableObject {
-    @Published var captureSession: AVCaptureSession?
     @Published var captureDevice: AVCaptureDevice?
     @Published var isEnabled = false
-    private var backCam: AVCaptureDevice?
-    private var frontCam: AVCaptureDevice?
+    @Published var previewLayer: AVCaptureVideoPreviewLayer?
+    var captureSession: AVCaptureSession?
+    var backCam: AVCaptureDevice?
+    var frontCam: AVCaptureDevice?
     private var disposables = Set<AnyCancellable>()
     
     init() {
@@ -28,34 +29,47 @@ class CaptureSessionViewModel: ObservableObject {
         
         $captureDevice
             .receive(on: DispatchQueue.main)
-            .sink(receiveValue: createCaptureSession(for:))
+            .sink(receiveValue: { [weak self] _ in
+                guard let isEnabled = self?.isEnabled else  {
+                    return
+                }
+                if isEnabled { self?.resetCameraFeed() }
+            })
             .store(in: &disposables)
         
         $isEnabled
             .receive(on: DispatchQueue.main)
-            .sink(receiveValue: { _isEnabled in
-                if (_isEnabled) {
-                    self.createCaptureSession(for: self.captureDevice)
-                } else {
-                    self.captureSession?.stopRunning()
+            .sink(receiveValue: { [weak self] _isEnabled in
+                if _isEnabled { self?.resetCameraFeed() }
+                else {
+                    /// On disable, stop running capture session and then tear down.
+                    /// Both steps are required to prroperly shut down camera session.
+                    self?.captureSession?.stopRunning()
+                    self?.captureSession = nil
                 }
             })
             .store(in: &disposables)
     }
     
-    func createCaptureSession(for captureDevice: AVCaptureDevice?) {
-        guard self.isEnabled else {
-            print("Capture session disabled.")
+    /// Resets camera feed, which does:
+    /// 1. Creates capture session for specified device.
+    /// 2. Creates preview layaer.
+    /// 3. Starts capture session.
+    func resetCameraFeed() {
+        guard let captureDevice = self.captureDevice else {
+            print("No capture device found on reset camera feed.")
             return
         }
-
+        let captureSession = self.createCaptureSession(for: captureDevice)
+        let previewLayer = self.createPreviewLayer(for: captureSession)
+        captureSession.startRunning()
+        self.captureSession = captureSession
+        self.previewLayer = previewLayer
+    }
+    
+    /// Creates a capture session given input device as param.
+    private func createCaptureSession(for captureDevice: AVCaptureDevice) -> AVCaptureSession {
         let captureSession = AVCaptureSession()
-
-        guard let captureDevice = captureDevice
-        else {
-            print("Could not start capture session.")
-            return
-        }
 
         do {
             let input = try AVCaptureDeviceInput(device: captureDevice)
@@ -64,12 +78,14 @@ class CaptureSessionViewModel: ObservableObject {
             print("Could not create AVCaptureDeviceInput in viewDidLoad.")
         }
         
-        captureSession.startRunning()
-        self.captureSession = captureSession
-        
-        // TO-DO
-//        setPreviewLayer()
-//        setOutput()
+        return captureSession
+    }
+    
+    /// Sets up preview layer which gets displayed in view controller.
+    func createPreviewLayer(for captureSession: AVCaptureSession) -> AVCaptureVideoPreviewLayer {
+        let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
+        previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
+        return previewLayer
     }
     
     // TO-DO

@@ -13,21 +13,6 @@ import VideoToolbox
 /// View controller for setting camera output to UI view.
 class CaptureSessionViewController: UIViewController {
     var previewLayer: AVCaptureVideoPreviewLayer?
-
-    var viewModel: CaptureSessionViewModel?
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    init(viewModel: CaptureSessionViewModel) {
-        super.init(nibName: nil, bundle: nil)
-        self.viewModel = viewModel
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
     
     /// Set video configuration for subview layout
     override func viewDidLayoutSubviews() {
@@ -49,26 +34,9 @@ class CaptureSessionViewController: UIViewController {
 //        self.captureSession?.stopRunning()
 //        startCaptureSession()
 //    }
-
-    func setPreviewLayer() {
-        // TO-DO: 1. move this to view model
-        // TO-DO: 2. fix the number of calls amde here
-        
-        
-        
-        guard let captureSession = self.viewModel?.captureSession else {
-            fatalError("Preview layer not set.")
-        }
-        let previewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
-        previewLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill
-        configureVideoOrientation(for: previewLayer)
-        view.layer.addSublayer(previewLayer)
-        
-        self.previewLayer = previewLayer
-    }
     
     /// Configures orientation of preview layer for AVCapture session.
-    private func configureVideoOrientation(for previewLayer: AVCaptureVideoPreviewLayer?) {
+    func configureVideoOrientation(for previewLayer: AVCaptureVideoPreviewLayer?) {
         if let preview = previewLayer,
            let connection = preview.connection {
             let orientation = UIDevice.current.orientation

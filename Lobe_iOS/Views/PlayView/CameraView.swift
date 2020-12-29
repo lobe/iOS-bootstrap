@@ -19,31 +19,31 @@ struct CameraView: UIViewControllerRepresentable {
     @ObservedObject var captureSessionViewModel: CaptureSessionViewModel
 
     func makeUIViewController(context: Context) -> CaptureSessionViewController {
-        let vc = CaptureSessionViewController(viewModel: captureSessionViewModel)
-        return vc
+        CaptureSessionViewController()
     }
     
+    /// Update preview layer when state changes for camera device
     func updateUIViewController(_ uiViewController: CaptureSessionViewController, context: Context) {
-        /// Update preview layer when state changes for camera device
         // TO-DO: need a check here so that this doesn't crash device
-        if self.captureSessionViewModel.captureSession != nil {
-            uiViewController.setPreviewLayer()
-//            uiViewController.setOutput()
 
-            /// Set data output
-            let dataOutput = AVCaptureVideoDataOutput()
-
-            guard let captureSession = self.captureSessionViewModel.captureSession,
-                  captureSession.canAddOutput(dataOutput) else {
-                print("Cannot add output to capture session")
-                return
-            }
-            
-            print("success")
-            dataOutput.setSampleBufferDelegate(context.coordinator, queue: DispatchQueue(label: "videoQueue"))
-
-            captureSession.addOutput(dataOutput)
+        guard let captureSession = self.captureSessionViewModel.captureSession,
+              let previewLayer = self.captureSessionViewModel.previewLayer else {
+            print("Could not create video data output.")
+            return
         }
+        
+        /// Set view
+        uiViewController.previewLayer = previewLayer
+        uiViewController.configureVideoOrientation(for: previewLayer)
+        uiViewController.view.layer.addSublayer(previewLayer)
+        
+        /// Set data output
+        let dataOutput = AVCaptureVideoDataOutput()
+        
+        print("success")
+        dataOutput.setSampleBufferDelegate(context.coordinator, queue: DispatchQueue(label: "videoQueue"))
+
+        captureSession.addOutput(dataOutput)
     }
     
     func makeCoordinator() -> Coordinator {
@@ -60,50 +60,49 @@ struct CameraView: UIViewControllerRepresentable {
         
         /// Delegate method for `AVCaptureVideoDataOutputSampleBufferDelegate`: formats image for inference
         func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-            // Skip frames to optimize.
+            /// Skip frames to optimize.
             totalFrameCount += 1
             if totalFrameCount % 20 != 0{ return }
             
             guard let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer),
-                  let image = UIImage(pixelBuffer: pixelBuffer)
-                //   let previewLayer = self.previewLayer,
-                //   let videoOrientation = previewLayer.connection?.videoOrientation
-            else {
+                  let image = UIImage(pixelBuffer: pixelBuffer),
+                  let previewLayer = self.parent.captureSessionViewModel.previewLayer,
+                  let videoOrientation = previewLayer.connection?.videoOrientation else {
                 print("Failed creating image at captureOutput.")
                 return
             }
             
             // Determine rotation by radians given device orientation and camera device
-            // var radiansToRotate = CGFloat(0)
-            // switch videoOrientation {
-            //     case .portrait:
-            //         radiansToRotate = .pi / 2
-            //         break
-            //     case .portraitUpsideDown:
-            //         radiansToRotate = (3 * .pi) / 2
-            //         break
-            //     case .landscapeLeft:
-            //         if (self.captureDevice == self.backCam) {
-            //             radiansToRotate = .pi
-            //         }
-            //         break
-            //     case .landscapeRight:
-            //         if (self.captureDevice == self.frontCam) {
-            //             radiansToRotate = .pi
-            //         }
-            //         break
-            //     default:
-            //         break
-            // }
-
-            // Rotate and crop the captured image to be the size of the screen.
-            // let isUsingFrontCam = self.captureDevice == self.frontCam
-            // guard let rotatedImage = image.rotate(radians: radiansToRotate, flipX: isUsingFrontCam),
-            //       let squaredImage = rotatedImage.squared() else {
-            //     fatalError("Could not rotate or crop image.")
-            // }
+            var radiansToRotate = CGFloat(0)
+            switch videoOrientation {
+            case .portrait:
+                radiansToRotate = .pi / 2
+                break
+            case .portraitUpsideDown:
+                radiansToRotate = (3 * .pi) / 2
+                break
+            case .landscapeLeft:
+                if (self.parent.captureSessionViewModel.captureDevice == self.parent.captureSessionViewModel.backCam) {
+                    radiansToRotate = .pi
+                }
+                break
+            case .landscapeRight:
+                if (self.parent.captureSessionViewModel.captureDevice == self.parent.captureSessionViewModel.frontCam) {
+                    radiansToRotate = .pi
+                }
+                break
+            default:
+                break
+            }
             
-            // self.setCameraImage(with: squaredImage)
+            // Rotate and crop the captured image to be the size of the screen.
+            let isUsingFrontCam = self.parent.captureSessionViewModel.captureDevice == self.parent.captureSessionViewModel.frontCam
+            guard let rotatedImage = image.rotate(radians: radiansToRotate, flipX: isUsingFrontCam),
+                  let squaredImage = rotatedImage.squared() else {
+                fatalError("Could not rotate or crop image.")
+            }
+            
+            self.setCameraImage(with: squaredImage)
         }
 
         /// Wrapper for screen shot.
