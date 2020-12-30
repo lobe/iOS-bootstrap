@@ -16,6 +16,7 @@ import VideoToolbox
 /// Backend logic for predicting classifiers for a given image.
 class PredictionLayer: NSObject {
     @Published var classificationResult: VNClassificationObservation?
+    @Published var imageForProcessing: UIImage?
     var model: VNCoreMLModel?
     var totalFrameCount = 0
     
@@ -116,10 +117,9 @@ extension PredictionLayer: AVCaptureVideoDataOutputSampleBufferDelegate {
 //                let squaredImage = rotatedImage.squared() else {
 //            fatalError("Could not rotate or crop image.")
 //        }
-        
-        
-//        self.getPrediction(forImage: rotatedImage)
 
+        self.getPrediction(forImage: image)
+        self.imageForProcessing = image
         // TO-DO: explore if we nee this
         /// Crop the captured image to be the size of the screen.
 //        guard let croppedImage = rotatedImage.crop(height: previewLayer.frame.height, width: previewLayer.frame.width) else {

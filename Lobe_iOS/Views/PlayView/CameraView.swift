@@ -12,7 +12,11 @@ import UIKit
 import Vision
 
 struct CameraView: UIViewControllerRepresentable {
-    @ObservedObject var viewModel: CaptureSessionViewModel
+    var captureSessionManager: CaptureSessionManager
+    
+    init(captureSessionManager: CaptureSessionManager) {
+        self.captureSessionManager = captureSessionManager
+    }
 
     func makeUIViewController(context: Context) -> CaptureSessionViewController {
         CaptureSessionViewController()
@@ -21,7 +25,7 @@ struct CameraView: UIViewControllerRepresentable {
     /// Update preview layer when state changes for camera device
     func updateUIViewController(_ uiViewController: CaptureSessionViewController, context: Context) {
         /// Set view with previewlayer
-        let previewLayer = self.viewModel.previewLayer
+        let previewLayer = self.captureSessionManager.previewLayer
         uiViewController.previewLayer = previewLayer
         uiViewController.configureVideoOrientation(for: previewLayer)
         if previewLayer != nil { uiViewController.view.layer.addSublayer(previewLayer!) }

@@ -11,7 +11,7 @@ import Combine
 import SwiftUI
 
 /// View model for camera view.
-class CaptureSessionViewModel: ObservableObject {
+class CaptureSessionManager: NSObject {
     @Published var captureDevice: AVCaptureDevice?
     @Published var isEnabled = false
     @Published var previewLayer: AVCaptureVideoPreviewLayer?
@@ -29,31 +29,6 @@ class CaptureSessionViewModel: ObservableObject {
         self.backCam = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .back).devices.first
         self.frontCam = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .front).devices.first
         self.captureDevice = backCam
-        
-        /// Reset camera feed if capture device changes.
-        $captureDevice
-            .receive(on: DispatchQueue.main)
-            .sink(receiveValue: { [weak self] _ in
-                guard let isEnabled = self?.isEnabled else  {
-                    return
-                }
-                if isEnabled { self?.resetCameraFeed() }
-            })
-            .store(in: &disposables)
-        
-        /// Reset camera feed if capture session is enabled, or tear-down if disabled.
-        $isEnabled
-            .receive(on: DispatchQueue.main)
-            .sink(receiveValue: { [weak self] _isEnabled in
-                if _isEnabled { self?.resetCameraFeed() }
-                else {
-                    /// On disable, stop running capture session and then tear down.
-                    /// Both steps are required to prroperly shut down camera session.
-                    self?.captureSession?.stopRunning()
-                    self?.captureSession = nil
-                }
-            })
-            .store(in: &disposables)
     }
     
     /// Resets camera feed, which:

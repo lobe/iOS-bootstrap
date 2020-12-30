@@ -14,12 +14,12 @@ struct PlayView: View {
     @ObservedObject var viewModel: PlayViewModel
     @State var imageForPreview: UIImage?
     
-    // TO-DO: move this out of playview
-    @ObservedObject var captureSessionViewModel: CaptureSessionViewModel
+    // TO-DO: remove this, only debugging
+    @State var imageForProcessing: UIImage?
+
     
     init(viewModel: PlayViewModel) {
         self.viewModel = viewModel
-        self.captureSessionViewModel = CaptureSessionViewModel(predictionLayer: viewModel.imagePredicter)
     }
     
     var body: some View {
@@ -28,26 +28,36 @@ struct PlayView: View {
                 switch(self.viewModel.viewMode) {
                     // Background camera view.
                     case .Camera:
-                        CameraView(viewModel: captureSessionViewModel)
-                        // Gesture for swiping up the photo library.
-                        .gesture(
-                            DragGesture()
-                                .onEnded {value in
-                                    if value.translation.height < 0 {
-                                        withAnimation{
-                                            self.viewModel.showImagePicker.toggle()
+                        ZStack {
+                            CameraView(captureSessionManager: self.viewModel.captureSessionManager)
+                                // Gesture for swiping up the photo library.
+                                .gesture(
+                                    DragGesture()
+                                        .onEnded {value in
+                                            if value.translation.height < 0 {
+                                                withAnimation{
+                                                    self.viewModel.showImagePicker.toggle()
+                                                }
+                                            }
                                         }
-                                    }
-                                }
-                        )
+                                )
+                            
+                            // TO-DO: remove this, only for debugging
+                            if let imageForProcessing = self.viewModel.imagePredicter.imageForProcessing {
+                                Image(uiImage: imageForProcessing)
+                                    .resizable()
+                                    .scaledToFit()
+                                    .border(Color.blue, width: 8)
+                            }
+                        }
 
                     // Placeholder for displaying an image from the photo library.
                     case .ImagePreview:
                         ImagePreview(image: self.$imageForPreview, viewMode: self.$viewModel.viewMode)
-                            .onDisappear {
-                                /// Re-enable capture session when image preview disappears
-                                self.captureSessionViewModel.isEnabled = true
-                            }
+                        
+                    // TO-DO: loading screen here
+                    case .NotLoaded:
+                        Text("View Loading...")
                 }
             }
             .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
@@ -77,10 +87,11 @@ struct PlayView: View {
                 .edgesIgnoringSafeArea(.all)
         }
         .onAppear {
-            self.captureSessionViewModel.isEnabled = true
+            self.viewModel.viewMode = .Camera
         }
         .onDisappear {
-            self.captureSessionViewModel.isEnabled = false
+            /// Disable capture session
+            self.viewModel.viewMode = .NotLoaded
         }
     }
 }
@@ -114,7 +125,6 @@ extension PlayView {
     var openPhotoPickerButton: some View {
         Button(action: {
             self.viewModel.showImagePicker.toggle()
-            self.captureSessionViewModel.isEnabled = false
         }) {
             Image(systemName: "photo.fill")
         }
@@ -124,7 +134,6 @@ extension PlayView {
     var showCameraModeButton: some View {
         Button(action: {
             self.viewModel.viewMode = .Camera
-            self.captureSessionViewModel.isEnabled = true
         }) {
             Image(systemName: "camera.viewfinder")
         }
@@ -132,7 +141,7 @@ extension PlayView {
     
     /// Button for rotating camera
     var rotateCameraButton: some View {
-        Button(action: { self.captureSessionViewModel.rotateCamera() }) {
+        Button(action: { self.viewModel.captureSessionManager.rotateCamera() }) {
             Image(systemName: "camera.rotate.fill")
         }
     }
