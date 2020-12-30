@@ -22,13 +22,14 @@ struct CameraView: UIViewControllerRepresentable {
         CaptureSessionViewController()
     }
     
-    /// Update preview layer when state changes for camera device
+    /// Update preview layer when state changes for camera device 
     func updateUIViewController(_ uiViewController: CaptureSessionViewController, context: Context) {
         /// Set view with previewlayer
         let previewLayer = self.captureSessionManager.previewLayer
         uiViewController.previewLayer = previewLayer
         uiViewController.configureVideoOrientation(for: previewLayer)
         if previewLayer != nil { uiViewController.view.layer.addSublayer(previewLayer!) }
+        else { print("Preview layer null in updateUIViewController.") }
     }
     
     func makeCoordinator() -> Coordinator {

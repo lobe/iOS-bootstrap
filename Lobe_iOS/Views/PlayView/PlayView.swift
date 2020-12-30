@@ -12,11 +12,6 @@ import SwiftUI
 struct PlayView: View {
     @Environment(\.presentationMode) var presentationMode: Binding<PresentationMode>
     @ObservedObject var viewModel: PlayViewModel
-    @State var imageForPreview: UIImage?
-    
-    // TO-DO: remove this, only debugging
-    @State var imageForProcessing: UIImage?
-
     
     init(viewModel: PlayViewModel) {
         self.viewModel = viewModel
@@ -41,19 +36,11 @@ struct PlayView: View {
                                             }
                                         }
                                 )
-                            
-                            // TO-DO: remove this, only for debugging
-                            if let imageForProcessing = self.viewModel.captureSessionManager.imageForProcessing {
-                                Image(uiImage: imageForProcessing)
-                                    .resizable()
-                                    .scaledToFit()
-                                    .border(Color.blue, width: 8)
-                            }
                         }
 
                     // Placeholder for displaying an image from the photo library.
                     case .ImagePreview:
-                        ImagePreview(image: self.$imageForPreview, viewMode: self.$viewModel.viewMode)
+                        ImagePreview(image: self.$viewModel.imageFromPhotoPicker, viewMode: self.$viewModel.viewMode)
                         
                     // TO-DO: loading screen here
                     case .NotLoaded:
@@ -64,6 +51,14 @@ struct PlayView: View {
             .edgesIgnoringSafeArea(.all)
 
             VStack {
+                /// Uncomment the below for debugging purposes.
+//                if let imageForProcessing = self.viewModel.imagePredicter.imageForPrediction {
+//                    Image(uiImage: imageForProcessing)
+//                        .resizable()
+//                        .scaledToFit()
+//                        .frame(width: 300, height: 300)
+//                        .border(Color.blue, width: 8)
+//                }
                 Spacer()
                 PredictionLabelView(classificationLabel: self.$viewModel.classificationLabel, confidence: self.$viewModel.confidence, projectName: self.viewModel.project.name)
             }
@@ -83,7 +78,7 @@ struct PlayView: View {
                                 .buttonStyle(PlayViewButtonStyle())
         )
         .sheet(isPresented: self.$viewModel.showImagePicker) {
-            ImagePicker(image: self.$imageForPreview, viewMode: self.$viewModel.viewMode, predictionLayer: self.viewModel.imagePredicter, sourceType: .photoLibrary)
+            ImagePicker(image: self.$viewModel.imageFromPhotoPicker, viewMode: self.$viewModel.viewMode, predictionLayer: self.viewModel.imagePredicter, sourceType: .photoLibrary)
                 .edgesIgnoringSafeArea(.all)
         }
         .onAppear {

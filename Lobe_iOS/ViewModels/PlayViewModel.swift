@@ -21,6 +21,7 @@ class PlayViewModel: ObservableObject {
     @Published var confidence: Float?
     @Published var viewMode: PlayViewMode = PlayViewMode.NotLoaded
     @Published var showImagePicker: Bool = false
+    @Published var imageFromPhotoPicker: UIImage?
     var captureSessionManager: CaptureSessionManager
     let project: Project
     var imagePredicter: PredictionLayer
@@ -31,12 +32,20 @@ class PlayViewModel: ObservableObject {
         self.imagePredicter = PredictionLayer(model: project.model)
         self.captureSessionManager = CaptureSessionManager(predictionLayer: self.imagePredicter)
         
-        /// Subscribe to video data output delegate to provide inference for image.
-        self.captureSessionManager.$imageForProcessing
+        /// Subscribes to two publishers:
+        ///     1. `capturedImageOutput` published from `Camera` mode.
+        ///     2.  `imageFromPhotoPicker` published from `ImagePreview` mode.
+        /// If either of the above publishers emit, we send it's output to the prediction layer for classification results.
+        self.self.$imageFromPhotoPicker
+            .merge(with: captureSessionManager.$capturedImageOutput)
             .compactMap { $0 }  // remove non-nill values
             .receive(on: DispatchQueue.global(qos: .userInitiated))
             .sink(receiveValue: { [weak self] image in
-                self?.imagePredicter.getPrediction(forImage: image)
+                guard let squaredImage = image.squared() else {
+                    print("Could not create squared image in PlayViewModel.")
+                    return
+                }
+                self?.imagePredicter.getPrediction(forImage: squaredImage)
             })
             .store(in: &disposables)
         

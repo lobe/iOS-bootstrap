@@ -16,7 +16,7 @@ class CaptureSessionManager: NSObject {
     @Published var captureDevice: AVCaptureDevice?
     @Published var isEnabled = false
     @Published var previewLayer: AVCaptureVideoPreviewLayer?
-    @Published var imageForPrediction: UIImage?
+    @Published var capturedImageOutput: UIImage?
     let predictionLayer: PredictionLayer
     var captureSession: AVCaptureSession?
     var backCam: AVCaptureDevice?
@@ -106,7 +106,7 @@ extension CaptureSessionManager: AVCaptureVideoDataOutputSampleBufferDelegate {
             return
         }
         
-        // Determine rotation by radians given device orientation and camera device
+        /// Determine rotation by radians given device orientation and camera device
         var radiansToRotate = CGFloat(0)
         switch videoOrientation {
         case .portrait:
@@ -129,14 +129,13 @@ extension CaptureSessionManager: AVCaptureVideoDataOutputSampleBufferDelegate {
             break
         }
 
-        // Rotate and crop the captured image to be the size of the screen.
+        /// Rotate image and flip over x-axis if using front-facing cam.
         let isUsingFrontCam = self.captureDevice == self.frontCam
-        guard let rotatedImage = image.rotate(radians: radiansToRotate, flipX: isUsingFrontCam),
-              let squaredImage = rotatedImage.squared() else {
+        guard let rotatedImage = image.rotate(radians: radiansToRotate, flipX: isUsingFrontCam) else {
             fatalError("Could not rotate or crop image.")
         }
 
-        self.imageForPrediction = squaredImage
+        self.capturedImageOutput = rotatedImage
     }
 }
 

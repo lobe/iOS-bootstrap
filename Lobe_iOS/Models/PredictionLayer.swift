@@ -15,6 +15,9 @@ class PredictionLayer: NSObject {
     @Published var classificationResult: VNClassificationObservation?
     var model: VNCoreMLModel?
     
+    /// Used for debugging image output
+    @Published var imageForPrediction: UIImage?
+    
     init(model: VNCoreMLModel?) {
         self.model = model
     }
@@ -22,6 +25,7 @@ class PredictionLayer: NSObject {
     /// Prediction handler which updates `classificationResult` publisher.
     func getPrediction(forImage image: UIImage) {
         let requestHandler = createPredictionRequestHandler(forImage: image)
+        self.imageForPrediction = image
         let request = createModelRequest(
             /// Set classification result to publisher
             onComplete: { [weak self] request in
