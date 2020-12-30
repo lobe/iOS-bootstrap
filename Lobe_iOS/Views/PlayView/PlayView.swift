@@ -43,7 +43,7 @@ struct PlayView: View {
                                 )
                             
                             // TO-DO: remove this, only for debugging
-                            if let imageForProcessing = self.viewModel.imagePredicter.imageForProcessing {
+                            if let imageForProcessing = self.viewModel.captureSessionManager.imageForProcessing {
                                 Image(uiImage: imageForProcessing)
                                     .resizable()
                                     .scaledToFit()

@@ -31,6 +31,15 @@ class PlayViewModel: ObservableObject {
         self.imagePredicter = PredictionLayer(model: project.model)
         self.captureSessionManager = CaptureSessionManager(predictionLayer: self.imagePredicter)
         
+        /// Subscribe to video data output delegate to provide inference for image.
+        self.captureSessionManager.$imageForProcessing
+            .compactMap { $0 }  // remove non-nill values
+            .receive(on: DispatchQueue.global(qos: .userInitiated))
+            .sink(receiveValue: { [weak self] image in
+                self?.imagePredicter.getPrediction(forImage: image)
+            })
+            .store(in: &disposables)
+        
         /// Subscribe to classifier results from prediction layer
         self.imagePredicter.$classificationResult
             .receive(on: DispatchQueue.main)
