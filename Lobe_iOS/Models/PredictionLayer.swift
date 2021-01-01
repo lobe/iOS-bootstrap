@@ -25,7 +25,14 @@ class PredictionLayer: NSObject {
     /// Prediction handler which updates `classificationResult` publisher.
     func getPrediction(forImage image: UIImage) {
         let requestHandler = createPredictionRequestHandler(forImage: image)
-        self.imageForPrediction = image
+        
+        /// Add image to publisher if enviornment variable is enabled.
+        /// Used for debugging purposes.
+        if Bool(ProcessInfo.processInfo.environment["SHOW_FORMATTED_IMAGE"] ?? "false") ?? false {
+            self.imageForPrediction = image
+        }
+        
+        /// Create request handler.
         let request = createModelRequest(
             /// Set classification result to publisher
             onComplete: { [weak self] request in

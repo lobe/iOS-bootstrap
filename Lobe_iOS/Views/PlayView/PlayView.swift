@@ -52,14 +52,17 @@ struct PlayView: View {
             .edgesIgnoringSafeArea(.all)
 
             VStack {
-                /// Uncomment the below for debugging purposes.
-//                if let imageForProcessing = self.viewModel.imagePredicter.imageForPrediction {
-//                    Image(uiImage: imageForProcessing)
-//                        .resizable()
-//                        .scaledToFit()
-//                        .frame(width: 300, height: 300)
-//                        .border(Color.blue, width: 8)
-//                }
+                /// Show processed image that gets used for prediction.
+                /// Used for debugging purposes
+                if Bool(ProcessInfo.processInfo.environment["SHOW_FORMATTED_IMAGE"] ?? "false") ?? false {
+                    if let imageForProcessing = self.viewModel.imagePredicter.imageForPrediction {
+                        Image(uiImage: imageForProcessing)
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 300, height: 300)
+                            .border(Color.blue, width: 8)
+                    }
+                }
                 Spacer()
                 PredictionLabelView(classificationLabel: self.$viewModel.classificationLabel, confidence: self.$viewModel.confidence, projectName: self.viewModel.project.name)
             }
