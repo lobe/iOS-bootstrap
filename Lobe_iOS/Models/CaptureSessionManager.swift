@@ -13,15 +13,14 @@ import VideoToolbox
 
 /// View model for camera view.
 class CaptureSessionManager: NSObject {
-    @Published var captureDevice: AVCaptureDevice?
-    @Published var isEnabled = false
     @Published var previewLayer: AVCaptureVideoPreviewLayer?
     @Published var capturedImageOutput: UIImage?
     let predictionLayer: PredictionLayer
     var captureSession: AVCaptureSession?
-    var backCam: AVCaptureDevice?
-    var frontCam: AVCaptureDevice?
-    var dataOutput: AVCaptureVideoDataOutput?
+    private var backCam: AVCaptureDevice?
+    private var frontCam: AVCaptureDevice?
+    private var dataOutput: AVCaptureVideoDataOutput?
+    private var captureDevice: AVCaptureDevice?
     private var disposables = Set<AnyCancellable>()
     private var totalFrameCount = 0
     
@@ -63,6 +62,13 @@ class CaptureSessionManager: NSObject {
         self.dataOutput = dataOutput
     }
     
+    /// On disable, stop running capture session and then tear down.
+    /// Both steps are required to prroperly shut down camera session.
+    func tearDown() {
+        self.captureSession?.stopRunning()
+        self.captureSession = nil
+    }
+    
     /// Creates a capture session given input device as param.
     private func createCaptureSession(for captureDevice: AVCaptureDevice) -> AVCaptureSession {
         let captureSession = AVCaptureSession()
@@ -87,6 +93,7 @@ class CaptureSessionManager: NSObject {
     /// Toggles between front and back cam.
     func rotateCamera() {
         self.captureDevice = (captureDevice == backCam) ? frontCam : backCam
+        self.resetCameraFeed()
     }
     
     /// Wrapper for screen shot.

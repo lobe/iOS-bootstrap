@@ -67,32 +67,8 @@ class PlayViewModel: ObservableObject {
         self.$viewMode
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: { [weak self] _viewMode in
-                self?.captureSessionManager.isEnabled = _viewMode == .Camera
-            })
-            .store(in: &disposables)
-        
-        /// Reset camera feed if capture device changes.
-        self.captureSessionManager.$captureDevice
-            .receive(on: DispatchQueue.main)
-            .sink(receiveValue: { [weak self] _ in
-                guard let isEnabled = self?.captureSessionManager.isEnabled else  {
-                    return
-                }
-                if isEnabled { self?.captureSessionManager.resetCameraFeed() }
-            })
-            .store(in: &disposables)
-        
-        /// Reset camera or tear-down on enabled.
-        self.captureSessionManager.$isEnabled
-            .receive(on: DispatchQueue.main)
-            .sink(receiveValue: { [weak self] _isEnabled in
-                if _isEnabled { self?.captureSessionManager.resetCameraFeed() }
-                else {
-                    /// On disable, stop running capture session and then tear down.
-                    /// Both steps are required to prroperly shut down camera session.
-                    self?.captureSessionManager.captureSession?.stopRunning()
-                    self?.captureSessionManager.captureSession = nil
-                }
+                if _viewMode == .Camera { self?.captureSessionManager.resetCameraFeed() }
+                else { self?.captureSessionManager.tearDown() }
             })
             .store(in: &disposables)
     }
