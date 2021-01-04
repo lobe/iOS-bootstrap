@@ -62,7 +62,7 @@ class LobeTests: XCTestCase {
                 }
                 
                 guard expectedResult == observedLabel else {
-                    assertionFailure("Expected result did not eq ual observation.")
+                    assertionFailure("Expected result did not equal observation.")
                     return
                 }
                 
@@ -79,7 +79,7 @@ class LobeTests: XCTestCase {
         let testImageYosimite = UIImage(named: "testing_image_yosemite")
         let testImageBeach = UIImage(named: "testing_image_beach")
         self.playViewModel.captureSessionManager.capturedImageOutput = testImageYosimite
-        self.playViewModel.imageFromPhotoPicker = testImageBeach
+        self.playViewModel.captureSessionManager.capturedImageOutput = testImageBeach
         
         // wait for receivedAllValues to be fulfilled
         waitForExpectations(timeout: 1, handler: nil)

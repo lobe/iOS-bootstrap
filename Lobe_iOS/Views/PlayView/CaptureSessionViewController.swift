@@ -18,6 +18,7 @@ protocol CaptureSessionGestureDelegate {
 /// View controller for video capture session. It's responsibilities include:
 /// 1. Setting camera output to UI view.
 /// 2. Handling orientation changes.
+/// 3. Handles double and triple tap gestures (since SwiftUI seems to struggle with managing multiple tap gestures).
 class CaptureSessionViewController: UIViewController {
     var previewLayer: AVCaptureVideoPreviewLayer?
     var tripleTapGesture: UITapGestureRecognizer?
