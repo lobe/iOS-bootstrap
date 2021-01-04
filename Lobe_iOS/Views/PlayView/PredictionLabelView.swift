@@ -65,7 +65,7 @@ struct UpdateTextViewExternal_Previews: PreviewProvider {
     static var previews: some View {
         GeometryReader { geometry in
             ZStack(alignment: .center) {
-                Image("testing_image")
+                Image("testing_image_yosemite")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .edgesIgnoringSafeArea(.all)

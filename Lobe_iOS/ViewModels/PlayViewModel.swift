@@ -36,7 +36,7 @@ class PlayViewModel: ObservableObject {
         ///     1. `capturedImageOutput` published from `Camera` mode.
         ///     2.  `imageFromPhotoPicker` published from `ImagePreview` mode.
         /// If either of the above publishers emit, we send it's output to the prediction layer for classification results.
-        self.self.$imageFromPhotoPicker
+        self.$imageFromPhotoPicker
             .merge(with: captureSessionManager.$capturedImageOutput)
             .compactMap { $0 }  // remove non-nill values
             .receive(on: DispatchQueue.global(qos: .userInitiated))
@@ -59,7 +59,6 @@ class PlayViewModel: ObservableObject {
                 }
                 self?.classificationLabel = _classificationResult.identifier
                 self?.confidence = _classificationResult.confidence
-                
             })
             .store(in: &disposables)
 
