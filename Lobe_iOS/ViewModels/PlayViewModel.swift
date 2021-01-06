@@ -17,8 +17,8 @@ enum PlayViewMode {
 
 /// View model for the Play View
 class PlayViewModel: ObservableObject {
-    @Published var classificationLabel: String?
-    @Published var confidence: Float?
+    @Published var classificationLabel = "Loading Results..."
+    @Published var confidence: Float = 0.0
     @Published var viewMode: PlayViewMode = PlayViewMode.NotLoaded
     @Published var showImagePicker: Bool = false
     @Published var imageFromPhotoPicker: UIImage?
@@ -51,14 +51,11 @@ class PlayViewModel: ObservableObject {
         
         /// Subscribe to classifier results from prediction layer
         self.imagePredicter.$classificationResult
+            .compactMap { $0 }  // remove non-nill values
             .receive(on: DispatchQueue.main)
             .sink(receiveValue: {[weak self] classificationResult in
-                guard let _classificationResult = classificationResult else {
-                    self?.classificationLabel = "Loading Results..."
-                    return
-                }
-                self?.classificationLabel = _classificationResult.identifier
-                self?.confidence = _classificationResult.confidence
+                self?.classificationLabel = classificationResult.identifier
+                self?.confidence = classificationResult.confidence
             })
             .store(in: &disposables)
 

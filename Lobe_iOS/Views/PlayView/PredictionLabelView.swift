@@ -18,8 +18,8 @@ struct VisualEffectView: UIViewRepresentable {
 /* View for displaying the green bar containing the prediction label. */
 struct PredictionLabelView: View {
     @State private var showImagePicker: Bool = false
-    @Binding var classificationLabel: String?
-    @Binding var confidence: Float?
+    @Binding var classificationLabel: String
+    @Binding var confidence: Float
     var projectName: String
     
     var body: some View {
@@ -34,11 +34,11 @@ struct PredictionLabelView: View {
                         
                         Rectangle()
                             .foregroundColor(Color(UIColor(rgb: 0x00DDAD)))
-                            .frame(width: min(CGFloat(self.confidence ?? 0) * geometry.size.width / 1.2, geometry.size.width / 1.2))
+                            .frame(width: min(CGFloat(self.confidence) * geometry.size.width / 1.2, geometry.size.width / 1.2))
                             .animation(.linear)
                     
                         VStack(alignment: .leading) {
-                            Text(self.classificationLabel ?? "Loading...")
+                            Text(self.classificationLabel)
                                 .font(.system(size: 28))
                             Text(self.projectName)
                                 .font(.system(size: 12))
@@ -71,7 +71,7 @@ struct UpdateTextViewExternal_Previews: PreviewProvider {
                     .edgesIgnoringSafeArea(.all)
                     .frame(width: geometry.size.width,
                            height: geometry.size.height)
-                PredictionLabelView(classificationLabel: .constant(nil), confidence: .constant(nil), projectName: "Test")
+                PredictionLabelView(classificationLabel: .constant("Test Label"), confidence: .constant(0.3), projectName: "Test")
             }.frame(width: geometry.size.width,
                     height: geometry.size.height)
         }
