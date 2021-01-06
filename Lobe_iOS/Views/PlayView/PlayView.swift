@@ -71,9 +71,12 @@ struct PlayView: View {
         .navigationBarBackButtonHidden(true)
         .navigationBarItems(leading: openScreenButton, trailing:
             HStack {
+                /// Render `rotateCameraButton` for all modes--this is a workaround for bug where right padding is off for `ImagePreview` mode.
+                rotateCameraButton
+                    .disabled(self.viewModel.viewMode != .Camera)
+                    .opacity(self.viewModel.viewMode == .Camera ? 1 : 0)
                 /// Photo picker button if in camera mode, else we show button to toggle to camera mode
                 if (self.viewModel.viewMode == .Camera) {
-                    rotateCameraButton
                     openPhotoPickerButton
                 } else {
                     showCameraModeButton
