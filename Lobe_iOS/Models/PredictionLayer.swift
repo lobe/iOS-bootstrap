@@ -7,33 +7,52 @@
 //
 
 import Combine
-import Foundation
 import SwiftUI
 import Vision
 
-protocol ImageClassificationPredicter {
-    func getPrdiction(forImage image: UIImage,
-                      onComplete: @escaping (VNRequest) -> (),
-                      onError: @escaping (Error) -> ())
-}
-
 /// Backend logic for predicting classifiers for a given image.
-class PredictionLayer: NSObject, ImageClassificationPredicter {
+class PredictionLayer: NSObject {
+    @Published var classificationResult: VNClassificationObservation?
     var model: VNCoreMLModel?
+    
+    /// Used for debugging image output
+    @Published var imageForPrediction: UIImage?
     
     init(model: VNCoreMLModel?) {
         self.model = model
     }
     
-    func getPrdiction(forImage image: UIImage, onComplete: @escaping (VNRequest) -> (), onError: @escaping (Error) -> ()) {
+    /// Prediction handler which updates `classificationResult` publisher.
+    func getPrediction(forImage image: UIImage) {
         let requestHandler = createPredictionRequestHandler(forImage: image)
-        let request = createModelRequest(onComplete: onComplete, onError: onError)
+        
+        /// Add image to publisher if enviornment variable is enabled.
+        /// Used for debugging purposes.
+        if Bool(ProcessInfo.processInfo.environment["SHOW_FORMATTED_IMAGE"] ?? "false") ?? false {
+            self.imageForPrediction = image
+        }
+        
+        /// Create request handler.
+        let request = createModelRequest(
+            /// Set classification result to publisher
+            onComplete: { [weak self] request in
+                guard let classifications = request.results as? [VNClassificationObservation],
+                      !classifications.isEmpty else {
+                    self?.classificationResult = nil
+                    return
+                }
+                let topClassifications = classifications.prefix(1)
+                self?.classificationResult = topClassifications[0]
+            }, onError: { [weak self] error in
+                print("Error getting predictions: \(error)")
+                self?.classificationResult = nil
+            })
         
         try? requestHandler.perform([request])
     }
     
     /// Creates request handler and formats image for prediciton processing.
-    func createPredictionRequestHandler(forImage image: UIImage) -> VNImageRequestHandler {
+    private func createPredictionRequestHandler(forImage image: UIImage) -> VNImageRequestHandler {
         /* Crop to square images and send to the model. */
         guard let cgImage = image.cgImage else {
             fatalError("Could not create cgImage in captureOutput")
@@ -44,7 +63,7 @@ class PredictionLayer: NSObject, ImageClassificationPredicter {
         return requestHandler
     }
     
-    func createModelRequest(onComplete: @escaping (VNRequest) -> (), onError: @escaping (Error) -> ()) -> VNCoreMLRequest {
+    private func createModelRequest(onComplete: @escaping (VNRequest) -> (), onError: @escaping (Error) -> ()) -> VNCoreMLRequest {
         guard let model = model else {
             fatalError("Model not found in prediction layer")
         }

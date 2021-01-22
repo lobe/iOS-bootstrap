@@ -24,6 +24,7 @@
 		B55A1EC72572C8FD003EE8AD /* StorageProvider.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55A1EC62572C8FD003EE8AD /* StorageProvider.swift */; };
 		B55A1ED32574F368003EE8AD /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55A1ED22574F368003EE8AD /* CameraView.swift */; };
 		B55A1ED825760BAC003EE8AD /* PredictionLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55A1ED725760BAC003EE8AD /* PredictionLayer.swift */; };
+		B55D41462599BB48007C9DBF /* CaptureSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55D41452599BB48007C9DBF /* CaptureSessionManager.swift */; };
 		B56240FD257ED1E200709520 /* OpenScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56240FC257ED1E200709520 /* OpenScreenViewModel.swift */; };
 		B58A180C254FC4BE00AD32C1 /* ProjectPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58A180B254FC4BE00AD32C1 /* ProjectPicker.swift */; };
 		B5A4C5FF256B7E0E0092DDD8 /* OpenScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4C5FE256B7E0E0092DDD8 /* OpenScreen.swift */; };
@@ -63,6 +64,7 @@
 		B55A1EC62572C8FD003EE8AD /* StorageProvider.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StorageProvider.swift; sourceTree = "<group>"; };
 		B55A1ED22574F368003EE8AD /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		B55A1ED725760BAC003EE8AD /* PredictionLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionLayer.swift; sourceTree = "<group>"; };
+		B55D41452599BB48007C9DBF /* CaptureSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureSessionManager.swift; sourceTree = "<group>"; };
 		B56240FC257ED1E200709520 /* OpenScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenScreenViewModel.swift; sourceTree = "<group>"; };
 		B58A180B254FC4BE00AD32C1 /* ProjectPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPicker.swift; sourceTree = "<group>"; };
 		B5A4C5FE256B7E0E0092DDD8 /* OpenScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenScreen.swift; sourceTree = "<group>"; };
@@ -144,9 +146,10 @@
 			path = LobeTests;
 			sourceTree = "<group>";
 		};
-		B5173D5E257757910065A01F /* Model */ = {
+		B5173D5E257757910065A01F /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				B55D41452599BB48007C9DBF /* CaptureSessionManager.swift */,
 				B55A1ED725760BAC003EE8AD /* PredictionLayer.swift */,
 				B55A1EC62572C8FD003EE8AD /* StorageProvider.swift */,
 				B53C73752533C150007A0231 /* Project.swift */,
@@ -304,6 +307,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B55D41462599BB48007C9DBF /* CaptureSessionManager.swift in Sources */,
 				76A9AF54247F138B002086F7 /* LobeModel.mlmodel in Sources */,
 				9B7B03EB2475DBF300D34020 /* AppDelegate.swift in Sources */,
 				B5173D5B25774F400065A01F /* ImagePreview.swift in Sources */,
