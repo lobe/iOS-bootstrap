@@ -64,12 +64,12 @@ struct PlayView: View {
                     }
                 }
                 Spacer()
-                PredictionLabelView(classificationLabel: self.$viewModel.classificationLabel, confidence: self.$viewModel.confidence, projectName: self.viewModel.project.name)
+                PredictionLabelView(classificationLabel: self.$viewModel.classificationLabel, confidence: self.$viewModel.confidence)
             }
         }
         .statusBar(hidden: true)
         .navigationBarBackButtonHidden(true)
-        .navigationBarItems(leading: openScreenButton, trailing:
+        .navigationBarItems(trailing:
             HStack {
                 /// Render `rotateCameraButton` for all modes--this is a workaround for bug where right padding is off for `ImagePreview` mode.
                 rotateCameraButton
@@ -108,19 +108,6 @@ extension PlayView {
                 .background(Color.black.opacity(0.35).blur(radius: 20))
                 .cornerRadius(8)
         }
-    }
-
-    /// Button for return back to open screen
-    var openScreenButton: some View {
-        Button(action: {
-            self.presentationMode.wrappedValue.dismiss()
-        }) {
-            HStack {
-                Image(systemName: "chevron.left")
-                Text("Projects")
-            }
-        }
-        .buttonStyle(PlayViewButtonStyle())
     }
     
     /// Button for opening photo picker
@@ -179,7 +166,7 @@ struct PlayView_Previews: PreviewProvider {
     }
     
     static var previews: some View {
-        let viewModel = PlayViewModel(project: Project(name: "Test", model: nil))
+        let viewModel = PlayViewModel(project: Project(mlModel: nil))
         viewModel.viewMode = .Camera
 
         return Group {

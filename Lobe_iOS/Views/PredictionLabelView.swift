@@ -20,7 +20,6 @@ struct PredictionLabelView: View {
     @State private var showImagePicker: Bool = false
     @Binding var classificationLabel: String?
     @Binding var confidence: Float?
-    var projectName: String
     
     var body: some View {
         GeometryReader { geometry in
@@ -36,14 +35,9 @@ struct PredictionLabelView: View {
                             .foregroundColor(Color(UIColor(rgb: 0x00DDAD)))
                             .frame(width: min(CGFloat(self.confidence ?? 0) * geometry.size.width / 1.2, geometry.size.width / 1.2))
                             .animation(.linear)
-                    
-                        VStack(alignment: .leading) {
-                            Text(self.classificationLabel ?? "Loading...")
-                                .font(.system(size: 28))
-                            Text(self.projectName)
-                                .font(.system(size: 12))
-                                .fontWeight(.bold)
-                        }
+
+                        Text(self.classificationLabel ?? "Loading...")
+                            .font(.system(size: 28))
                         .foregroundColor(.white)
                         .padding()
                     }
@@ -71,7 +65,7 @@ struct UpdateTextViewExternal_Previews: PreviewProvider {
                     .edgesIgnoringSafeArea(.all)
                     .frame(width: geometry.size.width,
                            height: geometry.size.height)
-                PredictionLabelView(classificationLabel: .constant(nil), confidence: .constant(nil), projectName: "Test")
+                PredictionLabelView(classificationLabel: .constant(nil), confidence: .constant(nil))
             }.frame(width: geometry.size.width,
                     height: geometry.size.height)
         }

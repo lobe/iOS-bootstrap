@@ -25,10 +25,6 @@
 		B55A1ED32574F368003EE8AD /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55A1ED22574F368003EE8AD /* CameraView.swift */; };
 		B55A1ED825760BAC003EE8AD /* PredictionLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55A1ED725760BAC003EE8AD /* PredictionLayer.swift */; };
 		B55D41462599BB48007C9DBF /* CaptureSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55D41452599BB48007C9DBF /* CaptureSessionManager.swift */; };
-		B56240FD257ED1E200709520 /* OpenScreenViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B56240FC257ED1E200709520 /* OpenScreenViewModel.swift */; };
-		B58A180C254FC4BE00AD32C1 /* ProjectPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = B58A180B254FC4BE00AD32C1 /* ProjectPicker.swift */; };
-		B5A4C5FF256B7E0E0092DDD8 /* OpenScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4C5FE256B7E0E0092DDD8 /* OpenScreen.swift */; };
-		B5A4C603256B96BF0092DDD8 /* ProjectRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A4C602256B96BF0092DDD8 /* ProjectRow.swift */; };
 		B5A9B5272557373E00FD595B /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5A9B5262557373E00FD595B /* CloudKit.framework */; };
 /* End PBXBuildFile section */
 
@@ -65,10 +61,6 @@
 		B55A1ED22574F368003EE8AD /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		B55A1ED725760BAC003EE8AD /* PredictionLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionLayer.swift; sourceTree = "<group>"; };
 		B55D41452599BB48007C9DBF /* CaptureSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureSessionManager.swift; sourceTree = "<group>"; };
-		B56240FC257ED1E200709520 /* OpenScreenViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenScreenViewModel.swift; sourceTree = "<group>"; };
-		B58A180B254FC4BE00AD32C1 /* ProjectPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectPicker.swift; sourceTree = "<group>"; };
-		B5A4C5FE256B7E0E0092DDD8 /* OpenScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OpenScreen.swift; sourceTree = "<group>"; };
-		B5A4C602256B96BF0092DDD8 /* ProjectRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectRow.swift; sourceTree = "<group>"; };
 		B5A9B5232557372800FD595B /* Lobe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Lobe.entitlements; sourceTree = "<group>"; };
 		B5A9B5262557373E00FD595B /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
@@ -115,8 +107,12 @@
 			isa = PBXGroup;
 			children = (
 				B56240FA257ED11B00709520 /* Views */,
-				B56240F9257ED0FD00709520 /* ViewModels */,
-				B5173D5E257757910065A01F /* Models */,
+				76ED73F2248987E3003B4F6B /* CaptureSessionViewController.swift */,
+				B5173D5625774E990065A01F /* PlayViewModel.swift */,
+				B55D41452599BB48007C9DBF /* CaptureSessionManager.swift */,
+				B55A1ED725760BAC003EE8AD /* PredictionLayer.swift */,
+				B55A1EC62572C8FD003EE8AD /* StorageProvider.swift */,
+				B53C73752533C150007A0231 /* Project.swift */,
 				B5A9B5232557372800FD595B /* Lobe.entitlements */,
 				9B7B03EA2475DBF300D34020 /* AppDelegate.swift */,
 				9B7B03F52475DBF600D34020 /* LaunchScreen.storyboard */,
@@ -146,56 +142,16 @@
 			path = LobeTests;
 			sourceTree = "<group>";
 		};
-		B5173D5E257757910065A01F /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				B55D41452599BB48007C9DBF /* CaptureSessionManager.swift */,
-				B55A1ED725760BAC003EE8AD /* PredictionLayer.swift */,
-				B55A1EC62572C8FD003EE8AD /* StorageProvider.swift */,
-				B53C73752533C150007A0231 /* Project.swift */,
-			);
-			path = Models;
-			sourceTree = "<group>";
-		};
-		B56240F9257ED0FD00709520 /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				B5173D5625774E990065A01F /* PlayViewModel.swift */,
-				B56240FC257ED1E200709520 /* OpenScreenViewModel.swift */,
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
 		B56240FA257ED11B00709520 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				B5A4C601256B961D0092DDD8 /* OpenScreen */,
-				B58D97E6256F9B890050E2CD /* PlayView */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		B58D97E6256F9B890050E2CD /* PlayView */ = {
 			isa = PBXGroup;
 			children = (
 				9B7B03EE2475DBF300D34020 /* PlayView.swift */,
 				76ED73F4248988AE003B4F6B /* PredictionLabelView.swift */,
-				76ED73F2248987E3003B4F6B /* CaptureSessionViewController.swift */,
 				76CDE1A3247F2E6D0096E882 /* ImagePicker.swift */,
 				B55A1ED22574F368003EE8AD /* CameraView.swift */,
 				B5173D5A25774F400065A01F /* ImagePreview.swift */,
 			);
-			path = PlayView;
-			sourceTree = "<group>";
-		};
-		B5A4C601256B961D0092DDD8 /* OpenScreen */ = {
-			isa = PBXGroup;
-			children = (
-				B5A4C5FE256B7E0E0092DDD8 /* OpenScreen.swift */,
-				B5A4C602256B96BF0092DDD8 /* ProjectRow.swift */,
-				B58A180B254FC4BE00AD32C1 /* ProjectPicker.swift */,
-			);
-			path = OpenScreen;
+			path = Views;
 			sourceTree = "<group>";
 		};
 		B5A9B5252557373E00FD595B /* Frameworks */ = {
@@ -316,14 +272,10 @@
 				9B7B03ED2475DBF300D34020 /* SceneDelegate.swift in Sources */,
 				B55A1EC72572C8FD003EE8AD /* StorageProvider.swift in Sources */,
 				76ED73F5248988AE003B4F6B /* PredictionLabelView.swift in Sources */,
-				B5A4C603256B96BF0092DDD8 /* ProjectRow.swift in Sources */,
 				76ED73F3248987E3003B4F6B /* CaptureSessionViewController.swift in Sources */,
-				B58A180C254FC4BE00AD32C1 /* ProjectPicker.swift in Sources */,
 				B55A1ED825760BAC003EE8AD /* PredictionLayer.swift in Sources */,
-				B5A4C5FF256B7E0E0092DDD8 /* OpenScreen.swift in Sources */,
 				B5173D5725774E990065A01F /* PlayViewModel.swift in Sources */,
 				9B7B03EF2475DBF300D34020 /* PlayView.swift in Sources */,
-				B56240FD257ED1E200709520 /* OpenScreenViewModel.swift in Sources */,
 				B53C73762533C150007A0231 /* Project.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
