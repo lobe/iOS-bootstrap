@@ -18,9 +18,10 @@ struct PlayView: View {
     }
     
     var body: some View {
-        GeometryReader { geometry in
-            VStack {
-                switch(self.viewModel.viewMode) {
+        NavigationView {
+            GeometryReader { geometry in
+                VStack {
+                    switch(self.viewModel.viewMode) {
                     // Background camera view.
                     case .Camera:
                         ZStack {
@@ -37,7 +38,7 @@ struct PlayView: View {
                                         }
                                 )
                         }
-
+                        
                     // Placeholder for displaying an image from the photo library.
                     case .ImagePreview:
                         ImagePreview(image: self.$viewModel.imageFromPhotoPicker, viewMode: self.$viewModel.viewMode)
@@ -45,56 +46,57 @@ struct PlayView: View {
                     // TO-DO: loading screen here
                     case .NotLoaded:
                         Text("View Loading...")
-                }
-            }
-            .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
-            .background(Color.black)
-            .edgesIgnoringSafeArea(.all)
-
-            VStack {
-                /// Show processed image that gets used for prediction.
-                /// Used for debugging purposes
-                if Bool(ProcessInfo.processInfo.environment["SHOW_FORMATTED_IMAGE"] ?? "false") ?? false {
-                    if let imageForProcessing = self.viewModel.imagePredicter.imageForPrediction {
-                        Image(uiImage: imageForProcessing)
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 300, height: 300)
-                            .border(Color.blue, width: 8)
                     }
                 }
-                Spacer()
-                PredictionLabelView(classificationLabel: self.$viewModel.classificationLabel, confidence: self.$viewModel.confidence)
-            }
-        }
-        .statusBar(hidden: true)
-        .navigationBarBackButtonHidden(true)
-        .navigationBarItems(trailing:
-            HStack {
-                /// Render `rotateCameraButton` for all modes--this is a workaround for bug where right padding is off for `ImagePreview` mode.
-                rotateCameraButton
-                    .disabled(self.viewModel.viewMode != .Camera)
-                    .opacity(self.viewModel.viewMode == .Camera ? 1 : 0)
-                /// Photo picker button if in camera mode, else we show button to toggle to camera mode
-                if (self.viewModel.viewMode == .Camera) {
-                    openPhotoPickerButton
-                } else {
-                    showCameraModeButton
+                .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
+                .background(Color.black)
+                .edgesIgnoringSafeArea(.all)
+                
+                VStack {
+                    /// Show processed image that gets used for prediction.
+                    /// Used for debugging purposes
+                    if Bool(ProcessInfo.processInfo.environment["SHOW_FORMATTED_IMAGE"] ?? "false") ?? false {
+                        if let imageForProcessing = self.viewModel.imagePredicter.imageForPrediction {
+                            Image(uiImage: imageForProcessing)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 300, height: 300)
+                                .border(Color.blue, width: 8)
+                        }
+                    }
+                    Spacer()
+                    PredictionLabelView(classificationLabel: self.$viewModel.classificationLabel, confidence: self.$viewModel.confidence)
                 }
             }
-                                .buttonStyle(PlayViewButtonStyle())
-        )
-        .sheet(isPresented: self.$viewModel.showImagePicker) {
-            ImagePicker(image: self.$viewModel.imageFromPhotoPicker, viewMode: self.$viewModel.viewMode, predictionLayer: self.viewModel.imagePredicter, sourceType: .photoLibrary)
-                .edgesIgnoringSafeArea(.all)
-        }
-        .onAppear {
-            self.viewModel.viewMode = .Camera
-        }
-        .onDisappear {
-            /// Disable capture session
-            self.viewModel.viewMode = .NotLoaded
-        }
+            .statusBar(hidden: true)
+            .navigationBarBackButtonHidden(true)
+            .navigationBarItems(trailing:
+                                    HStack {
+                                        /// Render `rotateCameraButton` for all modes--this is a workaround for bug where right padding is off for `ImagePreview` mode.
+                                        rotateCameraButton
+                                            .disabled(self.viewModel.viewMode != .Camera)
+                                            .opacity(self.viewModel.viewMode == .Camera ? 1 : 0)
+                                        /// Photo picker button if in camera mode, else we show button to toggle to camera mode
+                                        if (self.viewModel.viewMode == .Camera) {
+                                            openPhotoPickerButton
+                                        } else {
+                                            showCameraModeButton
+                                        }
+                                    }
+                                    .buttonStyle(PlayViewButtonStyle())
+            )
+            .sheet(isPresented: self.$viewModel.showImagePicker) {
+                ImagePicker(image: self.$viewModel.imageFromPhotoPicker, viewMode: self.$viewModel.viewMode, predictionLayer: self.viewModel.imagePredicter, sourceType: .photoLibrary)
+                    .edgesIgnoringSafeArea(.all)
+            }
+            .onAppear {
+                self.viewModel.viewMode = .Camera
+            }
+            .onDisappear {
+                /// Disable capture session
+                self.viewModel.viewMode = .NotLoaded
+            }
+        }   
     }
 }
 
@@ -168,7 +170,7 @@ struct PlayView_Previews: PreviewProvider {
     static var previews: some View {
         let viewModel = PlayViewModel(project: Project(mlModel: nil))
         viewModel.viewMode = .Camera
-
+        
         return Group {
             NavigationView {
                 ZStack {
