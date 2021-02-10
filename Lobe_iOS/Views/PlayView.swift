@@ -47,7 +47,7 @@ struct PlayView: View {
 
             VStack {
                 Spacer()
-                PredictionLabelView(classificationLabel: self.$viewModel.classificationLabel, confidence: self.$viewModel.confidence, projectName: self.viewModel.project.name)
+                PredictionLabelView(classificationLabel: self.$viewModel.classificationLabel, confidence: self.$viewModel.confidence)
             }
         }
         .statusBar(hidden: true)
@@ -147,7 +147,7 @@ extension UIColor {
 
 struct PlayView_Previews: PreviewProvider {
     static var previews: some View {
-        let viewModel = PlayViewModel(project: Project(name: "Test", model: nil))
+        let viewModel = PlayViewModel(project: Project(mlModel: nil))
         return Group {
             PlayView(viewModel: viewModel)
             PlayView(viewModel: viewModel)
