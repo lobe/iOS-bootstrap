@@ -30,7 +30,7 @@ class PlayViewModel: ObservableObject {
     init(project: Project) {
         self.project = project
         self.imagePredicter = PredictionLayer(model: project.model)
-        self.captureSessionManager = CaptureSessionManager(predictionLayer: self.imagePredicter)
+        self.captureSessionManager = CaptureSessionManager()
         
         /// Subscribes to two publishers:
         ///     1. `capturedImageOutput` published from `Camera` mode.

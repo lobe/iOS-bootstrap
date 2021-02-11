@@ -15,22 +15,16 @@ import VideoToolbox
 class CaptureSessionManager: NSObject {
     @Published var previewLayer: AVCaptureVideoPreviewLayer?
     @Published var capturedImageOutput: UIImage?
-    let predictionLayer: PredictionLayer
     var captureSession: AVCaptureSession?
-    private var backCam: AVCaptureDevice?
-    private var frontCam: AVCaptureDevice?
+    private var backCam = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .back).devices.first
+    private var frontCam = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .front).devices.first
     private var dataOutput: AVCaptureVideoDataOutput?
     private var captureDevice: AVCaptureDevice?
     private var disposables = Set<AnyCancellable>()
     private var totalFrameCount = 0
     
-    init(predictionLayer: PredictionLayer) {
-        self.predictionLayer = predictionLayer
-        
-        /// Init devices.
-        self.backCam = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .back).devices.first
-        self.frontCam = AVCaptureDevice.DiscoverySession(deviceTypes: [.builtInWideAngleCamera], mediaType: AVMediaType.video, position: .front).devices.first
-        self.captureDevice = backCam
+    override init() {
+        self.captureDevice = self.backCam
     }
     
     /// Resets camera feed, which:
