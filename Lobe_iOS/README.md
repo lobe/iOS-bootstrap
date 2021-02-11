@@ -2,7 +2,7 @@
 
 This project adheres to [MVVM architecture](https://www.raywenderlich.com/34-design-patterns-by-tutorials-mvvm). MVVM is a design pattern which organizes objects by model, view model, and view. Our app leverages MVVM as follows:
 
-[Schematic Here]
+![Code Diagram](https://github.com/lobe/iOS-bootstrap/raw/master/assets/codeDiagram.png)
 
 *Arrows designate subscriptions in their pointed direction, i.e `PlayViewModel` subscribes to `PredictionLayer`.*
 
