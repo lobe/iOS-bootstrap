@@ -18,6 +18,7 @@ protocol CaptureSessionGestureDelegate {
 /// View controller for video capture session. It's responsibilities include:
 /// 1. Setting camera output to UI view.
 /// 2. Handling orientation changes.
+/// 3. Managing tap gestures.
 class CaptureSessionViewController: UIViewController {
     var previewLayer: AVCaptureVideoPreviewLayer?
     var tripleTapGesture: UITapGestureRecognizer?
@@ -72,10 +73,8 @@ class CaptureSessionViewController: UIViewController {
                 default:
                     videoOrientation = UIApplication.shared.windows.first?.windowScene?.interfaceOrientation.asAVCaptureVideoOrientation() ?? .portrait
                 }
-                preview.frame = self.view.bounds
                 connection.videoOrientation = videoOrientation
             }
-
             preview.frame = self.view.bounds
         }
     }

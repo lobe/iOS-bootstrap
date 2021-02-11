@@ -1,0 +1,8 @@
+# View Objects
+The Lobe iOS-bootstrap app organizes view logic into the following objects:
+
+- [`PlayView`](https://github.com/lobe/iOS-bootstrap/tree/master/Lobe_iOS/Views/PlayView.swift) is the superview object, which handles rendering logic for both `Camera` and `ImagePreview` modes. `PlayView` also formats the location of overlayed buttons and labels in the frame.
+- [`CameraView`](https://github.com/lobe/iOS-bootstrap/tree/master/Lobe_iOS/Views/CameraView.swift) is a `UIViewControllerRepresentable`, rather than a `View`. It manages a view controller which sets the video feed to the view frame, described in more detail [here](https://github.com/lobe/iOS-bootstrap/tree/master/Lobe_iOS#other-files).
+- [`ImagePreview`](https://github.com/lobe/iOS-bootstrap/tree/master/Lobe_iOS/Views/ImagePreview.swift) displays a `UIImage` as selected from the `ImagePicker` photo picker.
+- [`ImagePicker`](https://github.com/lobe/iOS-bootstrap/tree/master/Lobe_iOS/Views/ImagePicker.swift) is another `UIViewControllerRepresentable` which integrates `UIImagePickerControllerDelegate`, a UIKit delegate for handling selected images from an image picker. The selected image is used for `ImagePreview` mode.
+- [`PredictionLabelView`](https://github.com/lobe/iOS-bootstrap/tree/master/Lobe_iOS/Views/PredictionLabelView.swift) defines the view for the UI label displaying prediction text and confidence percentage.

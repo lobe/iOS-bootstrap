@@ -4,9 +4,7 @@
 
 iOS Bootstrap takes the machine learning model created in Lobe, and adds it to a project on iOS that uses CoreML and [SwiftUI](https://developer.apple.com/xcode/swiftui/). We help you along the way with everything you need to do to integrate it in your project.
 
-<br />
-
-## Installing Your Development Environment
+## Installing Development Environment
 
 You need to get you setup so you can build, launch, and play with your app. These instructions are written for macOS, the only system you can develop iOS apps on.
 
@@ -42,9 +40,7 @@ Once it's done, double click on the `Lobe_iOS.xcodeproj` file in your project di
 
 Now we need to export your custom model from Lobe. If you'd like, you can skip to the [deploying your app](#deploying-your-app) section if you just want to see this app working with the default sample model.
 
-<br />
-
-### Step 3 - Exporting your model
+### Step 3 - Exporting Model
 
 After your machine learning is done training, and you are getting good results, you can export your model by going into the file menu and clicking export. Lobe supports a bunch of industry standard platforms. For this project, we'll select CoreML, the standard for Apple's platforms.
 
@@ -52,9 +48,7 @@ Once you have the CoreML model, rename it to `LobeModel.mlmodel` and drag it int
 
 ![Illustration of Finder](https://github.com/lobe/iOS-bootstrap/raw/master/assets/modeldrag.png)
 
-<br />
-
-## Step 4 - Deploying your app
+### Step 4 - Deploying App
 
 Next, we'll want to get this app onto your phone so you can see it working live with your device's camera. To do this, plug in your device via a USB-Lightning cable and, in the open Xcode window, press the play button in the top left corner of the window:
 
@@ -68,11 +62,22 @@ And there you have it! You're app should be running on your device. If Xcode pop
 
 And finally, if you'd like to post your app (running your custom image classification model) to the App Store, you're more than welcome to do so. [Follow the instructions here](https://developer.apple.com/app-store/submitting/) to get the process rolling. You'll need to have an Apple Developer account.
 
-<br />
+## Miscellaneous Information
+
+### In-App Gestures
+
+The Lobe iOS bootstrap app supports the following gestures:
+- **Swipe Up**: opens an image picker for the device's photo library. The selected image is previewed and used for prediction.
+- **Double Tap**: toggles between front and back-facing cameras for the video feed.
+- **Triple Tap**: saves a screenshot of the video feed, omitting overlayed UI components in the capture.
+
+### Device Support
+
+This app works for iPhones and iPads running iOS/iPadOS 13.4 or greater.
 
 ## Understanding the Code
 
-Follow the README in the [`/Lobe_iOS`](https://github.com/lobe/iOS-bootstrap/raw/master/FIL_THIS_IN) folder.
+Follow the README in the [`/Lobe_iOS`](https://github.com/lobe/iOS-bootstrap/tree/master/Lobe_iOS) folder.
 
 ## Contributing
 
