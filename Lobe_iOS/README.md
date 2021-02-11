@@ -29,7 +29,7 @@ The model layer handles all data processing in the app, publishing results to an
 Thankfully, [we can integrate UIKit easily into SwiftUI](https://developer.apple.com/tutorials/swiftui/interfacing-with-uikit) with `UIViewControllerRepresentable`, a struct that manages view controllers directly in a SwiftUI view. In our app, [`CameraView`](https://github.com/lobe/iOS-bootstrap/tree/master/Lobe_iOS/Views/CameraView.swift) is a `UIViewControllerRepresentable` which creates `CaptureSessionViewController`. This view controller is responsible for:
 1. Setting the view frame to the video feed.
 2. Handling device orientation changes, ensuring the video feed is correctly oriented.
-3. Managing tap gestures. UIKit handles conflicts between multiple tap gesture handlers better than SwiftUI, at the time of this writing. [Click here](https://github.com/lobe/iOS-bootstrap/tree/master/Lobe_iOS#in-app-gestures) to read more about tap-gestures in iOS-bootstrap.
+3. Managing tap gestures. UIKit handles conflicts between multiple tap gesture handlers better than SwiftUI, at the time of this writing. [Click here](https://github.com/lobe/iOS-bootstrap#in-app-gestures) to read more about tap-gestures in iOS-bootstrap.
 
 ## Useful Links
 
