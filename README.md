@@ -70,29 +70,9 @@ And finally, if you'd like to post your app (running your custom image classific
 
 <br />
 
-## Tips and Tricks
+## Understanding the Code
 
-This app is meant as a starting place for your own project. Below is a high level overview of the project to get you started. Like any good bootstrap app, this project has been kept intentionally simple. There are only two main components in two files, `ContentView.swift` and `MyViewController.swift`.
-
-#### `ContentView.swift`
-
-This file contains all the main UI, built using SwiftUI. If you'd like to adjust the placement of any UI elements or add you own, start here. If you'd like a primer on SwiftUI, start with this: [Build a SwiftUI app for iOS 14](https://designcode.io/swiftui2-course)
-
-#### `MyViewController.swift`
-
-This file contains all parts that needed to be done using the old style UIKit. Mainly this is making the camera view. Luckily, this is all ported back to SwiftUI using Apple's `UIViewControllerRepresentable` API. This allows us to make the camera view, and then use it like any other SwiftUI view above. You'll also see the CoreML prediction call here.
-
-#### `UpdateTextViewExternal.swift`
-
-Includes the small amount of SwiftUI for the prediction bar at the bottom of the screen.
-
-#### Miscellaneous Pointers
-
-- This project contains a sample icon and other assets, feel free to use these or create your own.
-- When you're using the app, swiping up on the screen pulls open the image picker.
-- Double tapping flips the camera around to the front facing camera. Double tapping again flips the camera back to the front.
-
-<br />
+Follow the README in the [`/Lobe_iOS`](https://github.com/lobe/iOS-bootstrap/raw/master/FIL_THIS_IN) folder.
 
 ## Contributing
 

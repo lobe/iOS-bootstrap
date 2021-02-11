@@ -105,11 +105,9 @@
 			isa = PBXGroup;
 			children = (
 				B56240FA257ED11B00709520 /* Views */,
-				76ED73F2248987E3003B4F6B /* CaptureSessionViewController.swift */,
+				B55C4E1325D4F7820075F68B /* Models */,
 				B5173D5625774E990065A01F /* PlayViewModel.swift */,
-				B55D41452599BB48007C9DBF /* CaptureSessionManager.swift */,
-				B55A1ED725760BAC003EE8AD /* PredictionLayer.swift */,
-				B53C73752533C150007A0231 /* Project.swift */,
+				76ED73F2248987E3003B4F6B /* CaptureSessionViewController.swift */,
 				B5A9B5232557372800FD595B /* Lobe.entitlements */,
 				9B7B03EA2475DBF300D34020 /* AppDelegate.swift */,
 				9B7B03F52475DBF600D34020 /* LaunchScreen.storyboard */,
@@ -137,6 +135,16 @@
 				B513D84625809D62009D91E2 /* Info.plist */,
 			);
 			path = LobeTests;
+			sourceTree = "<group>";
+		};
+		B55C4E1325D4F7820075F68B /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				B55D41452599BB48007C9DBF /* CaptureSessionManager.swift */,
+				B55A1ED725760BAC003EE8AD /* PredictionLayer.swift */,
+				B53C73752533C150007A0231 /* Project.swift */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		B56240FA257ED11B00709520 /* Views */ = {
