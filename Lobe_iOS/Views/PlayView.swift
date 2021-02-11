@@ -96,7 +96,8 @@ struct PlayView: View {
                 /// Disable capture session
                 self.viewModel.viewMode = .NotLoaded
             }
-        }   
+        }
+        .navigationViewStyle(StackNavigationViewStyle())
     }
 }
 
