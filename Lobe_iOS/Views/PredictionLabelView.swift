@@ -1,3 +1,11 @@
+//
+//  PredictionLabelView.swift
+//  Lobe_iOS
+//
+//  Created by Kathy Zhou on 6/4/20.
+//  Copyright © 2020 Microsoft. All rights reserved.
+//
+
 import Foundation
 import SwiftUI
 
@@ -8,10 +16,10 @@ struct VisualEffectView: UIViewRepresentable {
 }
 
 /* View for displaying the green bar containing the prediction label. */
-struct UpdateTextViewExternal: View {
-    @ObservedObject var viewModel: MyViewController
-    @State var showImagePicker: Bool = false
-    @State private var image: UIImage?
+struct PredictionLabelView: View {
+    @State private var showImagePicker: Bool = false
+    @Binding var classificationLabel: String?
+    @Binding var confidence: Float?
     
     var body: some View {
         GeometryReader { geometry in
@@ -25,17 +33,17 @@ struct UpdateTextViewExternal: View {
                         
                         Rectangle()
                             .foregroundColor(Color(UIColor(rgb: 0x00DDAD)))
-                            .frame(width: min(CGFloat(self.viewModel.confidence ?? 0) * geometry.size.width / 1.2, geometry.size.width / 1.2))
+                            .frame(width: min(CGFloat(self.confidence ?? 0) * geometry.size.width / 1.2, geometry.size.width / 1.2))
                             .animation(.linear)
-                    
-                        Text(self.viewModel.classificationLabel ?? "Loading...")
-                            .padding()
-                            .foregroundColor(.white)
+
+                        Text(self.classificationLabel ?? "Loading...")
                             .font(.system(size: 28))
+                        .foregroundColor(.white)
+                        .padding()
                     }
                 }
                 .frame(width: geometry.size.width / 1.2,
-                       height: 65,
+                       height: 75,
                        alignment: .center
                 )
                 .cornerRadius(17.0)
@@ -45,6 +53,7 @@ struct UpdateTextViewExternal: View {
         }
     }
 }
+
 
 struct UpdateTextViewExternal_Previews: PreviewProvider {
     static var previews: some View {
@@ -56,7 +65,7 @@ struct UpdateTextViewExternal_Previews: PreviewProvider {
                     .edgesIgnoringSafeArea(.all)
                     .frame(width: geometry.size.width,
                            height: geometry.size.height)
-                UpdateTextViewExternal(viewModel: MyViewController()).zIndex(0)
+                PredictionLabelView(classificationLabel: .constant(nil), confidence: .constant(nil))
             }.frame(width: geometry.size.width,
                     height: geometry.size.height)
         }
