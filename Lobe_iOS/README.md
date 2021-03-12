@@ -1,8 +1,6 @@
 # Files in iOS Bootstrap
 
-This project adheres to [MVVM architecture](https://www.raywenderlich.com/34-design-patterns-by-tutorials-mvvm). MVVM is a design pattern which organizes objects by model, view model, and view. Our app leverages MVVM as follows:
-
-![Code Diagram](https://github.com/lobe/iOS-bootstrap/raw/master/assets/codeDiagram.png)
+This project adheres to [MVVM architecture](https://www.raywenderlich.com/34-design-patterns-by-tutorials-mvvm). MVVM is a design pattern which organizes objects by model, view model, and view.
 
 *Arrows designate subscriptions in their pointed direction, i.e `PlayViewModel` subscribes to `PredictionLayer`.*
 
