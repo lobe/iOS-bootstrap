@@ -125,7 +125,7 @@ extension CaptureSessionManager: AVCaptureVideoDataOutputSampleBufferDelegate {
   func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
     /// Skip frames to optimize.
     totalFrameCount += 1
-    if totalFrameCount % 10 != 0 { return }
+    if totalFrameCount % 20 != 0 { return }
     
     guard let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer),
           let image = UIImage(pixelBuffer: pixelBuffer),
