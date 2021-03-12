@@ -1,3 +1,7 @@
+//
+//  Copyright © 2020 Microsoft. All rights reserved.
+//
+
 import Foundation
 import SwiftUI
 
@@ -30,7 +34,7 @@ struct PredictionLabelView: View {
               .opacity(opacity)
               .cornerRadius(23)
               .opacity(text == "Loading..." ? 0 : 1)
-              .frame(width: max(min(CGFloat(self.confidence ?? 0) * geometry.size.width / 1.2, geometry.size.width / 1.2), 46))
+              .frame(width: max(min(CGFloat(self.confidence ?? 0) * geometry.size.width / 1, geometry.size.width / 1), 46))
               .animation(.spring())
 
             Text(text)

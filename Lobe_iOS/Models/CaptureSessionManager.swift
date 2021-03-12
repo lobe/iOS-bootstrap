@@ -1,8 +1,4 @@
 //
-//  CaptureSessionViewModel.swift
-//  Lobe_iOS
-//
-//  Created by Elliot Boschwitz on 12/27/20.
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
@@ -129,7 +125,7 @@ extension CaptureSessionManager: AVCaptureVideoDataOutputSampleBufferDelegate {
   func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
     /// Skip frames to optimize.
     totalFrameCount += 1
-    if totalFrameCount % 20 != 0{ return }
+    if totalFrameCount % 4 != 0 { return }
     
     guard let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer),
           let image = UIImage(pixelBuffer: pixelBuffer),

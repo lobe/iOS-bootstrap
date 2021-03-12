@@ -1,3 +1,7 @@
+//
+//  Copyright © 2020 Microsoft. All rights reserved.
+//
+
 import AVKit
 import Foundation
 

@@ -1,3 +1,7 @@
+//
+//  Copyright © 2020 Microsoft. All rights reserved.
+//
+
 import SwiftUI
 
 /// Shows image preview from photo library on top of PlayView.

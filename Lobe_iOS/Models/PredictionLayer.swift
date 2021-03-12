@@ -1,8 +1,4 @@
 //
-//  PredictionLayer.swift
-//  Lobe_iOS
-//
-//  Created by Elliot Boschwitz on 11/30/20.
 //  Copyright © 2020 Microsoft. All rights reserved.
 //
 
@@ -42,6 +38,7 @@ class PredictionLayer: NSObject {
           return
         }
 
+        // TODO: Move this to 3 and make sure the FOREACH is working.
         let topClassifications = classifications.prefix(3)
         self?.classificationResult = Array(topClassifications)
       }, onError: { [weak self] error in
