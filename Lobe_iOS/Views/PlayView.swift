@@ -67,7 +67,7 @@ struct PlayView: View {
         .frame(minWidth: 0,
                maxWidth: .infinity, minHeight: 0,
                maxHeight: CGFloat((viewModel.confidences ?? []).count * 70
-                                    + ((viewModel.confidences ?? []).count == 0 ? 0 : 20)),
+                                    + ((viewModel.confidences ?? []).count == 0 ? 0 : 32)),
                alignment: .top)
         .edgesIgnoringSafeArea(.all)
         .background(PlayView.blurEffect)

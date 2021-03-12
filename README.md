@@ -12,8 +12,6 @@ If you already have `git` installed and know how to clone this repo, skip to [St
 
 If you prefer to use the [GitHub Desktop](https://desktop.github.com) app, click on the "Code" button above and click "Open with GitHub Desktop":
 
-![](https://github.com/lobe/iOS-bootstrap/raw/master/assets/downloadProject.png)
-
 ### Step 1 - Install [Homebrew](http://brew.sh/) and [Git](https://git-scm.com)
 
 Type the following into a Terminal window:
@@ -34,8 +32,6 @@ git clone https://github.com/lobe/iOS-bootstrap.git
 
 Next, we're going to install Xcode, a free tool from Apple, via the [App Store](https://apps.apple.com/us/app/xcode/id497799835?mt=12). This is a fairly straightforward process that could take an hour or more, as the Xcode app is pretty large.
 
-![Screenshot of XCode installation](https://github.com/lobe/iOS-bootstrap/raw/master/assets/xcodeDownload.png)
-
 Once it's done, double click on the `Lobe_iOS.xcodeproj` file in your project directory and it'll open in Xcode!
 
 Now we need to export your custom model from Lobe. If you'd like, you can skip to the [deploying your app](#deploying-your-app) section if you just want to see this app working with the default sample model.
@@ -44,21 +40,13 @@ Now we need to export your custom model from Lobe. If you'd like, you can skip t
 
 After your machine learning is done training, and you are getting good results, you can export your model by going into the file menu and clicking export. Lobe supports a bunch of industry standard platforms. For this project, we'll select CoreML, the standard for Apple's platforms.
 
-Once you have the CoreML model, rename it to `LobeModel.mlmodel` and drag it into the root of this repo to replace the exisiting sample model:
-
-![Illustration of Finder](https://github.com/lobe/iOS-bootstrap/raw/master/assets/modeldrag.png)
+Once you have the CoreML model, rename it to `LobeModel.mlmodel` and drag it into the root of this repo to replace the exisiting sample model.
 
 ### Step 4 - Deploying App
 
-Next, we'll want to get this app onto your phone so you can see it working live with your device's camera. To do this, plug in your device via a USB-Lightning cable and, in the open Xcode window, press the play button in the top left corner of the window:
-
-![Screenshot of Xcode](https://github.com/lobe/iOS-bootstrap/raw/master/assets/Xcode%20Play%20Button.png)
+Next, we'll want to get this app onto your phone so you can see it working live with your device's camera. To do this, plug in your device via a USB-Lightning cable and, in the open Xcode window, press the play button in the top left corner of the window.
 
 And there you have it! You're app should be running on your device. If Xcode pops up a message asking you to setup your team, just follow the steps it suggests or [take a look here](https://stackoverflow.com/questions/40475094/how-to-specify-development-team-in-xcode#40476567).
-
-<p align="center">
-  <img height='500px' src="https://github.com/lobe/iOS-bootstrap/raw/master/assets/iphone-video.gif" alt="video"/>
-</p>
 
 And finally, if you'd like to post your app (running your custom image classification model) to the App Store, you're more than welcome to do so. [Follow the instructions here](https://developer.apple.com/app-store/submitting/) to get the process rolling. You'll need to have an Apple Developer account.
 
@@ -81,10 +69,8 @@ Follow the README in the [`/Lobe_iOS`](https://github.com/lobe/iOS-bootstrap/tre
 
 ## Contributing
 
-If you can think of anything you'd like to add, or bugs you find, please reach out! PRs will be openly accepted (if they keep project simple, bonus points for making it even simplier) and issues will be triaged.
+If you can think of anything you'd like to add, or bugs you find, please reach out! PRs will be openly accepted (if they keep project simple, bonus points for making it even simpler) and issues will be triaged.
 
 For project ideas or feedback, please visit our community on [Reddit](https://www.reddit.com/r/Lobe/)!
 
 We look forward to seeing the awesome projects you put out there into the world! Cheers!
-
-![team sig](https://github.com/lobe/iOS-bootstrap/raw/master/assets/lobeteam.png)
