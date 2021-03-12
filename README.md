@@ -1,4 +1,4 @@
-<div style="text-align:center"><img src="https://github.com/lobe/iOS-bootstrap/raw/master/assets/header.png" /></div>
+<div style="text-align:center"><img src="https://github.com/lobe/iOS-bootstrap/raw/master/Assets/header.jpg" /></div>
 
 [Lobe](http://lobe.ai/) is an easy to use app that has everything you need to bring your machine learning ideas to life. Just show it some examples of what you want it to do, and train a custom machine learning model that can be shipped in your app.
 
