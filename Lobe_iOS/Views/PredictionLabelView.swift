@@ -30,11 +30,12 @@ struct PredictionLabelView: View {
             
             // TODO: Add animations.
             Rectangle()
+              .frame(width: max(min(CGFloat(self.confidence ?? 0) * geometry.size.width / 1, geometry.size.width / 1), 46))
               .foregroundColor(color)
               .opacity(opacity)
               .cornerRadius(23)
               .opacity(text == "Loading..." ? 0 : 1)
-              .frame(width: max(min(CGFloat(self.confidence ?? 0) * geometry.size.width / 1, geometry.size.width / 1), 46))
+              .animation(.spring())
 
             Text(text)
               .font(.system(size: 32))
