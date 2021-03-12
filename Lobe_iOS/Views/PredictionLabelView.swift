@@ -12,22 +12,26 @@ struct PredictionLabelView: View {
   @State private var showImagePicker: Bool = false
   @State var classificationLabel: String?
   @State var confidence: Float?
-  @State var top: Bool = false
+  @State var top: Bool?
   
   var body: some View {
     GeometryReader { geometry in
       VStack(alignment: .center) {
         HStack(alignment: .center) {
           ZStack (alignment: .leading) {
-            let color = self.top ? Color(UIColor(rgb: 0x00DDB3)) : Color.white
-            let opacity = self.top ? 1 : 0.2
+            let top = self.top ?? false
+            let color = top ? Color(UIColor(rgb: 0x00DDB3)) : Color.white
+            let opacity = top ? 1 : 0.2
             let text = self.classificationLabel ?? "Loading..."
+            
+            // TODO: Add animations.
             Rectangle()
               .foregroundColor(color)
               .opacity(opacity)
-              .frame(width: max(min(CGFloat(self.confidence ?? 0) * geometry.size.width / 1.2, geometry.size.width / 1.2), 46))
               .cornerRadius(23)
               .opacity(text == "Loading..." ? 0 : 1)
+              .frame(width: max(min(CGFloat(self.confidence ?? 0) * geometry.size.width / 1.2, geometry.size.width / 1.2), 46))
+              .animation(.spring())
 
             Text(text)
               .font(.system(size: 32))
@@ -42,7 +46,7 @@ struct PredictionLabelView: View {
            height: 58,
            alignment: .center
     )
-    .padding(.top, self.top ? 16 : 0)
+    .padding(.top, (self.top ?? false) ? 16 : 0)
   }
 }
 

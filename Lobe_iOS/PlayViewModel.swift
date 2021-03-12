@@ -48,6 +48,7 @@ class PlayViewModel: ObservableObject {
           self?.classificationLabels = ["Loading..."]
           return
         }
+
         self?.classificationLabels = _classificationResult.map { $0.identifier }
         self?.confidences = _classificationResult.map { $0.confidence }
       })

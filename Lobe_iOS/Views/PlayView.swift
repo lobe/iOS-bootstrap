@@ -54,18 +54,24 @@ struct PlayView: View {
                 .border(Color.blue, width: 8)
             }
           }
-          
-          let labels = self.viewModel.classificationLabels ?? [""]
-          let confidences = self.viewModel.confidences ?? [0]
-          
-          ForEach(Array(labels.enumerated()), id: \.element) { index, label in
-            PredictionLabelView(classificationLabel: label, confidence: confidences[index], top: index == 0)
+
+          let labels = self.$viewModel.classificationLabels.wrappedValue ?? [""]
+          let confidences = self.$viewModel.confidences.wrappedValue ?? [0]
+
+          // TODO: Fix this for each to make it really unique.
+          ForEach(confidences, id: \.self) { confidence in
+            let index = confidences.firstIndex(of: confidence) ?? 0
+            PredictionLabelView(classificationLabel: labels[index], confidence: confidence, top: index == 0)
           }
         }
-        .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: CGFloat(Double((self.viewModel.confidences ?? []).count) * 76.67), alignment: .top)
+        .frame(minWidth: 0,
+               maxWidth: .infinity, minHeight: 0,
+               maxHeight: CGFloat((viewModel.confidences ?? []).count * 70
+                                    + ((viewModel.confidences ?? []).count == 0 ? 0 : 20)),
+               alignment: .top)
         .edgesIgnoringSafeArea(.all)
         .background(PlayView.blurEffect)
-        .cornerRadius(40)
+        .cornerRadius(40, corners: [.topLeft, .topRight])
       }
       .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .bottom)
       .edgesIgnoringSafeArea(.all)
@@ -89,7 +95,10 @@ struct PlayView: View {
     .navigationBarBackButtonHidden(true)
     .navigationBarHidden(true)
     .sheet(isPresented: self.$viewModel.showImagePicker) {
-      ImagePicker(image: self.$viewModel.imageFromPhotoPicker, viewMode: self.$viewModel.viewMode, predictionLayer: self.viewModel.imagePredicter, sourceType: .photoLibrary)
+      ImagePicker(image: self.$viewModel.imageFromPhotoPicker,
+                  viewMode: self.$viewModel.viewMode,
+                  predictionLayer: self.viewModel.imagePredicter,
+                  sourceType: .photoLibrary)
         .edgesIgnoringSafeArea(.all)
     }
     .onAppear {
@@ -99,6 +108,13 @@ struct PlayView: View {
       /// Disable capture session
       self.viewModel.viewMode = .NotLoaded
     }
+  }
+}
+
+extension View {
+  func Print(_ vars: Any...) -> some View {
+    for v in vars { print(v) }
+    return EmptyView()
   }
 }
 
@@ -159,6 +175,22 @@ extension UIColor {
       green: (rgb >> 8) & 0xFF,
       blue: rgb & 0xFF
     )
+  }
+}
+
+extension View {
+  func cornerRadius(_ radius: CGFloat, corners: UIRectCorner) -> some View {
+    clipShape(RoundedCorner(radius: radius, corners: corners) )
+  }
+}
+
+struct RoundedCorner: Shape {
+  var radius: CGFloat = .infinity
+  var corners: UIRectCorner = .allCorners
+
+  func path(in rect: CGRect) -> Path {
+    let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
+    return Path(path.cgPath)
   }
 }
 
