@@ -15,6 +15,14 @@ enum PlayViewMode {
 class PlayViewModel: ObservableObject {
   @Published var classificationLabels: [String]?
   @Published var confidences: [Float]?
+  
+  @Published var firstLabel: String?
+  @Published var secondLabel: String?
+  @Published var thirdLabel: String?
+  @Published var firstConfidence: Float?
+  @Published var secondConfidence: Float?
+  @Published var thirdConfidence: Float?
+  
   @Published var viewMode: PlayViewMode = PlayViewMode.NotLoaded
   @Published var showImagePicker: Bool = false
   @Published var imageFromPhotoPicker: UIImage?
@@ -52,7 +60,16 @@ class PlayViewModel: ObservableObject {
           self?.classificationLabels = ["Loading..."]
           return
         }
-
+        
+        
+        self?.firstLabel = _classificationResult[safe: 0]?.identifier
+        self?.secondLabel = _classificationResult[safe: 1]?.identifier
+        self?.thirdLabel = _classificationResult[safe: 2]?.identifier
+        
+        self?.firstConfidence = _classificationResult[safe: 0]?.confidence
+        self?.secondConfidence = _classificationResult[safe: 1]?.confidence
+        self?.thirdConfidence = _classificationResult[safe: 2]?.confidence
+        
         self?.classificationLabels = _classificationResult.map { $0.identifier }
         self?.confidences = _classificationResult.map { $0.confidence }
       })

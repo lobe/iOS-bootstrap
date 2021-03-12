@@ -14,8 +14,8 @@ struct VisualEffectView: UIViewRepresentable {
 /* View for displaying the green bar containing the prediction label. */
 struct PredictionLabelView: View {
   @State private var showImagePicker: Bool = false
-  @State var classificationLabel: String?
-  @State var confidence: Float?
+  @Binding var classificationLabel: String?
+  @Binding var confidence: Float?
   @State var top: Bool?
   
   var body: some View {
@@ -35,7 +35,6 @@ struct PredictionLabelView: View {
               .cornerRadius(23)
               .opacity(text == "Loading..." ? 0 : 1)
               .frame(width: max(min(CGFloat(self.confidence ?? 0) * geometry.size.width / 1, geometry.size.width / 1), 46))
-              .animation(.spring())
 
             Text(text)
               .font(.system(size: 32))

@@ -59,14 +59,15 @@ struct PlayView: View {
             }
           }
 
-          let labels = self.$viewModel.classificationLabels.wrappedValue ?? [""]
-          let confidences = self.$viewModel.confidences.wrappedValue ?? [0]
-
-          // TODO: Fix this for each to make it really unique.
-          ForEach(confidences, id: \.self) { confidence in
-            let index = confidences.firstIndex(of: confidence) ?? 0
-            PredictionLabelView(classificationLabel: labels[index], confidence: confidence, top: index == 0)
-          }
+          // TODO: Implement this in a nicer way.
+          PredictionLabelView(classificationLabel: self.$viewModel.firstLabel,
+                              confidence: self.$viewModel.firstConfidence, top: true)
+          
+          PredictionLabelView(classificationLabel: self.$viewModel.secondLabel,
+                              confidence: self.$viewModel.secondConfidence, top: false)
+          
+          PredictionLabelView(classificationLabel: self.$viewModel.thirdLabel,
+                              confidence: self.$viewModel.thirdConfidence, top: false)
         }
         .frame(minWidth: 0,
                maxWidth: .infinity, minHeight: 0,
@@ -76,6 +77,8 @@ struct PlayView: View {
         .edgesIgnoringSafeArea(.all)
         .background(PlayView.blurEffect)
         .cornerRadius(40, corners: [.topLeft, .topRight])
+        
+        // TODO: Do height based on labels.
       }
       .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .bottom)
       .edgesIgnoringSafeArea(.all)
@@ -119,6 +122,13 @@ extension View {
   func Print(_ vars: Any...) -> some View {
     for v in vars { print(v) }
     return EmptyView()
+  }
+}
+
+extension Collection {
+  /// Returns the element at the specified index if it is within bounds, otherwise nil.
+  subscript (safe index: Index) -> Element? {
+    return indices.contains(index) ? self[index] : nil
   }
 }
 
