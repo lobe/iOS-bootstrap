@@ -6,13 +6,13 @@
 
 ## Get Started
 
-Clone, fork or download the project on your computer and install [Xcode](https://apps.apple.com/us/app/xcode/id497799835?mt=12) to get started. Xcode is the app that's used to run the starter project on your computer or device.
+1. Clone, fork or download the project on your computer and install [Xcode](https://apps.apple.com/us/app/xcode/id497799835?mt=12) to get started. Xcode is the app that's used to run the starter project on your computer or device.
 
-When the installation of Xcode is complete, open the `Lobe_iOS.xcodeproj` file. Notice that we've added a sample model called `LobeModel.mlmodel` in the same folder as your starter project. This model recognizes common objects on your desk.
+2. When the installation of Xcode is complete, open the `Lobe_iOS.xcodeproj` file. Notice that we've added a sample model called `LobeModel.mlmodel` in the same folder as your starter project. This model recognizes common objects on your desk.
 
-To use your own model file, open your Lobe project, go to the Use tab, select Export and click on the Core ML model file. When exported, rename the `.mlmodel` file to `LobeModel.mlmodel` and drag it to the original starter project folder.
+3. To use your own model file, open your Lobe project, go to the Use tab, select Export and click on the Core ML model file. When exported, rename the `.mlmodel` file to `LobeModel.mlmodel` and drag it to the original starter project folder.
 
-Head back to Xcode and run the app by clicking on the play button. To run your project on your phone directly, you might need to log into your Apple Developer account under the Preferences panel.
+4. Head back to Xcode and run the app by clicking on the play button. To run your project on your phone directly, you might need to log into your Apple Developer account under the Preferences panel.
 
 ## Additional Information
 
