@@ -12,7 +12,7 @@
 
 3. To use your own model file, open your Lobe project, go to the Use tab, select Export and click on the Core ML model file. When exported, rename the `.mlmodel` file to `LobeModel.mlmodel` and drag it to the original starter project folder.
 
-4. Head back to Xcode and run the app by clicking on the play button. Consult [the following section](#Running-on-Personal-Device) to run your project directly on your iPhone/iPad, otherwise ensure you select a simulator as a target device.
+4. Head back to Xcode and run the app by clicking on the play button. Consult [the following section](#Running-on-Personal-Device) to run your project directly on your iPhone, otherwise ensure you select a simulator as a target device.
 
 ### Running on Personal Device
 
