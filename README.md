@@ -12,7 +12,17 @@
 
 3. To use your own model file, open your Lobe project, go to the Use tab, select Export and click on the Core ML model file. When exported, rename the `.mlmodel` file to `LobeModel.mlmodel` and drag it to the original starter project folder.
 
-4. Head back to Xcode and run the app by clicking on the play button. To run your project on your phone directly, you might need to log into your Apple Developer account under the Preferences panel.
+4. Head back to Xcode and run the app by clicking on the play button. Consult [the following section](#Running-on-Personal-Device) to run your project directly on your iPhone/iPad, otherwise ensure you select a simulator as a target device.
+
+### Running on Personal Device
+
+The following requirements must be met in order to run the Lobe app on your device:
+
+1. **Apple developer account subscription.** You must link your developer account subscription in Xcode under the preferences panel. 
+
+2. **Create a unique bundle identifier.** Create your own unique ID under Targets > General tab > Bundle Identifier in the project settings.
+
+3. **Register device with developer account.** Follow [Apple's docs](https://developer.apple.com/documentation/xcode/distributing_your_app_to_registered_devices) for adding your own device.
 
 ## Additional Information
 

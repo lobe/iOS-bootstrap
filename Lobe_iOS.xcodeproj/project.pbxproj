@@ -438,14 +438,14 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Lobe_iOS/Preview Content\"";
-				DEVELOPMENT_TEAM = TRXLK9K735;
+				DEVELOPMENT_TEAM = UBF8T346G9;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Lobe_iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.bootstrap.lobe;
+				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.lobe;
 				PRODUCT_NAME = Lobe;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -461,14 +461,14 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_ASSET_PATHS = "\"Lobe_iOS/Preview Content\"";
-				DEVELOPMENT_TEAM = TRXLK9K735;
+				DEVELOPMENT_TEAM = UBF8T346G9;
 				ENABLE_PREVIEWS = YES;
 				INFOPLIST_FILE = Lobe_iOS/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = com.bootstrap.lobe;
+				PRODUCT_BUNDLE_IDENTIFIER = com.microsoft.lobe;
 				PRODUCT_NAME = Lobe;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
