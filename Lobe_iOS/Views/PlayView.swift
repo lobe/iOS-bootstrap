@@ -48,35 +48,38 @@ struct PlayView: View {
       .edgesIgnoringSafeArea(.all)
       
       VStack(spacing: 0) {
-        VStack(spacing: 12) {
+        VStack {
+          /// Show processed image that gets used for prediction.
           if Bool(ProcessInfo.processInfo.environment["SHOW_FORMATTED_IMAGE"] ?? "false") ?? false {
             if let imageForProcessing = self.viewModel.imagePredicter.imageForPrediction {
               Image(uiImage: imageForProcessing)
                 .resizable()
                 .scaledToFit()
-                .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
+                .frame(width: 300, height: 300)
                 .border(Color.blue, width: 8)
             }
           }
 
           // TODO: Implement this in a nicer way.
-          PredictionLabelView(classificationLabel: self.$viewModel.firstLabel,
-                              confidence: self.$viewModel.firstConfidence, top: true)
-          
-          PredictionLabelView(classificationLabel: self.$viewModel.secondLabel,
-                              confidence: self.$viewModel.secondConfidence, top: false)
-          
-          PredictionLabelView(classificationLabel: self.$viewModel.thirdLabel,
-                              confidence: self.$viewModel.thirdConfidence, top: false)
+          VStack(spacing: 12) {
+            PredictionLabelView(classificationLabel: self.$viewModel.firstLabel,
+                                confidence: self.$viewModel.firstConfidence, top: true)
+            
+            PredictionLabelView(classificationLabel: self.$viewModel.secondLabel,
+                                confidence: self.$viewModel.secondConfidence, top: false)
+            
+            PredictionLabelView(classificationLabel: self.$viewModel.thirdLabel,
+                                confidence: self.$viewModel.thirdConfidence, top: false)
+          }
+          .frame(minWidth: 0,
+                 maxWidth: .infinity, minHeight: 0,
+                 maxHeight: CGFloat((viewModel.confidences ?? []).count * 70
+                                        + ((viewModel.confidences ?? []).count == 0 ? 0 : 32)),
+                 alignment: .top)
+          .edgesIgnoringSafeArea(.all)
+          .background(PlayView.blurEffect)
+          .cornerRadius(40, corners: [.topLeft, .topRight])
         }
-        .frame(minWidth: 0,
-               maxWidth: .infinity, minHeight: 0,
-               maxHeight: CGFloat((viewModel.confidences ?? []).count * 70
-                                    + ((viewModel.confidences ?? []).count == 0 ? 0 : 32)),
-               alignment: .top)
-        .edgesIgnoringSafeArea(.all)
-        .background(PlayView.blurEffect)
-        .cornerRadius(40, corners: [.topLeft, .topRight])
         
         // TODO: Do height based on labels.
       }
