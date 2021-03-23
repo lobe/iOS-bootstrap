@@ -23,9 +23,9 @@
 		B55A1ED32574F368003EE8AD /* CameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55A1ED22574F368003EE8AD /* CameraView.swift */; };
 		B55A1ED825760BAC003EE8AD /* PredictionLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55A1ED725760BAC003EE8AD /* PredictionLayer.swift */; };
 		B55D41462599BB48007C9DBF /* CaptureSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55D41452599BB48007C9DBF /* CaptureSessionManager.swift */; };
-		B55FB5C42609B5AF003C5F9A /* LobeModel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B55FB5C32609B5AF003C5F9A /* LobeModel.mlmodel */; };
 		B5A30D2E260960DE0097EED3 /* Prediction.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5A30D2D260960DE0097EED3 /* Prediction.swift */; };
 		B5A9B5272557373E00FD595B /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5A9B5262557373E00FD595B /* CloudKit.framework */; };
+		B5B2D939260A4D5B00BABFAB /* LobeModel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B5B2D938260A4D5B00BABFAB /* LobeModel.mlmodel */; };
 		B5BB1F6B2609AA73004AB6A2 /* PredictionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5BB1F6A2609AA73004AB6A2 /* PredictionsView.swift */; };
 /* End PBXBuildFile section */
 
@@ -60,10 +60,10 @@
 		B55A1ED22574F368003EE8AD /* CameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CameraView.swift; sourceTree = "<group>"; };
 		B55A1ED725760BAC003EE8AD /* PredictionLayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionLayer.swift; sourceTree = "<group>"; };
 		B55D41452599BB48007C9DBF /* CaptureSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureSessionManager.swift; sourceTree = "<group>"; };
-		B55FB5C32609B5AF003C5F9A /* LobeModel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = LobeModel.mlmodel; path = ../../../Downloads/LobeModel.mlmodel; sourceTree = "<group>"; };
 		B5A30D2D260960DE0097EED3 /* Prediction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Prediction.swift; sourceTree = "<group>"; };
 		B5A9B5232557372800FD595B /* Lobe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Lobe.entitlements; sourceTree = "<group>"; };
 		B5A9B5262557373E00FD595B /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		B5B2D938260A4D5B00BABFAB /* LobeModel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = LobeModel.mlmodel; sourceTree = "<group>"; };
 		B5BB1F6A2609AA73004AB6A2 /* PredictionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionsView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -89,6 +89,7 @@
 		9B7B03DE2475DBF300D34020 = {
 			isa = PBXGroup;
 			children = (
+				B5B2D938260A4D5B00BABFAB /* LobeModel.mlmodel */,
 				9B7B03E92475DBF300D34020 /* Lobe_iOS */,
 				B513D84325809D62009D91E2 /* LobeTests */,
 				9B7B03E82475DBF300D34020 /* Products */,
@@ -117,7 +118,6 @@
 				9B7B03F52475DBF600D34020 /* LaunchScreen.storyboard */,
 				9B7B03EC2475DBF300D34020 /* SceneDelegate.swift */,
 				9B7B03F02475DBF600D34020 /* Assets.xcassets */,
-				B55FB5C32609B5AF003C5F9A /* LobeModel.mlmodel */,
 				9B7B03F82475DBF600D34020 /* Info.plist */,
 				9B7B03F22475DBF600D34020 /* Preview Content */,
 			);
@@ -281,7 +281,7 @@
 				B55A1ED32574F368003EE8AD /* CameraView.swift in Sources */,
 				76CDE1A4247F2E6D0096E882 /* ImagePicker.swift in Sources */,
 				9B7B03ED2475DBF300D34020 /* SceneDelegate.swift in Sources */,
-				B55FB5C42609B5AF003C5F9A /* LobeModel.mlmodel in Sources */,
+				B5B2D939260A4D5B00BABFAB /* LobeModel.mlmodel in Sources */,
 				76ED73F5248988AE003B4F6B /* PredictionLabelView.swift in Sources */,
 				76ED73F3248987E3003B4F6B /* CaptureSessionViewController.swift in Sources */,
 				B55A1ED825760BAC003EE8AD /* PredictionLayer.swift in Sources */,
