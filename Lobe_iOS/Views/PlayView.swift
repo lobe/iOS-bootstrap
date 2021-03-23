@@ -59,26 +59,7 @@ struct PlayView: View {
                 .border(Color.blue, width: 8)
             }
           }
-
-          // TODO: Implement this in a nicer way.
-          VStack(spacing: 12) {
-            PredictionLabelView(classificationLabel: self.$viewModel.firstLabel,
-                                confidence: self.$viewModel.firstConfidence, top: true)
-            
-            PredictionLabelView(classificationLabel: self.$viewModel.secondLabel,
-                                confidence: self.$viewModel.secondConfidence, top: false)
-            
-            PredictionLabelView(classificationLabel: self.$viewModel.thirdLabel,
-                                confidence: self.$viewModel.thirdConfidence, top: false)
-          }
-          .frame(minWidth: 0,
-                 maxWidth: .infinity, minHeight: 0,
-                 maxHeight: CGFloat((viewModel.confidences ?? []).count * 70
-                                        + ((viewModel.confidences ?? []).count == 0 ? 0 : 32)),
-                 alignment: .top)
-          .edgesIgnoringSafeArea(.all)
-          .background(PlayView.blurEffect)
-          .cornerRadius(40, corners: [.topLeft, .topRight])
+          PredictionsView(predictions: self.viewModel.predictions)
         }
         
         // TODO: Do height based on labels.
@@ -204,7 +185,7 @@ extension View {
 struct RoundedCorner: Shape {
   var radius: CGFloat = .infinity
   var corners: UIRectCorner = .allCorners
-
+  
   func path(in rect: CGRect) -> Path {
     let path = UIBezierPath(roundedRect: rect, byRoundingCorners: corners, cornerRadii: CGSize(width: radius, height: radius))
     return Path(path.cgPath)
@@ -221,22 +202,23 @@ struct PlayView_Previews: PreviewProvider {
   }
   
   static var previews: some View {
-    let viewModel = PlayViewModel(project: Project(mlModel: nil))
-    viewModel.viewMode = .Camera
+    let viewModel1 = PlayViewModel(project: Project(mlModel: nil))
+    let viewModel2 = PlayViewModel(project: Project(mlModel: nil))
+    let viewModel3 = PlayViewModel(project: Project(mlModel: nil))
+    let predictionFirst = Prediction(label: "Primary Prediction", confidence: 0.6)
+    let predictionSecond = Prediction(label: "Second", confidence: 0.2)
+    let predictionThird = Prediction(label: "Third", confidence: 0.1)
+    viewModel1.predictions = [predictionFirst, predictionSecond, predictionThird]
+    viewModel2.predictions = [predictionFirst, predictionSecond]
+    viewModel3.predictions = []
     
     return Group {
-      NavigationView {
-        ZStack {
-          TestImage()
-          PlayView(viewModel: viewModel)
-        }
-      }
-      .previewDevice("iPhone 12")
-      ZStack {
-        TestImage()
-        PlayView(viewModel: viewModel)
-      }
-      .previewDevice("iPad Pro (11-inch) (2nd generation)")
+      PlayView(viewModel: viewModel1)
+        .previewDevice("iPhone 12")
+      PlayView(viewModel: viewModel2)
+        .previewDevice("iPhone 12")
+      PlayView(viewModel: viewModel3)
+        .previewDevice("iPhone 12")
     }
   }
 }

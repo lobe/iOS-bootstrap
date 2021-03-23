@@ -4,6 +4,7 @@
 
 import Combine
 import SwiftUI
+import Vision
 
 enum PlayViewMode {
   case Camera
@@ -14,15 +15,7 @@ enum PlayViewMode {
 /// View model for the Play View
 class PlayViewModel: ObservableObject {
   @Published var classificationLabels: [String]?
-  @Published var confidences: [Float]?
-  
-  @Published var firstLabel: String?
-  @Published var secondLabel: String?
-  @Published var thirdLabel: String?
-  @Published var firstConfidence: Float?
-  @Published var secondConfidence: Float?
-  @Published var thirdConfidence: Float?
-  
+  @Published var predictions: [Prediction] = []
   @Published var viewMode: PlayViewMode = PlayViewMode.NotLoaded
   @Published var showImagePicker: Bool = false
   @Published var imageFromPhotoPicker: UIImage?
@@ -39,7 +32,7 @@ class PlayViewModel: ObservableObject {
     ///     1. `capturedImageOutput` published from `Camera` mode.
     ///     2.  `imageFromPhotoPicker` published from `ImagePreview` mode.
     /// If either of the above publishers emit, we send it's output to the prediction layer for classification results.
-    self.self.$imageFromPhotoPicker
+    self.$imageFromPhotoPicker
       .merge(with: captureSessionManager.$capturedImageOutput)
       .compactMap { $0 }  // remove non-nill values
       .receive(on: DispatchQueue.global(qos: .userInitiated))
@@ -55,23 +48,17 @@ class PlayViewModel: ObservableObject {
     /// Subscribe to classifier results from prediction layer
     self.imagePredicter.$classificationResult
       .receive(on: DispatchQueue.main)
-      .sink(receiveValue: {[weak self] classificationResult in
-        guard let _classificationResult = classificationResult else {
+      .sink(receiveValue: {[weak self] classificationResults in
+        guard let _classificationResults: [VNClassificationObservation] = classificationResults else {
           self?.classificationLabels = ["Loading..."]
           return
         }
         
-        
-        self?.firstLabel = _classificationResult[safe: 0]?.identifier
-        self?.secondLabel = _classificationResult[safe: 1]?.identifier
-        self?.thirdLabel = _classificationResult[safe: 2]?.identifier
-        
-        self?.firstConfidence = _classificationResult[safe: 0]?.confidence
-        self?.secondConfidence = _classificationResult[safe: 1]?.confidence
-        self?.thirdConfidence = _classificationResult[safe: 2]?.confidence
-        
-        self?.classificationLabels = _classificationResult.map { $0.identifier }
-        self?.confidences = _classificationResult.map { $0.confidence }
+        var predictions: [Prediction] = []
+        _classificationResults.forEach { classificationResult in
+          predictions.append(Prediction(label: classificationResult.identifier, confidence: classificationResult.confidence))
+        }
+        self?.predictions = predictions
       })
       .store(in: &disposables)
     
