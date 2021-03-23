@@ -1,5 +1,4 @@
-<!-- <div style="text-align:center"><img src="https://github.com/lobe/iOS-bootstrap/raw/master/Assets/header.jpg" /></div> -->
-<div style="text-align:center"><img src="https://github.com/lobe/iOS-bootstrap/raw/master/assets/header.jpg" /></div>
+<div style="text-align:center"><img src="https://github.com/lobe/iOS-bootstrap/blob/master/Assets/header.jpg" /></div>
 <br>
 
 [Lobe](http://lobe.ai/) is a free, easy to use app that has everything you need to bring your machine learning ideas to life. The iOS starter project takes the machine learning model created in Lobe, and adds it to an iOS project. To get started using the starter project, follow the instructions below:
