@@ -25,7 +25,6 @@ struct CameraView: UIViewControllerRepresentable {
     /// Set view with previewlayer
     let previewLayer = self.captureSessionManager.previewLayer
     uiViewController.previewLayer = previewLayer
-    uiViewController.configureVideoOrientation(for: previewLayer)
     if previewLayer != nil { uiViewController.view.layer.addSublayer(previewLayer!) }
     else { print("Preview layer null in updateUIViewController.") }
   }
