@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		76A9AF54247F138B002086F7 /* LobeModel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = 76A9AF53247F138B002086F7 /* LobeModel.mlmodel */; };
 		76CDE1A4247F2E6D0096E882 /* ImagePicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76CDE1A3247F2E6D0096E882 /* ImagePicker.swift */; };
 		76ED73F3248987E3003B4F6B /* CaptureSessionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76ED73F2248987E3003B4F6B /* CaptureSessionViewController.swift */; };
 		76ED73F5248988AE003B4F6B /* PredictionLabelView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 76ED73F4248988AE003B4F6B /* PredictionLabelView.swift */; };
@@ -25,6 +24,7 @@
 		B55A1ED825760BAC003EE8AD /* PredictionLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55A1ED725760BAC003EE8AD /* PredictionLayer.swift */; };
 		B55D41462599BB48007C9DBF /* CaptureSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55D41452599BB48007C9DBF /* CaptureSessionManager.swift */; };
 		B5A9B5272557373E00FD595B /* CloudKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B5A9B5262557373E00FD595B /* CloudKit.framework */; };
+		B5BB1F912609B48D004AB6A2 /* LobeModel.mlmodel in Sources */ = {isa = PBXBuildFile; fileRef = B5BB1F902609B48D004AB6A2 /* LobeModel.mlmodel */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,7 +38,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		76A9AF53247F138B002086F7 /* LobeModel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; name = LobeModel.mlmodel; path = ../LobeModel.mlmodel; sourceTree = "<group>"; };
 		76CDE1A3247F2E6D0096E882 /* ImagePicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePicker.swift; sourceTree = "<group>"; tabWidth = 2; };
 		76ED73F2248987E3003B4F6B /* CaptureSessionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureSessionViewController.swift; sourceTree = "<group>"; };
 		76ED73F4248988AE003B4F6B /* PredictionLabelView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PredictionLabelView.swift; sourceTree = "<group>"; };
@@ -61,6 +60,7 @@
 		B55D41452599BB48007C9DBF /* CaptureSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CaptureSessionManager.swift; sourceTree = "<group>"; };
 		B5A9B5232557372800FD595B /* Lobe.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Lobe.entitlements; sourceTree = "<group>"; };
 		B5A9B5262557373E00FD595B /* CloudKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CloudKit.framework; path = System/Library/Frameworks/CloudKit.framework; sourceTree = SDKROOT; };
+		B5BB1F902609B48D004AB6A2 /* LobeModel.mlmodel */ = {isa = PBXFileReference; lastKnownFileType = file.mlmodel; path = LobeModel.mlmodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -112,8 +112,8 @@
 				9B7B03EA2475DBF300D34020 /* AppDelegate.swift */,
 				9B7B03F52475DBF600D34020 /* LaunchScreen.storyboard */,
 				9B7B03EC2475DBF300D34020 /* SceneDelegate.swift */,
+				B5BB1F902609B48D004AB6A2 /* LobeModel.mlmodel */,
 				9B7B03F02475DBF600D34020 /* Assets.xcassets */,
-				76A9AF53247F138B002086F7 /* LobeModel.mlmodel */,
 				9B7B03F82475DBF600D34020 /* Info.plist */,
 				9B7B03F22475DBF600D34020 /* Preview Content */,
 			);
@@ -269,11 +269,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				B55D41462599BB48007C9DBF /* CaptureSessionManager.swift in Sources */,
-				76A9AF54247F138B002086F7 /* LobeModel.mlmodel in Sources */,
 				9B7B03EB2475DBF300D34020 /* AppDelegate.swift in Sources */,
 				B5173D5B25774F400065A01F /* ImagePreview.swift in Sources */,
 				B55A1ED32574F368003EE8AD /* CameraView.swift in Sources */,
 				76CDE1A4247F2E6D0096E882 /* ImagePicker.swift in Sources */,
+				B5BB1F912609B48D004AB6A2 /* LobeModel.mlmodel in Sources */,
 				9B7B03ED2475DBF300D34020 /* SceneDelegate.swift in Sources */,
 				76ED73F5248988AE003B4F6B /* PredictionLabelView.swift in Sources */,
 				76ED73F3248987E3003B4F6B /* CaptureSessionViewController.swift in Sources */,
