@@ -13,15 +13,15 @@ struct VisualEffectView: UIViewRepresentable {
 
 /* View for displaying the green bar containing the prediction label. */
 struct PredictionLabelView: View {
-  var prediction: Prediction
+  var prediction: Prediction?
   private var backgroundColor: Color = Color.white
   private var opacity: Double = 0
   private var paddingTop: CGFloat = 0
   
-  init(prediction: Prediction, isTopPrediction: Bool) {
+  init(prediction: Prediction?, isTopPrediction: Bool) {
     self.prediction = prediction
     self.backgroundColor = isTopPrediction ? Color(UIColor(rgb: 0x00DDB3)) : Color.white
-    self.opacity = isTopPrediction ? 1 : 0.2
+    self.opacity = (prediction == nil) ? 0 : (isTopPrediction ? 1 : 0.2)
     self.paddingTop = isTopPrediction ? 16 : 0
   }
   
@@ -32,14 +32,13 @@ struct PredictionLabelView: View {
           ZStack (alignment: .leading) {
             // TODO: Add animations.
             Rectangle()
-              .frame(width: max(min(CGFloat(self.prediction.confidence) * geometry.size.width, geometry.size.width), 46))
+              .frame(width: max(min(CGFloat(self.prediction?.confidence ?? 0) * geometry.size.width, geometry.size.width), 46))
               .foregroundColor(self.backgroundColor)
-              .opacity(self.opacity)
               .cornerRadius(23)
               .opacity(self.opacity)
               .animation(.spring())
 
-            Text(self.prediction.label)
+            Text(self.prediction?.label ?? "")
               .font(.system(size: 32))
               .fontWeight(.medium)
               .foregroundColor(.white)

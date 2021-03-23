@@ -6,10 +6,16 @@ import Foundation
 import SwiftUI
 
 class PredictionsViewModel: ObservableObject {
-  @Published var predictions: [Prediction]
+  @Published var predictionFirst: Prediction?
+  @Published var predictionSecond: Prediction?
+  @Published var predictionThird: Prediction?
+  @Published var predictionsCount: Int
   
   init(predictions: [Prediction]) {
-    self.predictions = predictions
+    self.predictionFirst = predictions[safe: 0]
+    self.predictionSecond = predictions[safe: 1]
+    self.predictionThird = predictions[safe: 2]
+    self.predictionsCount = min(predictions.count, 3)
   }
 }
 
@@ -22,23 +28,16 @@ struct PredictionsView: View {
   }
   
   var body: some View {
-    let predictions = self.viewModel.predictions
 
     VStack(spacing: 12) {
-      if predictions.count > 0 {
-        PredictionLabelView(prediction: predictions[0], isTopPrediction: true)
-        if predictions.count > 1 {
-          PredictionLabelView(prediction: predictions[1], isTopPrediction: false)
-        }
-        if predictions.count > 2 {
-          PredictionLabelView(prediction: predictions[2], isTopPrediction: false)
-        }
-      }
+      PredictionLabelView(prediction: self.viewModel.predictionFirst, isTopPrediction: true)
+      PredictionLabelView(prediction: self.viewModel.predictionSecond, isTopPrediction: false)
+      PredictionLabelView(prediction: self.viewModel.predictionThird, isTopPrediction: false)
     }
     .frame(minWidth: 0,
            maxWidth: .infinity, minHeight: 0,
-           maxHeight: CGFloat(self.viewModel.predictions.count * 70
-                                + (self.viewModel.predictions.count == 0 ? 0 : 32)),
+           maxHeight: CGFloat(self.viewModel.predictionsCount * 70
+                                + (32 * min(self.viewModel.predictionsCount, 1))),
            alignment: .top)
     .edgesIgnoringSafeArea(.all)
     .background(PlayView.blurEffect)
