@@ -37,11 +37,7 @@ class PlayViewModel: ObservableObject {
       .compactMap { $0 }  // remove non-nill values
       .receive(on: DispatchQueue.global(qos: .userInitiated))
       .sink(receiveValue: { [weak self] image in
-        guard let squaredImage = image.squared() else {
-          print("Could not create squared image in PlayViewModel.")
-          return
-        }
-        self?.imagePredicter.getPrediction(forImage: squaredImage)
+        self?.imagePredicter.getPrediction(forImage: image)
       })
       .store(in: &disposables)
     
