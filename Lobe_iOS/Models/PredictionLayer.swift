@@ -72,6 +72,11 @@ class PredictionLayer: NSObject {
       }
       onComplete(request)
     })
+    
+    /// Set center cropping for the expected image size.
+    /// NOTE: Although center cropping is currently expected with Lobe's model version,
+    /// please be mindful of future changes which may affect the expected preprocessing steps.
+    request.imageCropAndScaleOption = .centerCrop
     return request
   }    
 }

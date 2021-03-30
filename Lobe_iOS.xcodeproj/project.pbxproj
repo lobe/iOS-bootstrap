@@ -89,8 +89,8 @@
 		9B7B03DE2475DBF300D34020 = {
 			isa = PBXGroup;
 			children = (
-				B5B2D938260A4D5B00BABFAB /* LobeModel.mlmodel */,
 				9B7B03E92475DBF300D34020 /* Lobe_iOS */,
+				B5B2D938260A4D5B00BABFAB /* LobeModel.mlmodel */,
 				B513D84325809D62009D91E2 /* LobeTests */,
 				9B7B03E82475DBF300D34020 /* Products */,
 				B5A9B5252557373E00FD595B /* Frameworks */,
