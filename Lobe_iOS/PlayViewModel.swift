@@ -19,6 +19,7 @@ class PlayViewModel: ObservableObject {
   @Published var viewMode: PlayViewMode = PlayViewMode.NotLoaded
   @Published var showImagePicker: Bool = false
   @Published var imageFromPhotoPicker: UIImage?
+  @Published var showPredictionView = false
   var captureSessionManager: CaptureSessionManager
   let project: Project
   var imagePredicter: PredictionLayer
@@ -68,6 +69,16 @@ class PlayViewModel: ObservableObject {
       .sink(receiveValue: { [weak self] _viewMode in
         if _viewMode == .Camera { self?.captureSessionManager.resetCameraFeed() }
         else { self?.captureSessionManager.tearDown() }
+      })
+      .store(in: &disposables)
+    
+    /// Update if predictions view should appear
+    self.$predictions
+      .receive(on: DispatchQueue.main)
+      .sink(receiveValue: { [weak self] _predictions in
+        withAnimation {
+          self?.showPredictionView = !_predictions.isEmpty
+        }
       })
       .store(in: &disposables)
   }

@@ -46,23 +46,22 @@ struct PlayView: View {
       .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity)
       .background(Color(UIColor(rgb: 0x333333)))
       .edgesIgnoringSafeArea(.all)
-      
-      VStack(spacing: 0) {
-        VStack {
-          /// Show processed image that gets used for prediction.
-          if Bool(ProcessInfo.processInfo.environment["SHOW_FORMATTED_IMAGE"] ?? "false") ?? false {
-            if let imageForProcessing = self.viewModel.imagePredicter.imageForPrediction {
-              Image(uiImage: imageForProcessing)
-                .resizable()
-                .scaledToFit()
-                .frame(width: 300, height: 300)
-                .border(Color.blue, width: 8)
-            }
+
+      /// Show processed image that gets used for prediction.
+      VStack {
+        if Bool(ProcessInfo.processInfo.environment["SHOW_FORMATTED_IMAGE"] ?? "false") ?? false {
+          if let imageForProcessing = self.viewModel.imagePredicter.imageForPrediction {
+            Image(uiImage: imageForProcessing)
+              .resizable()
+              .scaledToFit()
+              .frame(width: 300, height: 300)
+              .border(Color.blue, width: 8)
           }
-          PredictionsView(predictions: self.viewModel.predictions)
         }
-        
-        // TODO: Do height based on labels.
+          if self.viewModel.showPredictionView {
+            PredictionsView(predictions: self.viewModel.predictions)
+              .transition(.move(edge: .bottom))
+          }
       }
       .frame(minWidth: 0, maxWidth: .infinity, minHeight: 0, maxHeight: .infinity, alignment: .bottom)
       .edgesIgnoringSafeArea(.all)

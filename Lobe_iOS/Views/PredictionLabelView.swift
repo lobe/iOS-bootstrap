@@ -55,7 +55,6 @@ struct PredictionLabelView: View {
   }
 }
 
-
 struct UpdateTextViewExternal_Previews: PreviewProvider {
   static var previews: some View {
     GeometryReader { geometry in
