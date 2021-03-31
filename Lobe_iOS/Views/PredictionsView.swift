@@ -28,7 +28,6 @@ struct PredictionsView: View {
   }
   
   var body: some View {
-
     VStack(spacing: 12) {
       PredictionLabelView(prediction: self.viewModel.predictionFirst, isTopPrediction: true)
       PredictionLabelView(prediction: self.viewModel.predictionSecond, isTopPrediction: false)
@@ -42,5 +41,26 @@ struct PredictionsView: View {
     .edgesIgnoringSafeArea(.all)
     .background(PlayView.blurEffect)
     .cornerRadius(40, corners: [.topLeft, .topRight])
+  }
+}
+
+struct PredictionsViewExternal_Previews: PreviewProvider {
+  static var previews: some View {
+    GeometryReader { geometry in
+      ZStack(alignment: .center) {
+        Image("testing_image")
+          .resizable()
+          .aspectRatio(contentMode: .fill)
+          .edgesIgnoringSafeArea(.all)
+          .frame(width: geometry.size.width,
+                 height: geometry.size.height)
+        PredictionsView(predictions: [
+          Prediction(label: "Primary Prediction", confidence: 0.6),
+          Prediction(label: "Secondary", confidence: 0.2),
+          Prediction(label: "Third", confidence: 0.1)
+        ])
+      }.frame(width: geometry.size.width,
+              height: geometry.size.height)
+    }
   }
 }
